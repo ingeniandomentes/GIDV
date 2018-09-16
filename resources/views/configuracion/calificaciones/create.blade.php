@@ -22,10 +22,6 @@
 					</select>
 				</div>
 			</div>
-			@php($periodo=0)
-			{{ $periodo }}
-			@php($perido=\Request::get('ca_periodoFK'))
-			{{ $periodo }}
 			<div class="col-lg-6 col-sm-6 col-md-6 col-xs-6" id="anio">
 				<div class="form-group">
 					<label for="ca_anioCalificacion">Elija el Año</label>
@@ -38,8 +34,8 @@
 
 	<div class="row">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-			<div class="table-responsive">
 				<div id="calificaciones">
+					<div class="table-responsive">
 					<h1>Calificaciones por Competencias</h1>
 					<!--class="table table-striped table-bordered table-condensed table-hover"-->
 					<table  border>
@@ -71,7 +67,11 @@
 												@php($cont=$cont+1)
 												@endif
 										@endforeach
-										<th class="text-center" colspan="{{ $cont }}" scope="col" name="ca_idMateriaFK" id="ca_idMateriaFK" value="{{ $ma->ma_idMateria }}">{{ $ma->ma_nombre }}</th>
+										<th class="text-center" colspan="{{ $cont }}" scope="col">
+											<select class="se" name="ca_idMateriaFK" id="ca_idMateriaFK" readonly>
+												<option value="{{ $ma->ma_idMateria}}">{{ $ma->ma_nombre }}</option>
+											</select>
+										</th>
 									@endif
 								@php($cont=0)
 								@endforeach
@@ -89,7 +89,11 @@
 												@php($cont=$cont+1)
 												@endif
 										@endforeach
-										<th class="text-center" colspan="{{ $cont }}" scope="col" name="ca_idProcesoFK" id="ca_idProcesoFK" value="{{ $pro->pro_idProceso }}">{{ $pro->pro_nombre }}</th>	
+										<th class="text-center" colspan="{{ $cont }}" scope="col">
+											<select class="se2" name="ca_idProcesoFK" id="ca_idProcesoFK" readonly>
+												<option class="opt" value="{{ $pro->pro_idProceso }}">{{ $pro->pro_nombre }}</option>
+											</select>
+										</th>	
 									@endif
 								@php($cont=0)
 								@endforeach
@@ -97,7 +101,7 @@
 						</tr>
 						</thead>
 						<thead>
-							<tr>
+						<tr>
 						<th scope="col">Competencias</th>
 						@foreach($materias as $ma)
 							@foreach($procesos as $pro)
@@ -105,7 +109,12 @@
 									@foreach($competencias as $co)
 										@if($co->co_idProcesoFK==$pro->pro_idProceso)
 										@php($cont=$cont+1)
-											<th class="text-center" title="{{ $co->co_descripcion }}" scope="col" name="ca_idCompetenciaFK" id="ca_idCompetenciaFK" value="{{ $co->co_idCompetencia }}"><div class="size">{{ $cont }}°</div></th>
+											<th class="text-center" scope="col">
+												<select class="se4" name="ca_idCompetenciaFK" id="ca_idCompetenciaFK" readonly>
+													<option class="text-center" value="{{ $co->co_idCompetencia }}">{{ $cont }}°</option>
+												</select>
+												<span class="glyphicon glyphicon-info-sign" title="{{ $co->co_idCompetencia }}"></span>
+											</th>
 										@endif
 									@endforeach
 									@php($cont=0)
@@ -118,7 +127,11 @@
 							@foreach($estudiantes as $es)
 								@if($es->es_idCursoFK==Auth::user()->us_idCursoFK)
 								<tr>
-									<th class="text-center" scope="row" name="estudiante" id="estudiante" value="{{ $es->es_idEstudiante }}">{{ $es->es_nombre }} {{ $es->es_apellido }}</th>
+									<th class="text-center" scope="row">
+										<select class="se4" name="estudiante" id="estudiante" readonly>
+											<option class="text-center" value="{{ $es->es_idEstudiante }}">{{ $es->es_nombre }} {{ $es->es_apellido }}</option>
+										</select>
+									</th>
 									@foreach($materias as $ma)
 										@foreach($procesos as $pro)
 											@if($ma->ma_idMateria==$pro->pro_idMateriaFK && $pro->pro_idPeriodoFK==2 && $pro->pro_idGradoFK==Auth::user()->us_idGradoFK)
@@ -126,9 +139,9 @@
 													@if($co->co_idProcesoFK==$pro->pro_idProceso)
 													@php($cont=$cont+1)
 														<td>
-															<div class="col-lg-11 col-sm-11 col-md-11 col-xs-11">
+															<div class="col-lg-11 col-sm-11 col-md-11 col-xs-11" style="text-align:center;">
 																<div class="form-group">
-																	<select name="ca_idNotaFK" class="form-control text-center">
+																	<select name="ca_idNotaFK" id="ca_idNotaFK" class="se3">
 																		@foreach($notas as $nt)
 																		<option value="{{$nt->no_idNota}}">{{$nt->no_nombre}}</option>
 																		@endforeach
@@ -147,11 +160,11 @@
 							@endforeach
 						</tbody>
 					</table>
-					<div class="col-lg-2 col-sm-2 col-md-2 col-xs-2 panel panel-primary">
-						<div class="form-group panel-heading mask flex-center rgba-red-strong text-center">
-							<label onclick="calificacionesf()" class="text-center" style="cursor: pointer;">Siguiente</label>
-						</div>
-					</div>
+				</div>
+				<div class="col-lg-2 col-sm-2 col-md-2 col-xs-2 panel panel-primary">
+					<span class="form-group">
+						<label onclick="calificacionesf()" class="text-center" style="cursor: pointer;">Siguiente</label>
+					</span>
 				</div>
 			</div>
 		</div>
@@ -171,6 +184,7 @@
 								@foreach($materias as $ma)
 									@php($mat=$mat+1)
 								@endforeach
+								@php($mat=$mat+1)
 						<th colspan="{{ $mat }}" class="text-center" scope="col">Materias</th>
 						</tr>
 						</thead>
@@ -178,20 +192,29 @@
 							<tr>
 							<th></th>
 							@foreach($materias as $ma)
-								<th class="text-center" scope="col" name="ng_idMateriaFK" id="ng_idMateriaFK" value="{{ $ma->ma_idMateria }}"><div class="size2">{{ $ma->ma_nombre }}</div></th>
+								<th class="text-center" scope="col">
+									<select class="se" name="ng_idMateriaFK" id="ng_idMateriaFK" readonly>
+										<option value="{{ $ma->ma_idMateria }}">{{ $ma->ma_nombre }}</option>
+									</select>
+								</th>
 							@endforeach
+							<th class="text-center" scope="col">Fallas</th>
 							</tr>
 						</thead>
 						<tbody>
 							@foreach($estudiantes as $es)
 								@if($es->es_idCursoFK==Auth::user()->us_idCursoFK)
 								<tr>
-									<th class="text-center" scope="row" name="estudiante" id="estudiante" value="{{ $es->es_idEstudiante }}">{{ $es->es_nombre }} {{ $es->es_apellido }}</th>
+									<th class="text-center" scope="row">
+										<select class="se4" name="estudiante" id="estudiante" readonly>
+											<option class="text-center" value="{{ $es->es_idEstudiante }}">{{ $es->es_nombre }} {{ $es->es_apellido }}</option>
+										</select>
+									</th>
 									@foreach($materias as $ma)
 										<td>
-											<div class="col-lg-11 col-sm-11 col-md-11 col-xs-11">
+											<div class="col-lg-11 col-sm-11 col-md-11 col-xs-11" style="text-align:center;">
 												<div class="form-group">
-													<select name="ca_idNotaFK" class="form-control text-center">
+													<select name="ng_idNotaFK" id="ng_idNotaFK" class="se3">
 														@foreach($notas as $nt)
 														<option value="{{$nt->no_idNota}}">{{$nt->no_nombre}}</option>
 														@endforeach
@@ -200,15 +223,18 @@
 											</div>
 										</td>
 									@endforeach
+									<td>
+										<input  class="size5 text-center" type="number" min="0" value="0" name="ng_fallas" id="ng_fallas">
+									</td>
 								</tr>
 								@endif
 							@endforeach
 						</tbody>
 					</table>
 					<div class="col-lg-2 col-sm-2 col-md-2 col-xs-2 panel panel-primary">
-						<div class="form-group panel-heading mask flex-center rgba-red-strong text-center">
+						<span class="form-group">
 							<label onclick="observaciones()" class="text-center" style="cursor: pointer;">Siguiente</label>
-						</div>
+						</span>
 					</div>
 				</div>
 			</div>
@@ -231,7 +257,11 @@
 							@foreach($estudiantes as $es)
 								@if($es->es_idCursoFK==Auth::user()->us_idCursoFK)
 								<tr>
-									<th class="text-center" scope="row" name="estudiante" id="estudiante" value="{{ $es->es_idEstudiante }}">{{ $es->es_nombre }} {{ $es->es_apellido }}</th>
+									<th class="text-center" scope="row">
+										<select class="se4" name="estudiante" id="estudiante" readonly>
+											<option class="text-center" value="{{ $es->es_idEstudiante }}">{{ $es->es_nombre }} {{ $es->es_apellido }}</option>
+										</select>
+									</th>
 									<td>
 										<div class="col-lg-11 col-sm-11 col-md-11 col-xs-11">
 											<div class="form-group size3">

@@ -36,7 +36,7 @@ class CalificacionesFormRequest extends FormRequest
         //Notas Generales
         /*'ng_idEstudianteFK'=>'required',*/
         'ng_idMateriaFK'=>'required|not_in:0',
-        'ng_fallas'=>'required|not_in:0',
+        'ng_fallas'=>'required|not_in:0|numeric',
         'ng_idNotaFK'=>'required|not_in:0',
         //Observaciones Generales
         /*'og_idEstudianteFK'=>'required',*/

@@ -1,5 +1,5 @@
 .size{
-	width: 105px
+	width: 110px
 }
 .size2{
 	width: 110px
@@ -9,4 +9,43 @@
 }
 .size4{
 	width: 500px
+}
+.size5{
+	width: 90px
+}
+.se{
+-moz-appearance: none;
+-webkit-appearance: none;
+appearance: none;
+background: transparent no-repeat right center;
+padding: 2px 2px 2px 2px;
+border: none;
+}
+.se2{
+-moz-appearance: none;
+-webkit-appearance: none;
+appearance: none;
+background: transparent no-repeat right center;
+padding: 2px 2px 2px 2px;
+border: none;
+font-size: 10px;
+}
+.se3{
+	background: transparent no-repeat left center;
+	padding: 1px 1px 1px 1px;
+}
+.se4{
+-moz-appearance: none;
+-webkit-appearance: none;
+appearance: none;
+background: transparent no-repeat center;
+padding: 1px 1px 1px 1px;
+border: none;
+}
+.opt{
+width: 600px;
+margin: 10px auto;
+padding: 5px;
+border: solid 2px #f60;
+font: normal 13px arial, helvetica, sans-serif;
 }
