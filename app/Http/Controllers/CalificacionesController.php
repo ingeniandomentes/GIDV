@@ -12,7 +12,13 @@ use GIDV\Http\Requests\CalificacionesFormRequest;
 
 use GIDV\Calificaciones;
 
+use GIDV\NotasGenerales;
+
+use GIDV\ObservacionesGenerales;
+
 use DB;
+
+use Illuminate\Support\Facades\Auth;
 
 class CalificacionesController extends Controller
 {
@@ -155,26 +161,33 @@ class CalificacionesController extends Controller
                     "observaciones"=>$observaciones]);
     }
     public function store(CalificacionesFormRequest $request){
-    	$calificacion = new Calificaciones;
-        $calificacion->ca_anioCalificacion=$request->get('ca_anioCalificacion');
-        $calificacion->ca_idEstudianteFK=$request->get('estudiante');
-        $calificacion->ca_idPeriodoFK=$request->get('ca_idPeriodoFK');
-        $calificacion->ca_idMateriaFK=$request->get('ca_idMateriaFK');
-        $calificacion->ca_idUsuarioFK=$request->get('ca_idUsuarioFK');
-        $calificacion->ca_idProcesoFK=$request->get('ca_idProcesoFK');
-        $calificacion->ca_idCompetenciaFK=$request->get('ca_idCompetenciaFK');
-        $calificacion->ca_idNotaFK=$request->get('ca_idNotaFK');
-        //Notas Generales
-        $calificacion->ng_idEstudianteFK=$request->get('estudiante');
-        $calificacion->ng_idMateriaFK=$request->get('ng_idMateriaFK');
-        $calificacion->ng_fallas=$request->get('ng_fallas');
-        $calificacion->ng_idNotaFK=$request->get('ng_idNotaFK');
-        //Observaciones Generales
-        $calificacion->og_idEstudianteFK=$request->get('estudiante');
-        $calificacion->og_idTipoObservacionFK=$request->get('og_idTipoObservacionFK');
-        $calificacion->og_idObservacionesFK=$request->get('og_idObservacionesFK');
-
-    	$calificacion->save();
+        $estudiantes=DB::table('estudiantes')
+                                        ->where('es_estado','=','1')
+                                        ->orderBy('es_nombre','asc')
+                                        ->get();
+                $calificacion1 = new Calificaciones;
+                $calificacion1->ca_anioCalificacion=$request->get('ca_anioCalificacion');
+                $calificacion1->ca_idEstudianteFK=$request->get('estudiante');
+                $calificacion1->ca_idPeriodoFK=$request->get('ca_idPeriodoFK');
+                $calificacion1->ca_idMateriaFK=$request->get('ca_idMateriaFK');
+                $calificacion1->ca_idUsuarioFK=$request->get('ca_idUsuarioFK');
+                $calificacion1->ca_idProcesoFK=$request->get('ca_idProcesoFK');
+                $calificacion1->ca_idCompetenciaFK=$request->get('ca_idCompetenciaFK');
+                $calificacion1->ca_idNotaFK=$request->get('ca_idNotaFK');
+                $calificacion1->save();
+                //Notas Generales
+                $calificacion2 = new NotasGenerales;
+                $calificacion2->ng_idEstudianteFK=$request->get('estudianteN');
+                $calificacion2->ng_idMateriaFK=$request->get('ng_idMateriaFK');
+                $calificacion2->ng_fallas=$request->get('ng_fallas');
+                $calificacion2->ng_idNotaFK=$request->get('ng_idNotaFK');
+                $calificacion2->save();
+                //Observaciones Generales
+                $calificacion3 = new ObservacionesGenerales;
+                $calificacion3->og_idEstudianteFK=$request->get('estudianteO');
+                $calificacion3->og_idTipoObservacionFK=$request->get('og_idTipoObservacionFK');
+                $calificacion3->og_idObservacionesFK=$request->get('og_idObservacionesFK');
+                $calificacion3->save();
     	return Redirect::to('calificaciones');
     }
     public function show($id){
@@ -183,6 +196,7 @@ class CalificacionesController extends Controller
     public function edit($id){
         $calificaciones=Calificaciones::findOrFail($id);
         $estudiantes=DB::table('estudiantes')
+
                                         ->where('es_estado','=','1')
                                         ->orderBy('es_nombre','asc')
                                         ->get();
@@ -197,7 +211,7 @@ class CalificacionesController extends Controller
         $users=DB::table('users')
                                         ->where('us_estado','=','1')
                                         ->where('us_idRolFK','=','3')
-                                        ->orderBy('pe_nombre','asc')
+                                        ->orderBy('name','asc')
                                         ->get();
         $procesos=DB::table('procesos')
                                         ->where('pro_estado','=','1')
@@ -209,13 +223,26 @@ class CalificacionesController extends Controller
                                         ->get();
         $notas=DB::table('notas')
                                         ->where('no_estado','=','1')
-                                        ->orderBy('no_nombre','asc')
+                                        ->orderBy('no_idNota','asc')
                                         ->get();
-        $notasgenerales=DB::table('notasgenerales')
+        $tobservaciones=DB::table('tipoobservaciones')
+                                        ->where('to_estado','=','1')
+                                        ->orderBy('to_idTipoObservacion','asc')
                                         ->get();
-        $observacionesgenerales=DB::table('observacionesgenerales')
+        $observaciones=DB::table('observaciones')
+                                        ->where('ob_estado','=','1')
+                                        ->orderBy('ob_idObservaciones','asc')
                                         ->get();
-        return view("configuracion.competencias.edit",["estudiantes"=>$estudiantes],["periodos"=>$periodos],["materias"=>$materias],["users"=>$users],["procesos"=>$procesos],["competencias"=>$competencias],["notas"=>$notas],["notasgenerales"=>$notasgenerales],["observacionesgenerales"=>$observacionesgenerales]);
+        return view("configuracion.competencias.edit",
+                    ["estudiantes"=>$estudiantes,
+                    "periodos"=>$periodos,
+                    "materias"=>$materias,
+                    "users"=>$users,
+                    "procesos"=>$procesos,
+                    "competencias"=>$competencias,
+                    "notas"=>$notas,
+                    "tobservaciones"=>$tobservaciones,
+                    "observaciones"=>$observaciones]);
     }
     public function update(CompetenciasFormRequest $request,$id){
     	$calificaciones=Calificaciones::findOrFail($id);

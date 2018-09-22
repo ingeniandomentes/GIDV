@@ -20,7 +20,6 @@
     <link rel="stylesheet" href="{!!asset('css/estilos.css')!!}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
   </head>
   @guest
@@ -57,7 +56,7 @@
                     <!--<li><a href="{{ route('register') }}">Register</a></li>-->
                     @else
                         <li class="dropdown user user-menu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" v-pre>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true" aria-haspopup="true" v-pre>
                               <small class="bg-green">Online</small>
                                 {{ Auth::user()->name }} {{ Auth::user()->us_apellido }} <span class="caret"></span>
                             </a>

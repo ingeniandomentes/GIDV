@@ -72,6 +72,7 @@
 							</td>
 							@endif
 					@else
+					<td></td>
 					@endif
 				</tr>
 				@include('configuracion.estudiantes.modal')

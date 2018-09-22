@@ -19,7 +19,6 @@
 					<th>Tipo Documento</th>
 					<th>Numero Documento</th>
 					<th>Rol</th>
-					<th>Curso</th>
 					<th>Estado</th>
 					<th>Opciones</th>
 				</thead>
@@ -35,12 +34,25 @@
 						<td>{{$usuario->documento}}</td>
 						<td>{{$usuario->us_numeroDocumento}}</td>
 						<td>{{$usuario->rol}}</td>
-						<td>{{$usuario->curso}}</td>
 							@if($usuario->us_estado=='1')
 							<td>Activo</td>
 							@else
 							<td>Incativo</td>
 							@endif
+						@elseif($rol=Auth::user()->us_idRolFK==1 && $usuario->us_idRolFK==2)
+						<td>{{$usuario->id}}</td>
+							<td>{{$usuario->email}}</td>
+							<td>**********</td>
+							<td>{{$usuario->name}}</td>
+							<td>{{$usuario->us_apellido}}</td>
+							<td>{{$usuario->documento}}</td>
+							<td>{{$usuario->us_numeroDocumento}}</td>
+							<td>{{$usuario->rol}}</td>
+								@if($usuario->us_estado=='1')
+								<td>Activo</td>
+								@else
+								<td>Incativo</td>
+								@endif
 						@elseif($rol=Auth::user()->us_idRolFK==2 && $usuario->us_idRolFK==2)
 						<td>{{$usuario->id}}</td>
 							<td>{{$usuario->email}}</td>
@@ -50,7 +62,6 @@
 							<td>{{$usuario->documento}}</td>
 							<td>{{$usuario->us_numeroDocumento}}</td>
 							<td>{{$usuario->rol}}</td>
-							<td>{{$usuario->curso}}</td>
 								@if($usuario->us_estado=='1')
 								<td>Activo</td>
 								@else
@@ -65,7 +76,6 @@
 							<td>{{$usuario->documento}}</td>
 							<td>{{$usuario->us_numeroDocumento}}</td>
 							<td>{{$usuario->rol}}</td>
-							<td>{{$usuario->curso}}</td>
 								@if($usuario->us_estado=='1')
 								<td>Activo</td>
 								@else
@@ -73,7 +83,7 @@
 								@endif
 						@else
 						@endif
-					@else
+						@else
 						@if($rol=Auth::user()->us_idRolFK==1 && $usuario->us_idRolFK==1)
 						<td>{{$usuario->id}}</td>
 						<td>{{$usuario->email}}</td>
@@ -83,7 +93,6 @@
 						<td>{{$usuario->documento}}</td>
 						<td>{{$usuario->us_numeroDocumento}}</td>
 						<td>{{$usuario->rol}}</td>
-						<td>{{$usuario->curso}}</td>
 							@if($usuario->us_estado=='1')
 							<td>Activo</td>
 							<td>
@@ -96,6 +105,27 @@
 								<a href="{{URL::action('UsuariosController@edit',$usuario->id)}}"><button class="btn btn-info">Activar</button></a>
 							</td>
 							@endif
+						@elseif($rol=Auth::user()->us_idRolFK==1 && $usuario->us_idRolFK==2)
+							<td>{{$usuario->id}}</td>
+							<td>{{$usuario->email}}</td>
+							<td>**********</td>
+							<td>{{$usuario->name}}</td>
+							<td>{{$usuario->us_apellido}}</td>
+							<td>{{$usuario->documento}}</td>
+							<td>{{$usuario->us_numeroDocumento}}</td>
+							<td>{{$usuario->rol}}</td>
+								@if($usuario->us_estado=='1')
+								<td>Activo</td>
+								<td>
+									<a href="{{URL::action('UsuariosController@edit',$usuario->id)}}"><button class="btn btn-info">Editar</button></a>
+									<a href="" data-target="#modal-delete-{{$usuario->id}}" data-toggle="modal"><button class="btn btn-danger">Eliminar</button></a>
+								</td>
+								@else
+								<td>Incativo</td>
+								<td>
+									<a href="{{URL::action('UsuariosController@edit',$usuario->id)}}"><button class="btn btn-info">Activar</button></a>
+								</td>
+								@endif
 						@elseif($rol=Auth::user()->us_idRolFK==2 && $usuario->us_idRolFK==2)
 							<td>{{$usuario->id}}</td>
 							<td>{{$usuario->email}}</td>
@@ -105,7 +135,6 @@
 							<td>{{$usuario->documento}}</td>
 							<td>{{$usuario->us_numeroDocumento}}</td>
 							<td>{{$usuario->rol}}</td>
-							<td>{{$usuario->curso}}</td>
 								@if($usuario->us_estado=='1')
 								<td>Activo</td>
 								<td>
@@ -127,7 +156,6 @@
 							<td>{{$usuario->documento}}</td>
 							<td>{{$usuario->us_numeroDocumento}}</td>
 							<td>{{$usuario->rol}}</td>
-							<td>{{$usuario->curso}}</td>
 								@if($usuario->us_estado=='1')
 								<td>Activo</td>
 								<td>
@@ -141,6 +169,7 @@
 								</td>
 								@endif
 						@else
+						<td></td>
 						@endif
 					@endif
 				</tr>

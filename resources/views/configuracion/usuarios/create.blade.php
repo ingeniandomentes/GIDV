@@ -70,6 +70,7 @@
 					@if($rol=Auth::user()->us_idRolFK==1)
 					<option value="0" selected>Elije una opción</option>
 					<option value="1">Administrador</option>
+					<option value="2">Directivo</option>
 					@else(($rol=Auth::user()->us_idRolFK==2)
 					<option value="0" selected>Elije una opción</option>
 					<option value="2">Directivo</option>

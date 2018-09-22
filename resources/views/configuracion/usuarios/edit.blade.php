@@ -78,16 +78,17 @@
 					@if($rol=Auth::user()->us_idRolFK==1)
 					<option value="0">Elije una opción</option>
 					<option value="1" selected>Administrador</option>
-					@else($rol=Auth::user()->us_idRolFK==2)					
-					@if($usuarios->us_idRolFK == 2)
-					<option value="0">Elije una opción</option>
-					<option value="2" selected>Directivo</option>
-					<option value="3">Profesor</option>
-					@else
-					<option value="0">Elije una opción</option>
 					<option value="2">Directivo</option>
-					<option value="3" selected>Profesor</option>
-					@endif
+					@else($rol=Auth::user()->us_idRolFK==2)					
+						@if($usuarios->us_idRolFK == 2)
+						<option value="0">Elije una opción</option>
+						<option value="2" selected>Directivo</option>
+						<option value="3">Profesor</option>
+						@else
+						<option value="0">Elije una opción</option>
+						<option value="2">Directivo</option>
+						<option value="3" selected>Profesor</option>
+						@endif
 					@endif
 					</select>
 				</div>

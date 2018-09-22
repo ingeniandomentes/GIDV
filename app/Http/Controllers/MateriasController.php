@@ -24,8 +24,8 @@ class MateriasController extends Controller
     	if($request){
     		$query=trim($request->get('searchText'));
     		$materias=DB::table('materias as m')
-            ->join('usuarios as u','m.ma_docenteAsignadoFK','=','u.us_idUsuario')
-            ->select('m.ma_idMateria','m.ma_nombre','m.ma_intensidad','u.us_nombre as docente1','u.us_apellido as docente2','m.ma_estado')
+            ->join('users as u','m.ma_docenteAsignadoFK','=','u.id')
+            ->select('m.ma_idMateria','m.ma_nombre','m.ma_intensidad','u.name as docente1','u.us_apellido as docente2','m.ma_estado')
             ->where('m.ma_nombre','LIKE','%'.$query.'%')
     		->where ('m.ma_estado','=','1')
     		->orderBy('m.ma_idMateria','asc')
@@ -34,9 +34,9 @@ class MateriasController extends Controller
        	}
     }
     public function create(){
-        $docentes=DB::table('usuarios')->where('us_estado','=','1')
+        $docentes=DB::table('users')->where('us_estado','=','1')
         								->where('us_idRolFK','=','3')
-                                        ->orderBy('us_nombre','asc')
+                                        ->orderBy('name','asc')
         								->get();
     	return view("configuracion.materias.create",["docentes"=>$docentes]);
     }
@@ -54,9 +54,9 @@ class MateriasController extends Controller
     }
     public function edit($id){
         $materias=Materias::findOrFail($id);
-        $docentes=DB::table('usuarios')->where('us_estado','=','1')
+        $docentes=DB::table('users')->where('us_estado','=','1')
         								->where('us_idRolFK','=','3')
-                                        ->orderBy('us_nombre','asc')
+                                        ->orderBy('name','asc')
         								->get();
     	return view("configuracion.materias.edit",["materias"=>$materias,"docentes"=>$docentes]);
     }
