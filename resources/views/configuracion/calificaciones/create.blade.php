@@ -14,7 +14,7 @@
 			<div class="col-lg-6 col-sm-6 col-md-6 col-xs-6" id="periodo">
 				<div class="form-group">
 					<label for="periodo">Elija el Periodo</label>
-					<select name="ca_idPeriodoFK" id="ca_idPeriodoFK" class="form-control" onchange="anio();cambio()" required>
+					<select name="ca_idPeriodoFK[]" id="ca_idPeriodoFK" class="form-control" onchange="anio();cambio()" required>
 						<option value="0" selected>Elije una opción</option>
 						@foreach($periodos as $periodo)
 						<option value="{{$periodo->pe_idPeriodo}}">{{$periodo->pe_nombre}}</option>
@@ -25,7 +25,7 @@
 			<div class="col-lg-6 col-sm-6 col-md-6 col-xs-6" id="anio">
 				<div class="form-group">
 					<label for="ca_anioCalificacion">Elija el Año</label>
-					<select name="ca_anioCalificacion" id="ca_anioCalificacion" class="form-control" onchange="calificaciones();" required>
+					<select name="ca_anioCalificacion[]" id="ca_anioCalificacion" class="form-control" onchange="calificaciones();" required>
 						<option value="0" selected>Elije una opción</option>
 						<option value="2018">2018</option>
 					</select>
@@ -45,7 +45,6 @@
 						@foreach($periodos as $periodo)
 							@foreach($materias as $ma)
 								@foreach($procesos as $pro)
-
 									@if($ma->ma_idMateria==$pro->pro_idMateriaFK && $pro->pro_idPeriodoFK==$periodo->pe_idPeriodo && $pro->pro_idGradoFK==Auth::user()->us_idGradoFK)
 										@foreach($competencias as $co)
 												@if($co->co_idProcesoFK==$pro->pro_idProceso)
@@ -72,9 +71,12 @@
 													@endif
 											@endforeach
 											<th class="text-center" colspan="{{ $cont }}" scope="col">
+												<input type="hidden" name="ca_idMateriaFK[]" value="{{ $ma->ma_idMateria}}">
+												{{ $ma->ma_nombre }}
+												<!--
 												<select class="se" name="ca_idMateriaFK" id="ca_idMateriaFK" readonly>
 													<option value="{{ $ma->ma_idMateria}}">{{ $ma->ma_nombre }}</option>
-												</select>
+												</select>-->
 											</th>
 										@endif
 									@php($cont=0)
@@ -96,9 +98,12 @@
 												@endif
 										@endforeach
 										<th class="text-center" colspan="{{ $cont }}" scope="col">
+											<input type="hidden" name="ca_idProcesoFK[]" value="{{ $pro->pro_idProceso }}">
+											{{ $pro->pro_nombre }}
+											<!--
 											<select class="se2" name="ca_idProcesoFK" id="ca_idProcesoFK" readonly>
 												<option class="opt" value="{{ $pro->pro_idProceso }}">{{ $pro->pro_nombre }}</option>
-											</select>
+											</select>-->
 										</th>	
 									@endif
 								@php($cont=0)
@@ -118,10 +123,12 @@
 											@if($co->co_idProcesoFK==$pro->pro_idProceso)
 											@php($cont=$cont+1)
 												<th class="text-center" scope="col">
+													<input type="hidden" name="ca_idCompetenciaFK[]" value="{{ $co->co_idCompetencia }}">
+													<!--
 													<select class="se4" name="ca_idCompetenciaFK" id="ca_idCompetenciaFK" readonly>
 														<option class="text-center" value="{{ $co->co_idCompetencia }}">{{ $cont }}°</option>
-													</select>
-													<span class="glyphicon glyphicon-info-sign" title="{{ $co->co_descripcion }}"></span>
+													</select>-->
+													{{ $cont }}° <span class="glyphicon glyphicon-info-sign" title="{{ $co->co_descripcion }}"></span>
 												</th>
 											@endif
 										@endforeach
@@ -137,9 +144,12 @@
 								@if($es->es_idCursoFK==Auth::user()->us_idCursoFK)
 								<tr>
 									<th class="text-center" scope="row">
+										<input type="hidden" name="ca_idEstudianteFK[]" value="{{ $es->es_idEstudiante }}">
+										{{ $es->es_nombre }} {{ $es->es_apellido }}
+										<!--
 										<select class="se4" name="estudiante" id="estudiante" readonly>
 											<option class="text-center" value="{{ $es->es_idEstudiante }}">{{ $es->es_nombre }} {{ $es->es_apellido }}</option>
-										</select>
+										</select>-->
 									</th>
 									@foreach($periodos as $periodo)
 										@foreach($materias as $ma)
@@ -148,10 +158,10 @@
 													@foreach($competencias as $co)
 														@if($co->co_idProcesoFK==$pro->pro_idProceso)
 														@php($cont=$cont+1)
-															<td>
+															<td class="text-center">
 																<div class="col-lg-11 col-sm-11 col-md-11 col-xs-11" style="text-align:center;">
 																	<div class="form-group">
-																		<select name="ca_idNotaFK" id="ca_idNotaFK" class="se3">
+																		<select name="ca_idNotaFK[]" id="ca_idNotaFK" class="se3 text-center">
 																			@foreach($notas as $nt)
 																			@if($nt->no_idNota==2)
 																			<option value="{{$nt->no_idNota}}" selected>{{$nt->no_nombre}}</option>
@@ -176,9 +186,9 @@
 						</tbody>
 					</table>
 				</div>
-				<div class="arriba col-lg-2 col-sm-2 col-md-2 col-xs-2 panel panel-primary">
+				<div class="text-center arriba col-lg-2 col-sm-2 col-md-2 col-xs-2 panel panel-primary">
 					<span class="form-group">
-						<label onclick="calificacionesf()" class="text-center" style="cursor: pointer;">Siguiente</label>
+						<label onclick="calificacionesf()" style="cursor: pointer;">Siguiente</label>
 					</span>
 				</div>
 			</div>
@@ -205,19 +215,17 @@
 						</thead>
 						<thead>
 							<tr>
-							<th class="text-center" rowspan="2">Docentes</th>
+							<th class="text-center">Docentes</th>
 								@foreach($materias as $ma)
 									@foreach($users as $us)
-										<th class="text-center" scope="col">
-											<select class="se" name="ca_idUsuarioFK" id="ca_idUsuarioFK" readonly>
-												@if($us->id==$ma->ma_docenteAsignadoFK)
-												<option value="{{ $us->id }}">{{ $us->name }} {{ $us->us_apellido }}</option>
-												@endif
-											</select>
+									@if($us->id==$ma->ma_docenteAsignadoFK)
+										<th class="text-center" scope="col" colspan="2">
+													<input type="hidden" name="ca_idUsuarioFK[]" value="{{ $us->id }}">
+													{{ $us->name }} {{ $us->us_apellido }}
 										</th>
+									@endif
 									@endforeach
 								@endforeach
-							<th class="text-center" rowspan="2">Fallas</th>
 							</tr>
 						</thead>
 						<thead>
@@ -225,10 +233,14 @@
 							<th></th>
 							@foreach($materias as $ma)
 								<th class="text-center" scope="col">
+									<input type="hidden" name="ng_idMateriaFK[]" value="{{ $ma->ma_idMateria }}">
+									{{ $ma->ma_nombre }}
+									<!--
 									<select class="se" name="ng_idMateriaFK" id="ng_idMateriaFK" readonly>
 										<option value="{{ $ma->ma_idMateria }}">{{ $ma->ma_nombre }}</option>
-									</select>
+									</select>-->
 								</th>
+								<th class="text-center" rowspan="2">Fallas</th>
 							@endforeach
 							<th class="text-center" scope="col"></th>
 							</tr>
@@ -238,15 +250,18 @@
 								@if($es->es_idCursoFK==Auth::user()->us_idCursoFK)
 								<tr>
 									<th class="text-center" scope="row">
+										<input type="hidden" name="ng_idEstudianteFK[]" value="{{ $es->es_idEstudiante }}">
+										{{ $es->es_nombre }} {{ $es->es_apellido }}
+										<!--
 										<select class="se4" name="estudianteN" id="estudianteN" readonly>
 											<option class="text-center" value="{{ $es->es_idEstudiante }}">{{ $es->es_nombre }} {{ $es->es_apellido }}</option>
-										</select>
+										</select>-->
 									</th>
 									@foreach($materias as $ma)
-										<td>
+										<td class="text-center">
 											<div class="col-lg-11 col-sm-11 col-md-11 col-xs-11" style="text-align:center;">
 												<div class="form-group">
-													<select name="ng_idNotaFK" id="ng_idNotaFK" class="se3">
+													<select name="ng_idNotaFK[]" id="ng_idNotaFK" class="se3 text-center">
 														@foreach($notas as $nt)
 														@if($nt->no_idNota==2)
 														<option value="{{$nt->no_idNota}}" selected>{{$nt->no_nombre}}</option>
@@ -258,18 +273,18 @@
 												</div>
 											</div>
 										</td>
+										<td>
+											<input  class="size5 text-center" type="number" min="0" value="0" name="ng_fallas[]" id="ng_fallas">
+										</td>
 									@endforeach
-									<td>
-										<input  class="size5 text-center" type="number" min="0" value="0" name="ng_fallas" id="ng_fallas">
-									</td>
 								</tr>
 								@endif
 							@endforeach
 						</tbody>
 					</table>
-					<div class="arriba col-lg-2 col-sm-2 col-md-2 col-xs-2 panel panel-primary">
+					<div class="text-center arriba col-lg-2 col-sm-2 col-md-2 col-xs-2 panel panel-primary">
 						<span class="form-group">
-							<label onclick="observaciones()" class="text-center" style="cursor: pointer;">Siguiente</label>
+							<label onclick="observaciones()"style="cursor: pointer;">Siguiente</label>
 						</span>
 					</div>
 				</div>
@@ -289,37 +304,58 @@
 						<th class="text-center" scope="col" colspan="2">Observaciones</th>
 						</tr>
 						</thead>
+
+						<thead>
+						<tr>
+						<th scope="col"></th>
+						<th class="text-center" scope="col">Fortalezas</th>
+						<th class="text-center" scope="col">Debilidades<span class="glyphicon glyphicon-info-sign" title="Nota: Las debilidades son opcionales"></span></th>
+						</tr>
+						</thead>
+
 						<tbody>
 							@foreach($estudiantes as $es)
 								@if($es->es_idCursoFK==Auth::user()->us_idCursoFK)
 								<tr>
 									<th class="text-center" scope="row">
+										<input type="hidden" name="og_idEstudianteFK[]" value="{{ $es->es_idEstudiante }}">
+										{{ $es->es_nombre }} {{ $es->es_apellido }}
+										<!--
 										<select class="se4" name="estudianteO" id="estudianteO" readonly>
 											<option class="text-center" value="{{ $es->es_idEstudiante }}">{{ $es->es_nombre }} {{ $es->es_apellido }}</option>
-										</select>
+										</select>-->
 									</th>
-									<td>
+									<td class="text-center">
 										<div class="col-lg-11 col-sm-11 col-md-11 col-xs-11">
 											<div class="form-group size3">
-												<select name="og_idTipoObservacionFK" class="form-control text-center">
+												<select name="og_idObservacionesFK[]" class="form-control text-center">
 													<option value="0">Elija una opción</option>
-													@foreach($tobservaciones as $tob)
-													<!--<option value="{{$tob->to_idTipoObservacion}}">{{$tob->to_nombre}}</option>-->
-													<option value="1" selected>{{$tob->to_nombre}}</option>
-													@endforeach
+													<optgroup label="Fortalezas">
+														@foreach($observaciones as $ob)
+															<!--<option value="{{$ob->ob_idObservaciones}}">{{$ob->ob_descripcion}}</option>-->
+															@if($ob->ob_idTipoObservacionFK==1)
+																<option value="{{$ob->ob_idObservaciones}}">{{$ob->ob_descripcion}}</option>
+																<input type="hidden" name="og_idTipoObservacionFK[]" value="{{$ob->ob_idTipoObservacionFK}}">
+															@endif
+														@endforeach
+													</optgroup>
 												</select>
 											</div>
 										</div>
 									</td>
-									<td>
-									<div class="col-lg-11 col-sm-11 col-md-11 col-xs-11">
-											<div class="form-group size4">
-												<select name="og_idObservacionesFK" class="form-control text-center">
+									<td class="text-center">
+										<div class="col-lg-11 col-sm-11 col-md-11 col-xs-11">
+											<div class="form-group size3">
+												<select name="og_idObservacionesFK[]" class="form-control text-center">
 													<option value="0">Elija una opción</option>
-													@foreach($observaciones as $ob)
-													<!--<option value="{{$ob->ob_idObservaciones}}">{{$ob->ob_descripcion}}</option>-->
-													<option value="1" selected>{{$ob->ob_descripcion}}</option>
-													@endforeach
+													<optgroup label="Debilidades">
+														@foreach($observaciones as $ob)
+															@if($ob->ob_idTipoObservacionFK==2)
+																<option value="{{$ob->ob_idObservaciones}}">{{$ob->ob_descripcion}}</option>
+																<input type="hidden" name="og_idTipoObservacionFK[]" value="{{$ob->ob_idTipoObservacionFK}}">
+															@endif
+														@endforeach
+													</optgroup>
 												</select>
 											</div>
 										</div>

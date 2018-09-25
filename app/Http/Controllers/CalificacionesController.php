@@ -161,33 +161,126 @@ class CalificacionesController extends Controller
                     "observaciones"=>$observaciones]);
     }
     public function store(CalificacionesFormRequest $request){
-        $estudiantes=DB::table('estudiantes')
+       $estudiantes=DB::table('estudiantes')
+
                                         ->where('es_estado','=','1')
                                         ->orderBy('es_nombre','asc')
                                         ->get();
-                $calificacion1 = new Calificaciones;
-                $calificacion1->ca_anioCalificacion=$request->get('ca_anioCalificacion');
-                $calificacion1->ca_idEstudianteFK=$request->get('estudiante');
-                $calificacion1->ca_idPeriodoFK=$request->get('ca_idPeriodoFK');
-                $calificacion1->ca_idMateriaFK=$request->get('ca_idMateriaFK');
-                $calificacion1->ca_idUsuarioFK=$request->get('ca_idUsuarioFK');
-                $calificacion1->ca_idProcesoFK=$request->get('ca_idProcesoFK');
-                $calificacion1->ca_idCompetenciaFK=$request->get('ca_idCompetenciaFK');
-                $calificacion1->ca_idNotaFK=$request->get('ca_idNotaFK');
-                $calificacion1->save();
+        $periodos=DB::table('periodos')
+                                        ->where('pe_estado','=','1')
+                                        ->orderBy('pe_nombre','asc')
+                                        ->get();
+        $materias=DB::table('materias')
+                                        ->where('ma_estado','=','1')
+                                        ->orderBy('ma_nombre','asc')
+                                        ->get();
+        $users=DB::table('users')
+                                        ->where('us_estado','=','1')
+                                        ->where('us_idRolFK','=','3')
+                                        ->orderBy('name','asc')
+                                        ->get();
+        $procesos=DB::table('procesos')
+                                        ->where('pro_estado','=','1')
+                                        ->orderBy('pro_nombre','asc')
+                                        ->get();
+        $competencias=DB::table('competencias')
+                                        ->where('co_estado','=','1')
+                                        ->orderBy('co_descripcion','asc')
+                                        ->get();
+        $notas=DB::table('notas')
+                                        ->where('no_estado','=','1')
+                                        ->orderBy('no_idNota','asc')
+                                        ->get();
+        $tobservaciones=DB::table('tipoobservaciones')
+                                        ->where('to_estado','=','1')
+                                        ->orderBy('to_idTipoObservacion','asc')
+                                        ->get();
+        $observaciones=DB::table('observaciones')
+                                        ->where('ob_estado','=','1')
+                                        ->orderBy('ob_idObservaciones','asc')
+                                        ->get();
+
+
+                //Calificaciones::create($request->all());
+                /*for($i=0;$i<=2;$i++){
+                    $calificacion1 = new Calificaciones;
+                    $calificacion1->ca_anioCalificacion=$request->ca_anioCalificacion[$i];                                  
+                    $calificacion1->ca_idEstudianteFK=$request->ca_idEstudianteFK[$i];
+                    $calificacion1->ca_idPeriodoFK=$request->ca_idPeriodoFK[$i];
+                    $calificacion1->ca_idMateriaFK=$request->ca_idMateriaFK[$i];
+                    $calificacion1->ca_idUsuarioFK=$request->ca_idUsuarioFK[$i];
+                    $calificacion1->ca_idProcesoFK=$request->ca_idProcesoFK[$i];
+                    $calificacion1->ca_idCompetenciaFK=$request->ca_idCompetenciaFK[$i];
+                    $calificacion1->ca_idNotaFK=$request->ca_idNotaFK[$i];
+                    $calificacion1->save();
+                }*/
+                    /*
+                    $calificacion1 = new Calificaciones;
+                    $calificacion1->ca_anioCalificacion=$request->ca_anioCalificacion;                                  
+                    $calificacion1->ca_idEstudianteFK=$request->ca_idEstudianteFK;
+                    $calificacion1->ca_idPeriodoFK=$request->ca_idPeriodoFK;
+                    $calificacion1->ca_idMateriaFK=$request->ca_idMateriaFK;
+                    $calificacion1->ca_idUsuarioFK=$request->ca_idUsuarioFK;
+                    $calificacion1->ca_idProcesoFK=$request->ca_idProcesoFK;
+                    $calificacion1->ca_idCompetenciaFK=$request->ca_idCompetenciaFK;
+                    $calificacion1->ca_idNotaFK=$request->ca_idNotaFK;
+                    $calificacion1->save();*/
+
+                $pe=0;
+                $matt=0;
+                $est=0;
+                $proc=0;
+                $comp=0;
+                $nota=0;
+                    foreach ($estudiantes as $es) {
+                        if($es->es_idCursoFK==Auth::user()->us_idCursoFK){
+                            foreach ($materias as $ma) {
+                                    $calificacion1 = new Calificaciones;
+                                    $calificacion1->ca_anioCalificacion=$request->ca_anioCalificacion[$pe];                              
+                                    $calificacion1->ca_idEstudianteFK=$request->ca_idEstudianteFK[$est];
+                                    $calificacion1->ca_idPeriodoFK=$request->ca_idPeriodoFK[$pe];
+                                    $calificacion1->ca_idMateriaFK=$request->ca_idMateriaFK[$matt];
+                                    $calificacion1->ca_idUsuarioFK=$request->ca_idUsuarioFK[$matt];
+                                    $calificacion1->ca_idProcesoFK=$request->ca_idProcesoFK[$proc];
+                                    $calificacion1->ca_idCompetenciaFK=$request->ca_idCompetenciaFK[$comp];
+                                    $calificacion1->ca_idNotaFK=$request->ca_idNotaFK[$nota];
+                                    $calificacion1->save();
+                                $matt++;
+                            }
+                        $est++;
+                        }
+                        $matt=0;
+                    }
+                $estu=0;
+                $mat=0;
                 //Notas Generales
-                $calificacion2 = new NotasGenerales;
-                $calificacion2->ng_idEstudianteFK=$request->get('estudianteN');
-                $calificacion2->ng_idMateriaFK=$request->get('ng_idMateriaFK');
-                $calificacion2->ng_fallas=$request->get('ng_fallas');
-                $calificacion2->ng_idNotaFK=$request->get('ng_idNotaFK');
-                $calificacion2->save();
+                foreach ($estudiantes as $es) {
+                    if($es->es_idCursoFK==Auth::user()->us_idCursoFK){
+                        foreach ($materias as $ma) {
+                            $calificacion2 = new NotasGenerales;
+                            $calificacion2->ng_idEstudianteFK=$request->ng_idEstudianteFK[$estu];
+                            $calificacion2->ng_idMateriaFK=$request->ng_idMateriaFK[$mat];
+                            $calificacion2->ng_fallas=$request->ng_fallas[$mat];
+                            $calificacion2->ng_idNotaFK=$request->ng_idNotaFK[$mat];
+                            $calificacion2->save();
+                            $mat++;
+                        }
+                        $mat=0;
+                    $estu++;  
+                    }  
+                }
+                $estud=0;
                 //Observaciones Generales
-                $calificacion3 = new ObservacionesGenerales;
-                $calificacion3->og_idEstudianteFK=$request->get('estudianteO');
-                $calificacion3->og_idTipoObservacionFK=$request->get('og_idTipoObservacionFK');
-                $calificacion3->og_idObservacionesFK=$request->get('og_idObservacionesFK');
-                $calificacion3->save();
+                foreach ($estudiantes as $es) {
+                    if($es->es_idCursoFK==Auth::user()->us_idCursoFK){
+                        $calificacion3 = new ObservacionesGenerales;
+                        $calificacion3->og_idEstudianteFK=$request->og_idEstudianteFK[$estud];
+                        $calificacion3->og_idTipoObservacionFK=$request->og_idTipoObservacionFK[$estud];
+                        $calificacion3->og_idObservacionesFK=$request->og_idObservacionesFK[$estud];
+                        $calificacion3->save();
+                        $estud++;
+                    }
+                }
     	return Redirect::to('calificaciones');
     }
     public function show($id){
