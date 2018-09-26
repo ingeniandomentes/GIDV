@@ -1,8 +1,22 @@
 @extends('layouts.admin')
 @section('contenido')
+	@php($tr=0)
+	@foreach($periodos as $pee)
+		@foreach($calificaciones as $cal)
+			@if($pee->pe_nombre==$cal->periodo)
+				@php($tr=0)
+			@endif
+		@endforeach
+	@endforeach
 	<div class="row">
 		<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-			<h3>Listado de calificaciones <a href="calificaciones/create"><button class="btn btn-success">Nuevo</button></a></h3>
+			<h3>Listado de calificaciones 
+				<a href="calificaciones/create">
+					@if($tr!=0)
+					<button class="btn btn-success">Nuevo</button>
+					@endif
+				</a>
+			</h3>
 			@include('configuracion.calificaciones.search')
 		</div>
 	</div>
@@ -20,10 +34,11 @@
 					<th>Proceso</th>
 					<th>Competencia</th>
 					<th>Nota Competencia</th>
-					@if($user=Auth::user()->us_idRolFK!=3)
 					<th>Opciones</th>
-					@endif
 				</thead>
+				@foreach($periodos as $pe)
+				@php($per=$pe->pe_nombre)
+				@endforeach
 				@foreach($calificaciones as $calificacion)
 				<tr>
 					@if($user=Auth::user()->us_idRolFK==3)
@@ -35,6 +50,12 @@
 						<td>{{$calificacion->proceso}}</td>
 						<td>{{$calificacion->competencia}}</td>
 						<td>{{$calificacion->nota}}</td>
+						@if($calificacion->periodo==$per)
+						<td>
+							<a href="{{URL::action('CalificacionesController@edit',$calificacion->ca_idCalificacion)}}"><button class="btn btn-info">Editar</button></a>
+						</td>
+						@else
+						@endif
 					@elseif($user=Auth::user()->us_idRolFK==1 || $user=Auth::user()->us_idRolFK==2)
 						<td>{{$calificacion->ca_idCalificacion}}</td>
 						<td>{{$calificacion->ca_anioCalificacion}}</td>
@@ -50,7 +71,6 @@
 					@else
 					@endif
 				</tr>
-				@include('configuracion.calificaciones.modal')
 				@endforeach
 			</table>
 		</div>
@@ -70,9 +90,7 @@
 					<th>Materia</th>
 					<th>Fallas</th>
 					<th>Nota General</th>
-					@if($user=Auth::user()->us_idRolFK!=3)
 					<th>Opciones</th>
-					@endif
 				</thead>
 				@foreach($notasgenerales as $notageneral)
 				<tr>
@@ -109,9 +127,7 @@
 					<th>Id Observacion</th>
 					<th>Estudiante</th>
 					<th>Observacion</th>
-					@if($user=Auth::user()->us_idRolFK!=3)
 					<th>Opciones</th>
-					@endif
 				</thead>
 				@foreach($observacionesgenerales as $observaciongeneral)
 				<tr>

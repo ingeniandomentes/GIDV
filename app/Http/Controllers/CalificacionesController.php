@@ -89,6 +89,11 @@ class CalificacionesController extends Controller
             ->where('e.es_nombre','LIKE','%'.$query.'%')
 
             ->paginate(8);
+
+            $periodos=DB::table('periodos')
+                                        ->where('pe_estado','=','1')
+                                        ->orderBy('pe_nombre','asc')
+                                        ->get();
             /*->join('estudiantes as e',function($join){
                     $join->on('c.ca_idEstudianteFK','=','e.es_idEstudiante')
                     ->orOn('og.og_idEstudianteFK','=','e.es_idEstudiante')
@@ -120,7 +125,7 @@ class CalificacionesController extends Controller
             ->select('c.ca_idCalificacion','c.ca_anioCalificacion','e.es_nombre as nombreEs','p.pe_nombre as periodo','m.ma_nombre as materia','us.name as docente','pro.pro_nombre as proceso','co.co_descripcion as competencia','n.no_nombre','ng.ng_fallas','to.to_nombre','ob.ob_descripcion')
             ->where('c.co_nombre','LIKE','%'.$query.'%')
     		->paginate(8);*/
-    		return view('configuracion.calificaciones.index',["calificaciones"=>$calificaciones,"notasgenerales"=>$notasgenerales,"observacionesgenerales"=>$observacionesgenerales,"searchText"=>$query]);
+    		return view('configuracion.calificaciones.index',["calificaciones"=>$calificaciones,"notasgenerales"=>$notasgenerales,"observacionesgenerales"=>$observacionesgenerales,"periodos"=>$periodos,"searchText"=>$query]);
         	}    
         }
         public function create(){
@@ -318,6 +323,8 @@ class CalificacionesController extends Controller
     }
     public function edit($id){
         $calificaciones=Calificaciones::findOrFail($id);
+        $notasgenerales=NotasGenerales::findOrFail($id);
+        $observacionesgenerales=ObservacionesGenerales::findOrFail($id);
         $estudiantes=DB::table('estudiantes')
 
                                         ->where('es_estado','=','1')
