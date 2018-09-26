@@ -186,6 +186,7 @@
 						</tbody>
 					</table>
 				</div>
+				<br>
 				<div class="text-center arriba col-lg-2 col-sm-2 col-md-2 col-xs-2 panel panel-primary">
 					<span class="form-group">
 						<label onclick="calificacionesf()" style="cursor: pointer;">Siguiente</label>
@@ -220,7 +221,7 @@
 									@foreach($users as $us)
 									@if($us->id==$ma->ma_docenteAsignadoFK)
 										<th class="text-center" scope="col" colspan="2">
-													<input type="hidden" name="ca_idUsuarioFK[]" value="{{ $us->id }}">
+													<input type="hidden" name="ng_idUsuarioFK[]" value="{{ $us->id }}">
 													{{ $us->name }} {{ $us->us_apellido }}
 										</th>
 									@endif
@@ -282,6 +283,7 @@
 							@endforeach
 						</tbody>
 					</table>
+					<br>
 					<div class="text-center arriba col-lg-2 col-sm-2 col-md-2 col-xs-2 panel panel-primary">
 						<span class="form-group">
 							<label onclick="observaciones()"style="cursor: pointer;">Siguiente</label>
@@ -308,8 +310,6 @@
 						<thead>
 						<tr>
 						<th scope="col"></th>
-						<th class="text-center" scope="col">Fortalezas</th>
-						<th class="text-center" scope="col">Debilidades<span class="glyphicon glyphicon-info-sign" title="Nota: Las debilidades son opcionales"></span></th>
 						</tr>
 						</thead>
 
@@ -325,6 +325,7 @@
 											<option class="text-center" value="{{ $es->es_idEstudiante }}">{{ $es->es_nombre }} {{ $es->es_apellido }}</option>
 										</select>-->
 									</th>
+									@for($i=0;$i<2;$i++)
 									<td class="text-center">
 										<div class="col-lg-11 col-sm-11 col-md-11 col-xs-11">
 											<div class="form-group size3">
@@ -332,27 +333,17 @@
 													<option value="0">Elija una opción</option>
 													<optgroup label="Fortalezas">
 														@foreach($observaciones as $ob)
+															@if($ob->ob_idObservaciones==1)
 															<!--<option value="{{$ob->ob_idObservaciones}}">{{$ob->ob_descripcion}}</option>-->
-															@if($ob->ob_idTipoObservacionFK==1)
 																<option value="{{$ob->ob_idObservaciones}}">{{$ob->ob_descripcion}}</option>
-																<input type="hidden" name="og_idTipoObservacionFK[]" value="{{$ob->ob_idTipoObservacionFK}}">
 															@endif
 														@endforeach
 													</optgroup>
-												</select>
-											</div>
-										</div>
-									</td>
-									<td class="text-center">
-										<div class="col-lg-11 col-sm-11 col-md-11 col-xs-11">
-											<div class="form-group size3">
-												<select name="og_idObservacionesFK[]" class="form-control text-center">
-													<option value="0">Elija una opción</option>
 													<optgroup label="Debilidades">
 														@foreach($observaciones as $ob)
-															@if($ob->ob_idTipoObservacionFK==2)
+															<!--<option value="{{$ob->ob_idObservaciones}}">{{$ob->ob_descripcion}}</option>-->
+															@if($ob->ob_idObservaciones==2)
 																<option value="{{$ob->ob_idObservaciones}}">{{$ob->ob_descripcion}}</option>
-																<input type="hidden" name="og_idTipoObservacionFK[]" value="{{$ob->ob_idTipoObservacionFK}}">
 															@endif
 														@endforeach
 													</optgroup>
@@ -360,6 +351,7 @@
 											</div>
 										</div>
 									</td>
+									@endfor
 								</tr>
 								@endif
 							@endforeach

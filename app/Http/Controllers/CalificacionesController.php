@@ -37,17 +37,29 @@ class CalificacionesController extends Controller
 
             ->join('materias as m','c.ca_idMateriaFK','=','m.ma_idMateria')
 
-            ->join('users as us','c.ca_idUsuarioFK','=','us.id')
-
             ->join('procesos as pro','c.ca_idProcesoFK','=','pro.pro_idProceso')
 
             ->join('competencias as co','c.ca_idCompetenciaFK','=','co.co_idCompetencia')
 
             ->join('notas as n','c.ca_idNotaFK','=','n.no_idNota')
 
-            ->select('c.ca_idCalificacion','c.ca_anioCalificacion','e.es_nombre as nombreEs','p.pe_nombre as periodo','m.ma_nombre as materia','us.name as docente','pro.pro_nombre as proceso','co.co_descripcion as competencia','n.no_nombre as nota')
+            ->select('c.ca_idCalificacion','c.ca_anioCalificacion','e.es_nombre as nombreEs','p.pe_nombre as periodo','m.ma_nombre as materia','pro.pro_nombre as proceso','co.co_descripcion as competencia','n.no_nombre as nota')
 
             ->where('e.es_nombre','LIKE','%'.$query.'%')
+
+            ->orderBy('c.ca_anioCalificacion','asc')
+
+            ->orderBy('nombreEs','asc')
+
+            ->orderBy('periodo','asc')
+
+            ->orderBy('m.ma_idMateria','asc')
+
+            ->orderBy('pro.pro_idProceso','asc')
+
+            ->orderBy('co.co_idCompetencia','asc')
+
+            ->orderBy('n.no_idNota','asc')
 
             ->paginate(8); 
 
@@ -55,23 +67,24 @@ class CalificacionesController extends Controller
 
             ->join('estudiantes as e','ng.ng_idEstudianteFK','=','e.es_idEstudiante')
 
+            ->join('users as us','ng.ng_idUsuarioFK','=','us.id')
+
             ->join('materias as m','ng.ng_idMateriaFK','=','m.ma_idMateria')
 
             ->join('notas as n','ng.ng_idNotaFK','=','n.no_idNota')
 
-            ->select('ng.ng_idNotaGeneral','e.es_nombre as nombreEs','m.ma_nombre as materia','ng.ng_fallas','n.no_descripcion as nota')
+            ->select('ng.ng_idNotaGeneral','e.es_nombre as nombreEs','us.name as docente','m.ma_nombre as materia','ng.ng_fallas','n.no_descripcion as nota')
             ->where('e.es_nombre','LIKE','%'.$query.'%')
-            ->paginate(8);
+            ->paginate(9);
 
             $observacionesgenerales=DB::table('observacionesgenerales as og')
 
             ->join('estudiantes as e','og.og_idEstudianteFK','=','e.es_idEstudiante')
 
-            ->join('tipoobservaciones as to','og.og_idTipoObservacionFK','=','to.to_idTipoObservacion')
 
             ->join('observaciones as ob','og.og_idObservacionesFK','=','ob.ob_idObservaciones')
 
-            ->select('og.og_idObservacionGeneral','e.es_nombre as nombreEs','to.to_nombre as tipoobservacion','ob.ob_descripcion as observacion')
+            ->select('og.og_idObservacionGeneral','e.es_nombre as nombreEs','ob.ob_descripcion as observacion')
 
             ->where('e.es_nombre','LIKE','%'.$query.'%')
 
@@ -225,7 +238,9 @@ class CalificacionesController extends Controller
                     $calificacion1->ca_idCompetenciaFK=$request->ca_idCompetenciaFK;
                     $calificacion1->ca_idNotaFK=$request->ca_idNotaFK;
                     $calificacion1->save();*/
-
+                    foreach ($periodos as $perio) {
+                        $perr=$perio->pe_idPeriodo;
+                    }
                 $pe=0;
                 $matt=0;
                 $est=0;
@@ -235,21 +250,32 @@ class CalificacionesController extends Controller
                     foreach ($estudiantes as $es) {
                         if($es->es_idCursoFK==Auth::user()->us_idCursoFK){
                             foreach ($materias as $ma) {
-                                    $calificacion1 = new Calificaciones;
-                                    $calificacion1->ca_anioCalificacion=$request->ca_anioCalificacion[$pe];                              
-                                    $calificacion1->ca_idEstudianteFK=$request->ca_idEstudianteFK[$est];
-                                    $calificacion1->ca_idPeriodoFK=$request->ca_idPeriodoFK[$pe];
-                                    $calificacion1->ca_idMateriaFK=$request->ca_idMateriaFK[$matt];
-                                    $calificacion1->ca_idUsuarioFK=$request->ca_idUsuarioFK[$matt];
-                                    $calificacion1->ca_idProcesoFK=$request->ca_idProcesoFK[$proc];
-                                    $calificacion1->ca_idCompetenciaFK=$request->ca_idCompetenciaFK[$comp];
-                                    $calificacion1->ca_idNotaFK=$request->ca_idNotaFK[$nota];
-                                    $calificacion1->save();
+                                foreach($procesos as $pro){
+                                    if($ma->ma_idMateria==$pro->pro_idMateriaFK && $pro->pro_idPeriodoFK==$perr && $pro->pro_idGradoFK==Auth::user()->us_idGradoFK){
+                                        foreach ($competencias as $co) {
+                                            if($co->co_idProcesoFK==$pro->pro_idProceso){
+                                            $calificacion1 = new Calificaciones;
+                                            $calificacion1->ca_anioCalificacion=$request->ca_anioCalificacion[$pe];                              
+                                            $calificacion1->ca_idEstudianteFK=$request->ca_idEstudianteFK[$est];
+                                            $calificacion1->ca_idPeriodoFK=$request->ca_idPeriodoFK[$pe];
+                                            $calificacion1->ca_idMateriaFK=$request->ca_idMateriaFK[$matt];
+                                            $calificacion1->ca_idProcesoFK=$request->ca_idProcesoFK[$proc];
+                                            $calificacion1->ca_idCompetenciaFK=$request->ca_idCompetenciaFK[$comp];
+                                            $calificacion1->ca_idNotaFK=$request->ca_idNotaFK[$comp];
+                                            $calificacion1->save();
+                                            $comp++;
+                                            }
+                                        }
+                                        $proc++;
+                                    }
+                                }
                                 $matt++;
                             }
                         $est++;
                         }
                         $matt=0;
+                        $proc=0;
+                        $comp=0;
                     }
                 $estu=0;
                 $mat=0;
@@ -259,6 +285,7 @@ class CalificacionesController extends Controller
                         foreach ($materias as $ma) {
                             $calificacion2 = new NotasGenerales;
                             $calificacion2->ng_idEstudianteFK=$request->ng_idEstudianteFK[$estu];
+                            $calificacion2->ng_idUsuarioFK=$request->ng_idUsuarioFK[$mat];
                             $calificacion2->ng_idMateriaFK=$request->ng_idMateriaFK[$mat];
                             $calificacion2->ng_fallas=$request->ng_fallas[$mat];
                             $calificacion2->ng_idNotaFK=$request->ng_idNotaFK[$mat];
@@ -270,16 +297,19 @@ class CalificacionesController extends Controller
                     }  
                 }
                 $estud=0;
+                $obe=0;
                 //Observaciones Generales
                 foreach ($estudiantes as $es) {
                     if($es->es_idCursoFK==Auth::user()->us_idCursoFK){
+                        for($i=0;$i<2;$i++){
                         $calificacion3 = new ObservacionesGenerales;
                         $calificacion3->og_idEstudianteFK=$request->og_idEstudianteFK[$estud];
-                        $calificacion3->og_idTipoObservacionFK=$request->og_idTipoObservacionFK[$estud];
-                        $calificacion3->og_idObservacionesFK=$request->og_idObservacionesFK[$estud];
+                        $calificacion3->og_idObservacionesFK=$request->og_idObservacionesFK[$i];
                         $calificacion3->save();
-                        $estud++;
+                        $obe++;
+                        }
                     }
+                    $obe=0;
                 }
     	return Redirect::to('calificaciones');
     }

@@ -33,14 +33,14 @@ class CalificacionesFormRequest extends FormRequest
         'ca_idCompetenciaFK'=>'required|not_in:0',
         'ca_idNotaFK'=>'required|not_in:0',
         //Notas Generales
-        /*'ng_idEstudianteFK'=>'required',
+        'ng_idEstudianteFK'=>'required',
+        'ng_idUsuarioFK'=>'required',
         'ng_idMateriaFK'=>'required|not_in:0',
-        'ng_fallas'=>'required|numeric',
+        'ng_fallas'=>'required',
         'ng_idNotaFK'=>'required|not_in:0',
         //Observaciones Generales
         'og_idEstudianteFK'=>'required',
-        'og_idTipoObservacionFK'=>'required|not_in:0',
-        'og_idObservacionesFK'=>'required|not_in:0'*/
+        'og_idObservacionesFK'=>'required|not_in:0',
         ];
     }
 }

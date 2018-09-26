@@ -15,7 +15,6 @@ class Calificaciones extends Model
 		'ca_idEstudianteFK',
 		'ca_idPeriodoFK',
 		'ca_idMateriaFK',
-		'ca_idUsuarioFK',
 		'ca_idProcesoFK',
 		'ca_idCompetenciaFK',
 		'ca_idNotaFK'

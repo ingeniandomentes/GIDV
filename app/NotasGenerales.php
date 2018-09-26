@@ -12,6 +12,7 @@ class NotasGenerales extends Model
 	protected $fillable =[
 		//Notas Generales
 		'ng_idEstudianteFK',
+		'ng_idUsuarioFK',
 		'ng_idMateriaFK',
 		'ng_fallas',
 		'ng_idNotaFK'

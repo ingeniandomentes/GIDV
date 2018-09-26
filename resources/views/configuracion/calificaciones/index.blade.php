@@ -17,7 +17,6 @@
 					<th>Estudiante</th>
 					<th>Periodo</th>
 					<th>Materia</th>
-					<th>Docente</th>
 					<th>Proceso</th>
 					<th>Competencia</th>
 					<th>Nota Competencia</th>
@@ -33,7 +32,6 @@
 						<td>{{$calificacion->nombreEs}}</td>
 						<td>{{$calificacion->periodo}}</td>
 						<td>{{$calificacion->materia}}</td>
-						<td>{{$calificacion->docente}}</td>
 						<td>{{$calificacion->proceso}}</td>
 						<td>{{$calificacion->competencia}}</td>
 						<td>{{$calificacion->nota}}</td>
@@ -43,7 +41,6 @@
 						<td>{{$calificacion->nombreEs}}</td>
 						<td>{{$calificacion->periodo}}</td>
 						<td>{{$calificacion->materia}}</td>
-						<td>{{$calificacion->docente}}</td>
 						<td>{{$calificacion->proceso}}</td>
 						<td>{{$calificacion->competencia}}</td>
 						<td>{{$calificacion->nota}}</td>
@@ -69,7 +66,8 @@
 					<!--Notas Generales-->
 					<th>Id Nota General</th>
 					<th>Estudiante</th>
-					<th>Materia 2</th>
+					<th>Docente</th>
+					<th>Materia</th>
 					<th>Fallas</th>
 					<th>Nota General</th>
 					@if($user=Auth::user()->us_idRolFK!=3)
@@ -81,12 +79,14 @@
 					@if($user=Auth::user()->us_idRolFK==3)
 						<td>{{$notageneral->ng_idNotaGeneral}}</td>
 						<td>{{$notageneral->nombreEs}}</td>
+						<td>{{$notageneral->docente}}</td>
 						<td>{{$notageneral->materia}}</td>
 						<td>{{$notageneral->ng_fallas}}</td>
 						<td>{{$notageneral->nota}}</td>
 					@elseif($user=Auth::user()->us_idRolFK==1 || $user=Auth::user()->us_idRolFK==2)
 						<td>{{$notageneral->ng_idNotaGeneral}}</td>
 						<td>{{$notageneral->nombreEs}}</td>
+						<td>{{$calificacion->docente}}</td>
 						<td>{{$notageneral->materia}}</td>
 						<td>{{$notageneral->ng_fallas}}</td>
 						<td>{{$notageneral->nota}}</td>
@@ -108,7 +108,6 @@
 					<!--Observaciones-->
 					<th>Id Observacion</th>
 					<th>Estudiante</th>
-					<th>Tipo Observacion</th>
 					<th>Observacion</th>
 					@if($user=Auth::user()->us_idRolFK!=3)
 					<th>Opciones</th>
@@ -119,12 +118,10 @@
 					@if($user=Auth::user()->us_idRolFK==3)
 						<td>{{$observaciongeneral->og_idObservacionGeneral}}</td>
 						<td>{{$observaciongeneral->nombreEs}}</td>
-						<td>{{$observaciongeneral->tipoobservacion}}</td>
 						<td>{{$observaciongeneral->observacion}}</td>
 					@elseif($user=Auth::user()->us_idRolFK==1 || $user=Auth::user()->us_idRolFK==2)
 						<td>{{$observaciongeneral->og_idObservacionGeneral}}</td>
 						<td>{{$observaciongeneral->nombreEs}}</td>
-						<td>{{$observaciongeneral->tipoobservacion}}</td>
 						<td>{{$observaciongeneral->observacion}}</td>
 					@else
 					@endif
