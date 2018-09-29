@@ -2,7 +2,12 @@
 @section('contenido')
 	<div class="row">
 		<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-			<h3>Listado de estudiantes <a href="estudiantes/create"><button class="btn btn-success">Nuevo</button></a></h3>
+			<h3>Listado de estudiantes
+				@if($user=Auth::user()->us_idRolFK==3)
+				@else
+				<a href="estudiantes/create"><button class="btn btn-success">Nuevo</button></a>
+				@endif
+			</h3>
 			@include('configuracion.estudiantes.search')
 		</div>
 	</div>
@@ -72,7 +77,6 @@
 							</td>
 							@endif
 					@else
-					<td></td>
 					@endif
 				</tr>
 				@include('configuracion.estudiantes.modal')

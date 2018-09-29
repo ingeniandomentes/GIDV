@@ -1,25 +1,33 @@
 @extends('layouts.admin')
 @section('contenido')
-	@php($tr=0)
-	@foreach($periodos as $pee)
-		@foreach($calificaciones as $cal)
-			@if($pee->pe_nombre==$cal->periodo)
-				@php($tr=0)
-			@endif
-		@endforeach
+
+@php($tr=0)
+@php($peri=0)
+@foreach($periodos as $pee)
+	@if($pee->pe_estado==0)
+		@php($peri++)
+	@endif
+	@foreach($calificaciones as $cal)
+		@if($pee->pe_nombre==$cal->periodo && $pee->pe_estado==1)
+			@php($tr++)
+		@endif
 	@endforeach
-	<div class="row">
-		<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-			<h3>Listado de calificaciones 
-				<a href="calificaciones/create">
-					@if($tr!=0)
-					<button class="btn btn-success">Nuevo</button>
-					@endif
-				</a>
-			</h3>
-			@include('configuracion.calificaciones.search')
-		</div>
+@endforeach
+
+<div class="row">
+	<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+		<h3>Listado de calificaciones 
+			<a href="calificaciones/create">
+			@if($peri!=4)
+				@if($tr==0)
+				<button class="btn btn-success">Nuevo</button>
+				@endif
+			@endif
+			</a>
+		</h3>
+		@include('configuracion.calificaciones.search')
 	</div>
+</div>
 <div class="row">
 	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		<div class="table-responsive">
@@ -44,13 +52,13 @@
 					@if($user=Auth::user()->us_idRolFK==3)
 						<td>{{$calificacion->ca_idCalificacion}}</td>
 						<td>{{$calificacion->ca_anioCalificacion}}</td>
-						<td>{{$calificacion->nombreEs}}</td>
+						<td>{{$calificacion->nombreEs}} {{$calificacion->apellidoEs}}</td>
 						<td>{{$calificacion->periodo}}</td>
 						<td>{{$calificacion->materia}}</td>
 						<td>{{$calificacion->proceso}}</td>
 						<td>{{$calificacion->competencia}}</td>
 						<td>{{$calificacion->nota}}</td>
-						@if($calificacion->periodo==$per)
+						@if($tr!=0)
 						<td>
 							<a href="{{URL::action('CalificacionesController@edit',$calificacion->ca_idCalificacion)}}"><button class="btn btn-info">Editar</button></a>
 						</td>
@@ -59,7 +67,7 @@
 					@elseif($user=Auth::user()->us_idRolFK==1 || $user=Auth::user()->us_idRolFK==2)
 						<td>{{$calificacion->ca_idCalificacion}}</td>
 						<td>{{$calificacion->ca_anioCalificacion}}</td>
-						<td>{{$calificacion->nombreEs}}</td>
+						<td>{{$calificacion->nombreEs}} {{$calificacion->apellidoEs}}</td>
 						<td>{{$calificacion->periodo}}</td>
 						<td>{{$calificacion->materia}}</td>
 						<td>{{$calificacion->proceso}}</td>
@@ -86,6 +94,7 @@
 					<!--Notas Generales-->
 					<th>Id Nota General</th>
 					<th>Estudiante</th>
+					<th>Periodo</th>
 					<th>Docente</th>
 					<th>Materia</th>
 					<th>Fallas</th>
@@ -96,18 +105,29 @@
 				<tr>
 					@if($user=Auth::user()->us_idRolFK==3)
 						<td>{{$notageneral->ng_idNotaGeneral}}</td>
-						<td>{{$notageneral->nombreEs}}</td>
-						<td>{{$notageneral->docente}}</td>
+						<td>{{$notageneral->nombreEs}} {{$notageneral->apellidoEs}}</td>
+						<td>{{$notageneral->periodo}}</td>
+						<td>{{$notageneral->docente1}} {{$notageneral->docente2}}</td>
 						<td>{{$notageneral->materia}}</td>
 						<td>{{$notageneral->ng_fallas}}</td>
 						<td>{{$notageneral->nota}}</td>
+						@if($tr!=0)
+						<td>
+							<a href="{{URL::action('NotasGeneralesController@edit',$notageneral->ng_idNotaGeneral)}}"><button class="btn btn-info">Editar</button></a>
+						</td>
+						@else
+						@endif
 					@elseif($user=Auth::user()->us_idRolFK==1 || $user=Auth::user()->us_idRolFK==2)
 						<td>{{$notageneral->ng_idNotaGeneral}}</td>
-						<td>{{$notageneral->nombreEs}}</td>
-						<td>{{$calificacion->docente}}</td>
+						<td>{{$notageneral->nombreEs}} {{$notageneral->apellidoEs}}</td>
+						<td>{{$notageneral->periodo}}</td>
+						<td>{{$notageneral->docente1}} {{$notageneral->docente2}}</td>
 						<td>{{$notageneral->materia}}</td>
 						<td>{{$notageneral->ng_fallas}}</td>
 						<td>{{$notageneral->nota}}</td>
+						<td>
+							<a href="{{URL::action('NotasGeneralesController@edit',$notageneral->ng_idNotaGeneral)}}"><button class="btn btn-info">Editar</button></a>
+						</td>
 					@else
 					@endif
 				</tr>
@@ -126,6 +146,7 @@
 					<!--Observaciones-->
 					<th>Id Observacion</th>
 					<th>Estudiante</th>
+					<th>Periodo</th>
 					<th>Observacion</th>
 					<th>Opciones</th>
 				</thead>
@@ -133,12 +154,23 @@
 				<tr>
 					@if($user=Auth::user()->us_idRolFK==3)
 						<td>{{$observaciongeneral->og_idObservacionGeneral}}</td>
-						<td>{{$observaciongeneral->nombreEs}}</td>
+						<td>{{$observaciongeneral->nombreEs}} {{$observaciongeneral->apellidoEs}}</td>
+						<td>{{$observaciongeneral->periodo}}</td>
 						<td>{{$observaciongeneral->observacion}}</td>
+						@if($tr!=0)
+						<td>
+							<a href="{{URL::action('ObservacionesGeneralesController@edit',$observaciongeneral->og_idObservacionGeneral)}}"><button class="btn btn-info">Editar</button></a>
+						</td>
+						@else
+						@endif
 					@elseif($user=Auth::user()->us_idRolFK==1 || $user=Auth::user()->us_idRolFK==2)
 						<td>{{$observaciongeneral->og_idObservacionGeneral}}</td>
-						<td>{{$observaciongeneral->nombreEs}}</td>
+						<td>{{$observaciongeneral->nombreEs}} {{$observaciongeneral->apellidoEs}}</td>
+						<td>{{$observaciongeneral->periodo}}</td>
 						<td>{{$observaciongeneral->observacion}}</td>
+						<td>
+							<a href="{{URL::action('ObservacionesGeneralesController@edit',$observaciongeneral->og_idObservacionGeneral)}}"><button class="btn btn-info">Editar</button></a>
+						</td>
 					@else
 					@endif
 				</tr>

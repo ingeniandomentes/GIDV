@@ -13,6 +13,7 @@ class NotasGenerales extends Model
 		//Notas Generales
 		'ng_idEstudianteFK',
 		'ng_idUsuarioFK',
+		'ng_idPeriodoFK',
 		'ng_idMateriaFK',
 		'ng_fallas',
 		'ng_idNotaFK'

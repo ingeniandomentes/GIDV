@@ -27,7 +27,7 @@
 					<label for="ca_anioCalificacion">Elija el Año</label>
 					<select name="ca_anioCalificacion[]" id="ca_anioCalificacion" class="form-control" onchange="calificaciones();" required>
 						<option value="0" selected>Elije una opción</option>
-						<option value="2018">2018</option>
+						<option value="{{ date('Y') }}">{{ date('Y') }}</option>
 					</select>
 				</div>
 			</div>
@@ -330,7 +330,6 @@
 										<div class="col-lg-11 col-sm-11 col-md-11 col-xs-11">
 											<div class="form-group size3">
 												<select name="og_idObservacionesFK[]" class="form-control text-center">
-													<option value="0">Elija una opción</option>
 													<optgroup label="Fortalezas">
 														@foreach($observaciones as $ob)
 															@if($ob->ob_idObservaciones==1)

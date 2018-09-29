@@ -43,6 +43,8 @@ Route::resource('procesos','ProcesosController');
 Route::resource('tipoDocumentos','TipoDocumentosController');
 Route::resource('tipoObservaciones','TipoObservacionesController');
 Route::resource('usuarios','UsuariosController');
+Route::resource('notasgenerales','NotasGeneralesController');
+Route::resource('observacionesgenerales','ObservacionesGeneralesController');
 
 Route::get('configuracion/usuarios/reset','UsuariosController@reset');
 Route::post('configuracion/usuarios/resetUpdate','UsuariosController@resetUpdate');

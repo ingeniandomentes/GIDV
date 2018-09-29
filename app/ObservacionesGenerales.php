@@ -12,6 +12,7 @@ class ObservacionesGenerales extends Model
 	protected $fillable =[
 		//Observaciones Generales
 		'og_idEstudianteFK',
+		'og_idPeriodoFK',
 		'og_idObservacionesFK'
 	];
 }

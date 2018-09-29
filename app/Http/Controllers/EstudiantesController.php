@@ -39,6 +39,7 @@ class EstudiantesController extends Controller
        	}
     }
     public function create(){
+        //middleware
         $tipodocumentos=DB::table('tipodocumento')->where('td_estado','=','1')->get();
         $cursos=DB::table('cursos')->where('cu_estado','=','1')->get();
         $grados=DB::table('grados')->where('gr_estado','=','1')->get();

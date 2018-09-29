@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Redirect;
 
 use GIDV\Http\Requests\CalificacionesFormRequest;
 
+use GIDV\Http\Requests\CalificacionFormRequest;
+
 use GIDV\Calificaciones;
 
 use GIDV\NotasGenerales;
@@ -43,7 +45,7 @@ class CalificacionesController extends Controller
 
             ->join('notas as n','c.ca_idNotaFK','=','n.no_idNota')
 
-            ->select('c.ca_idCalificacion','c.ca_anioCalificacion','e.es_nombre as nombreEs','p.pe_nombre as periodo','m.ma_nombre as materia','pro.pro_nombre as proceso','co.co_descripcion as competencia','n.no_nombre as nota')
+            ->select('c.ca_idCalificacion','c.ca_anioCalificacion','e.es_nombre as nombreEs','e.es_apellido as apellidoEs','p.pe_nombre as periodo','m.ma_nombre as materia','pro.pro_nombre as proceso','co.co_descripcion as competencia','n.no_nombre as nota')
 
             ->where('e.es_nombre','LIKE','%'.$query.'%')
 
@@ -73,7 +75,9 @@ class CalificacionesController extends Controller
 
             ->join('notas as n','ng.ng_idNotaFK','=','n.no_idNota')
 
-            ->select('ng.ng_idNotaGeneral','e.es_nombre as nombreEs','us.name as docente','m.ma_nombre as materia','ng.ng_fallas','n.no_descripcion as nota')
+            ->join('periodos as p','ng.ng_idPeriodoFK','=','p.pe_idPeriodo')
+
+            ->select('ng.ng_idNotaGeneral','e.es_nombre as nombreEs','e.es_apellido as apellidoEs','us.name as docente1','us.us_apellido as docente2','p.pe_nombre as periodo','m.ma_nombre as materia','ng.ng_fallas','n.no_descripcion as nota')
             ->where('e.es_nombre','LIKE','%'.$query.'%')
             ->paginate(9);
 
@@ -81,17 +85,19 @@ class CalificacionesController extends Controller
 
             ->join('estudiantes as e','og.og_idEstudianteFK','=','e.es_idEstudiante')
 
-
             ->join('observaciones as ob','og.og_idObservacionesFK','=','ob.ob_idObservaciones')
 
-            ->select('og.og_idObservacionGeneral','e.es_nombre as nombreEs','ob.ob_descripcion as observacion')
+            ->join('periodos as p','og.og_idPeriodoFK','=','p.pe_idPeriodo')
+
+            ->select('og.og_idObservacionGeneral','e.es_nombre as nombreEs','e.es_apellido as apellidoEs','p.pe_nombre as periodo','ob.ob_descripcion as observacion')
 
             ->where('e.es_nombre','LIKE','%'.$query.'%')
+
+            ->orwhere('e.es_apellido','LIKE','%'.$query.'%')
 
             ->paginate(8);
 
             $periodos=DB::table('periodos')
-                                        ->where('pe_estado','=','1')
                                         ->orderBy('pe_nombre','asc')
                                         ->get();
             /*->join('estudiantes as e',function($join){
@@ -217,32 +223,6 @@ class CalificacionesController extends Controller
                                         ->where('ob_estado','=','1')
                                         ->orderBy('ob_idObservaciones','asc')
                                         ->get();
-
-
-                //Calificaciones::create($request->all());
-                /*for($i=0;$i<=2;$i++){
-                    $calificacion1 = new Calificaciones;
-                    $calificacion1->ca_anioCalificacion=$request->ca_anioCalificacion[$i];                                  
-                    $calificacion1->ca_idEstudianteFK=$request->ca_idEstudianteFK[$i];
-                    $calificacion1->ca_idPeriodoFK=$request->ca_idPeriodoFK[$i];
-                    $calificacion1->ca_idMateriaFK=$request->ca_idMateriaFK[$i];
-                    $calificacion1->ca_idUsuarioFK=$request->ca_idUsuarioFK[$i];
-                    $calificacion1->ca_idProcesoFK=$request->ca_idProcesoFK[$i];
-                    $calificacion1->ca_idCompetenciaFK=$request->ca_idCompetenciaFK[$i];
-                    $calificacion1->ca_idNotaFK=$request->ca_idNotaFK[$i];
-                    $calificacion1->save();
-                }*/
-                    /*
-                    $calificacion1 = new Calificaciones;
-                    $calificacion1->ca_anioCalificacion=$request->ca_anioCalificacion;                                  
-                    $calificacion1->ca_idEstudianteFK=$request->ca_idEstudianteFK;
-                    $calificacion1->ca_idPeriodoFK=$request->ca_idPeriodoFK;
-                    $calificacion1->ca_idMateriaFK=$request->ca_idMateriaFK;
-                    $calificacion1->ca_idUsuarioFK=$request->ca_idUsuarioFK;
-                    $calificacion1->ca_idProcesoFK=$request->ca_idProcesoFK;
-                    $calificacion1->ca_idCompetenciaFK=$request->ca_idCompetenciaFK;
-                    $calificacion1->ca_idNotaFK=$request->ca_idNotaFK;
-                    $calificacion1->save();*/
                     foreach ($periodos as $perio) {
                         $perr=$perio->pe_idPeriodo;
                     }
@@ -291,6 +271,7 @@ class CalificacionesController extends Controller
                             $calificacion2 = new NotasGenerales;
                             $calificacion2->ng_idEstudianteFK=$request->ng_idEstudianteFK[$estu];
                             $calificacion2->ng_idUsuarioFK=$request->ng_idUsuarioFK[$mat];
+                            $calificacion2->ng_idPeriodoFK=$request->ca_idPeriodoFK[$pe];
                             $calificacion2->ng_idMateriaFK=$request->ng_idMateriaFK[$mat];
                             $calificacion2->ng_fallas=$request->ng_fallas[$mat];
                             $calificacion2->ng_idNotaFK=$request->ng_idNotaFK[$mat];
@@ -302,13 +283,13 @@ class CalificacionesController extends Controller
                     }  
                 }
                 $estud=0;
-                $obe=0;
                 //Observaciones Generales
                 foreach ($estudiantes as $es) {
                     if($es->es_idCursoFK==Auth::user()->us_idCursoFK){
                         for($i=0;$i<2;$i++){
                         $calificacion3 = new ObservacionesGenerales;
                         $calificacion3->og_idEstudianteFK=$request->og_idEstudianteFK[$estud];
+                        $calificacion3->og_idPeriodoFK=$request->ca_idPeriodoFK[$pe];
                         $calificacion3->og_idObservacionesFK=$request->og_idObservacionesFK[$i];
                         $calificacion3->save();
                         $obe++;
@@ -321,10 +302,9 @@ class CalificacionesController extends Controller
     public function show($id){
     	return view("configuracion.calificaciones.show",["calificaciones"=>Calificaciones::findOrFail($id)]);
     }
+    //Calficaciones
     public function edit($id){
         $calificaciones=Calificaciones::findOrFail($id);
-        $notasgenerales=NotasGenerales::findOrFail($id);
-        $observacionesgenerales=ObservacionesGenerales::findOrFail($id);
         $estudiantes=DB::table('estudiantes')
 
                                         ->where('es_estado','=','1')
@@ -363,8 +343,10 @@ class CalificacionesController extends Controller
                                         ->where('ob_estado','=','1')
                                         ->orderBy('ob_idObservaciones','asc')
                                         ->get();
-        return view("configuracion.competencias.edit",
-                    ["estudiantes"=>$estudiantes,
+        
+        return view("configuracion.calificaciones.editCalificaciones",
+                    ["calificaciones"=>$calificaciones,
+                    "estudiantes"=>$estudiantes,
                     "periodos"=>$periodos,
                     "materias"=>$materias,
                     "users"=>$users,
@@ -374,27 +356,18 @@ class CalificacionesController extends Controller
                     "tobservaciones"=>$tobservaciones,
                     "observaciones"=>$observaciones]);
     }
-    public function update(CompetenciasFormRequest $request,$id){
-    	$calificaciones=Calificaciones::findOrFail($id);
-        $calificacion->ca_anioCalificacion=$request->get('ca_anioCalificacion');
-        $calificacion->ca_idEstudianteFK=$request->get('estudiante');
-        $calificacion->ca_idPeriodoFK=$request->get('ca_idPeriodoFK');
-        $calificacion->ca_idMateriaFK=$request->get('ca_idMateriaFK');
-        $calificacion->ca_idUsuarioFK=$request->get('ca_idUsuarioFK');
-        $calificacion->ca_idProcesoFK=$request->get('ca_idProcesoFK');
-        $calificacion->ca_idCompetenciaFK=$request->get('ca_idCompetenciaFK');
-        $calificacion->ca_idNotaFK=$request->get('ca_idNotaFK');
-        //Notas Generales
-        $calificacion->ng_idEstudianteFK=$request->get('estudiante');
-        $calificacion->ng_idMateriaFK=$request->get('ng_idMateriaFK');
-        $calificacion->ng_fallas=$request->get('ng_fallas');
-        $calificacion->ng_idNotaFK=$request->get('ng_idNotaFK');
-        //Observaciones Generales
-        $calificacion->og_idEstudianteFK=$request->get('estudiante');
-        $calificacion->og_idTipoObservacionFK=$request->get('og_idTipoObservacionFK');
-        $calificacion->og_idObservacionesFK=$request->get('og_idObservacionesFK');
+    public function update(CalificacionFormRequest $request,$id){
 
-        $calificacion->update();
+        $calificaciones=Calificaciones::findOrFail($id);
+        $calificaciones->ca_anioCalificacion=$request->ca_anioCalificacion;                              
+        $calificaciones->ca_idEstudianteFK=$request->ca_idEstudianteFK;
+        $calificaciones->ca_idPeriodoFK=$request->ca_idPeriodoFK;
+        $calificaciones->ca_idMateriaFK=$request->ca_idMateriaFK;
+        $calificaciones->ca_idProcesoFK=$request->ca_idProcesoFK;
+        $calificaciones->ca_idCompetenciaFK=$request->ca_idCompetenciaFK;
+        $calificaciones->ca_idNotaFK=$request->ca_idNotaFK;
+        $calificaciones->update();
+       
         return Redirect::to('calificaciones');
     }/*
     public function destroy($id){
