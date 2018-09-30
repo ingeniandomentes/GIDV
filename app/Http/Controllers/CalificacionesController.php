@@ -135,6 +135,8 @@ class CalificacionesController extends Controller
         	}    
         }
         public function create(){
+        $calificaciones=DB::table('calificaciones')
+        ->get();
         $estudiantes=DB::table('estudiantes')
 
                                         ->where('es_estado','=','1')
@@ -142,6 +144,9 @@ class CalificacionesController extends Controller
         								->get();
         $periodos=DB::table('periodos')
                                         ->where('pe_estado','=','1')
+                                        ->orderBy('pe_nombre','asc')
+                                        ->get();
+        $perio=DB::table('periodos')
                                         ->orderBy('pe_nombre','asc')
                                         ->get();
         $materias=DB::table('materias')
@@ -173,8 +178,13 @@ class CalificacionesController extends Controller
                                         ->where('ob_estado','=','1')
                                         ->orderBy('ob_idObservaciones','asc')
                                         ->get();
+        $calificaciones=DB::table('calificaciones')
+                                        ->get();
     	return view("configuracion.calificaciones.create",
                     ["estudiantes"=>$estudiantes,
+                    "calificaciones"=>$calificaciones,
+                    "calificaciones"=>$calificaciones,
+                    "perio"=>$perio,
                     "periodos"=>$periodos,
                     "materias"=>$materias,
                     "users"=>$users,
@@ -297,7 +307,7 @@ class CalificacionesController extends Controller
                     }
                     $obe=0;
                 }
-    	return Redirect::to('calificaciones');
+    	return Redirect::to('calificaciones')->with('status', 'Calificaciones creadas con éxito');
     }
     public function show($id){
     	return view("configuracion.calificaciones.show",["calificaciones"=>Calificaciones::findOrFail($id)]);
@@ -305,6 +315,11 @@ class CalificacionesController extends Controller
     //Calficaciones
     public function edit($id){
         $calificaciones=Calificaciones::findOrFail($id);
+        $perio=DB::table('periodos')
+                                        ->orderBy('pe_nombre','asc')
+                                        ->get();
+        $cali=DB::table('calificaciones')
+                                        ->get();
         $estudiantes=DB::table('estudiantes')
 
                                         ->where('es_estado','=','1')
@@ -346,6 +361,8 @@ class CalificacionesController extends Controller
         
         return view("configuracion.calificaciones.editCalificaciones",
                     ["calificaciones"=>$calificaciones,
+                    "cali"=>$cali,
+                    "perio"=>$perio,
                     "estudiantes"=>$estudiantes,
                     "periodos"=>$periodos,
                     "materias"=>$materias,
@@ -368,7 +385,7 @@ class CalificacionesController extends Controller
         $calificaciones->ca_idNotaFK=$request->ca_idNotaFK;
         $calificaciones->update();
        
-        return Redirect::to('calificaciones');
+        return Redirect::to('calificaciones')->with('status', 'Calificacion actualizada con éxito');
     }/*
     public function destroy($id){
     	$competencia=Competencias::findOrFail($id);

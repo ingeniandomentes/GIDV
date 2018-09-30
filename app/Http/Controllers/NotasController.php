@@ -39,7 +39,7 @@ class NotasController extends Controller
     	$nota->no_descripcion = $request->get('descripcion');
     	$nota->no_estado = '1';
     	$nota->save();
-    	return Redirect::to('notas');
+    	return Redirect::to('notas')->with('status', 'Nota creada con éxito');
     }
     public function show($id){
     	return view("configuracion.notas.show",["notas"=>Notas::findOrFail($id)]);
@@ -52,7 +52,7 @@ class NotasController extends Controller
     	$nota->no_nombre=$request->get('nombre');
     	$nota->no_descripcion = $request->get('descripcion');
     	$nota->update();
-    	return Redirect::to('notas');
+    	return Redirect::to('notas')->with('status', 'Nota actualizada con éxito');
     }
     public function destroy($id){
     	$nota=Notas::findOrFail($id);

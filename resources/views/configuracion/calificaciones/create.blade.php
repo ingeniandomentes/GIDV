@@ -1,16 +1,34 @@
 @extends('layouts.admin')
 @section('contenido')
-	<div class="row">
-		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-			<h3>Calificaciones</h3>
-			@include('errores/errores')
-		</div>
-	</div>
+
+	@php($tr=0)
+	@php($peri=0)
+	@foreach($perio as $p)
+		@if($p->pe_estado==0)
+			@php($peri++)
+		@endif
+		@foreach($calificaciones as $cal)
+			@if($p->pe_idPeriodo==$cal->ca_idPeriodoFK && $p->pe_estado==1 && $user=Auth::user()->us_idRolFK==3)
+				@php($tr++)
+			@endif
+		@endforeach
+	@endforeach
+
 	@php($cont=0)
 	@php($est=0)
 	@php($mat=0)
+
+	@if($peri!=4)
+		@if($tr==0)
+		<div class="row">
+			<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+				<h3>Calificaciones</h3>
+				@include('errores/errores')
+			</div>
+		</div>
 			{!!Form::open(array('url'=>'calificaciones','method'=>'POST','autocomplete'=>'off','files'=>'true'))!!}
 			{{Form::token()}}
+
 			<div class="col-lg-6 col-sm-6 col-md-6 col-xs-6" id="periodo">
 				<div class="form-group">
 					<label for="periodo">Elija el Periodo</label>
@@ -368,4 +386,34 @@
 			</div>
 		</div>
 			{!!Form::close()!!}
+	@else
+	<div class="container">
+	    <div class="row">
+	        <div class="col-md-8 col-md-offset-2">
+	            <div class="panel panel-danger text-center">
+	                <div class="panel-heading">Usted no tiene acceso a esta sección</div>
+
+	                <div class="panel-body">
+	                    <img src="/imagenes/candado.jpg" class="img-responsive center-block">
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+	@endif
+	@else
+	<div class="container">
+	    <div class="row">
+	        <div class="col-md-8 col-md-offset-2">
+	            <div class="panel panel-danger text-center">
+	                <div class="panel-heading">Usted no tiene acceso a esta sección</div>
+
+	                <div class="panel-body">
+	                    <img src="/imagenes/candado.jpg" class="img-responsive center-block">
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+	@endif
 @endsection

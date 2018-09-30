@@ -39,7 +39,6 @@ class EstudiantesController extends Controller
        	}
     }
     public function create(){
-        //middleware
         $tipodocumentos=DB::table('tipodocumento')->where('td_estado','=','1')->get();
         $cursos=DB::table('cursos')->where('cu_estado','=','1')->get();
         $grados=DB::table('grados')->where('gr_estado','=','1')->get();
@@ -74,7 +73,7 @@ class EstudiantesController extends Controller
         }
     	$estudiante->es_estado = '1';
     	$estudiante->save();
-    	return Redirect::to('estudiantes');
+    	return Redirect::to('estudiantes')->with('status', 'Estudiante creado con éxito');
     }
     public function show($id){
     	return view("configuracion.estudiantes.show",["estudiantes"=>Estudiantes::findOrFail($id)]);
@@ -115,7 +114,7 @@ class EstudiantesController extends Controller
         }
         $estudiante->es_estado = $request->get('estado');
     	$estudiante->update();
-    	return Redirect::to('estudiantes');
+    	return Redirect::to('estudiantes')->with('status', 'Estudiante actualizado con éxito');
     }
     public function destroy($id){
     	$estudiante=Estudiantes::findOrFail($id);

@@ -29,6 +29,11 @@ class ObservacionesGeneralesController extends Controller
     }
    public function edit($id){
         $observacionesgenerales=ObservacionesGenerales::findOrFail($id);
+        $perio=DB::table('periodos')
+                                        ->orderBy('pe_nombre','asc')
+                                        ->get();
+        $cali=DB::table('calificaciones')
+                                        ->get();
         $estudiantes=DB::table('estudiantes')
 
                                         ->where('es_estado','=','1')
@@ -70,6 +75,8 @@ class ObservacionesGeneralesController extends Controller
         
         return view("configuracion.calificaciones.editObservacionesGenerales",
                     ["observacionesgenerales"=>$observacionesgenerales,
+                    "cali"=>$cali,
+                    "perio"=>$perio,
                     "estudiantes"=>$estudiantes,
                     "periodos"=>$periodos,
                     "materias"=>$materias,
@@ -81,14 +88,14 @@ class ObservacionesGeneralesController extends Controller
                     "observaciones"=>$observaciones]);
     }
     public function update(ObservacionesGeneralesFormRequest $request,$id){
+
         $observacionesgenerales=ObservacionesGenerales::findOrFail($id);
-
         //Observaciones Generales
-        $observacionesgenerales->og_idEstudianteFK=$request->get('estudiante');
-        $observacionesgenerales->og_idTipoObservacionFK=$request->get('og_idTipoObservacionFK');
-        $observacionesgenerales->og_idObservacionesFK=$request->get('og_idObservacionesFK');
+        $observacionesgenerales->og_idEstudianteFK=$request->og_idEstudianteFK;
+        $observacionesgenerales->og_idPeriodoFK=$request->og_idPeriodoFK;
+        $observacionesgenerales->og_idObservacionesFK=$request->og_idObservacionesFK;
+        $observacionesgenerales->update()->with('status', 'Observacion General actualizada con éxito');
 
-        $observacionesgenerales->update();
         return Redirect::to('calificaciones');
     }
 }

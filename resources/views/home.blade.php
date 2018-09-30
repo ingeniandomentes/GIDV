@@ -15,8 +15,6 @@
                     @endif
                     <img src="/imagenes/prueba.jpg" class="img-responsive center-block">
                 </div>
-                 <a href="{{URL::action('UsuariosController@reset',$id=Auth::user()->id)}}"><button class="btn btn-primary btn-lg btn-block">Cambiar Contraseña</button></a>
-                </div>
             </div>
         </div>
     </div>

@@ -48,3 +48,11 @@ Route::resource('observacionesgenerales','ObservacionesGeneralesController');
 
 Route::get('configuracion/usuarios/reset','UsuariosController@reset');
 Route::post('configuracion/usuarios/resetUpdate','UsuariosController@resetUpdate');
+
+Route::group(['middleware'=>'estudiante'], function(){
+	Route::get('estudiantes/create','EstudiantesController@create');
+});
+
+Route::group(['middleware'=>'directivo'], function(){
+	Route::get('calificaciones/create','CalificacionesController@create');
+});

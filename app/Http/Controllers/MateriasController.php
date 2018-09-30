@@ -47,7 +47,7 @@ class MateriasController extends Controller
         $materia->ma_docenteAsignadoFK= $request->get('idDocenteAsignado');
     	$materia->ma_estado = '1';
     	$materia->save();
-    	return Redirect::to('materias');
+    	return Redirect::to('materias')->with('status', 'Materia creada con éxito');
     }
     public function show($id){
     	return view("configuracion.materias.show",["materias"=>Materias::findOrFail($id)]);
@@ -66,7 +66,7 @@ class MateriasController extends Controller
     	$materia->ma_intensidad = $request->get('intensidad');
         $materia->ma_docenteAsignadoFK= $request->get('idDocenteAsignado');
     	$materia->update();
-    	return Redirect::to('materias');
+    	return Redirect::to('materias')->with('status', 'Materia actualizada con éxito');
     }
     public function destroy($id){
     	$materia=Materias::findOrFail($id);

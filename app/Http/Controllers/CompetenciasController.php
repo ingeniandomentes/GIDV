@@ -45,7 +45,7 @@ class CompetenciasController extends Controller
         $competencia->co_idProcesoFK= $request->get('proceso');
     	$competencia->co_estado = '1';
     	$competencia->save();
-    	return Redirect::to('competencias');
+    	return Redirect::to('competencias')->with('status', 'Competencias creadas con éxito');
     }
     public function show($id){
     	return view("configuracion.competencias.show",["competencias"=>Competencias::findOrFail($id)]);
@@ -62,7 +62,7 @@ class CompetenciasController extends Controller
         $competencia->co_descripcion= $request->get('descripcion');
         $competencia->co_idProcesoFK= $request->get('proceso');
     	$competencia->update();
-    	return Redirect::to('competencias');
+    	return Redirect::to('competencias')->with('status', 'Usuario actualizado con éxito');
     }
     public function destroy($id){
     	$competencia=Competencias::findOrFail($id);

@@ -40,7 +40,7 @@ class GradosController extends Controller
     	$grado->gr_nombre = $request->get('nombre');
     	$grado->gr_estado = '1';
     	$grado->save();
-    	return Redirect::to('grados');
+    	return Redirect::to('grados')->with('status', 'Grado creado con éxito');
     }
     public function show($id){
     	return view("configuracion.grados.show",["grados"=>Grados::findOrFail($id)]);
@@ -52,7 +52,7 @@ class GradosController extends Controller
     	$grado=Grados::findOrFail($id);
     	$grado->gr_nombre=$request->get('nombre');
     	$grado->update();
-    	return Redirect::to('grados');
+    	return Redirect::to('grados')->with('status', 'Grado actualizado con éxito');
     }
     public function destroy($id){
     	$grado=Grados::findOrFail($id);

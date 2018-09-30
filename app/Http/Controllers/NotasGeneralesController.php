@@ -29,6 +29,11 @@ class NotasGeneralesController extends Controller
     }
     public function edit($id){
         $notasgenerales=NotasGenerales::findOrFail($id);
+        $perio=DB::table('periodos')
+                                        ->orderBy('pe_nombre','asc')
+                                        ->get();
+        $cali=DB::table('calificaciones')
+                                        ->get();
         $estudiantes=DB::table('estudiantes')
 
                                         ->where('es_estado','=','1')
@@ -70,6 +75,8 @@ class NotasGeneralesController extends Controller
         
         return view("configuracion.calificaciones.editNotasGenerales",
                     ["notasgenerales"=>$notasgenerales,
+                    "cali"=>$cali,
+                    "perio"=>$perio,
                     "estudiantes"=>$estudiantes,
                     "periodos"=>$periodos,
                     "materias"=>$materias,
@@ -91,6 +98,6 @@ class NotasGeneralesController extends Controller
         $notasgenerales->ng_fallas=$request->get('ng_fallas');
         $notasgenerales->ng_idNotaFK=$request->get('ng_idNotaFK');
         $notasgenerales->update();
-        return Redirect::to('calificaciones');
+        return Redirect::to('calificaciones')->with('status', 'Nota General actualizada con éxito');
     }
 }

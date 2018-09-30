@@ -1,5 +1,6 @@
 @extends('layouts.admin')
 @section('contenido')
+@if($user=Auth::user()->us_idRolFK!=3)
 	<div class="row">
 		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
 			<h3>Editar Estudiante {{$estudiantes->es_nombre}} {{$estudiantes->es_apellido}}</h3>
@@ -8,6 +9,7 @@
 	</div>
 			{!!Form::model($estudiantes,['method'=>'PATCH','route'=>['estudiantes.update',$estudiantes->es_idEstudiante],'files'=>'true'])!!}
 			{{Form::token()}}
+		
 		<div class="row">
 			@if($estudiantes->es_estado==1)
 			<div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
@@ -145,5 +147,20 @@
 				<button class="btn btn-primary" type="sumbmit">Agregar</button>
 				<button class="btn btn-danger" type="reset">Borrar</button>
 			</div>
+		@else
+		<div class="container">
+		    <div class="row">
+		        <div class="col-md-8 col-md-offset-2">
+		            <div class="panel panel-danger text-center">
+		                <div class="panel-heading">Usted no tiene acceso a esta sección</div>
+
+		                <div class="panel-body">
+		                    <img src="/imagenes/candado.jpg" class="img-responsive center-block">
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		</div>
+		@endif
 		{!!Form::close()!!}
 @endsection

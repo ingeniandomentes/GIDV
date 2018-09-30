@@ -56,7 +56,7 @@ class ProcesosController extends Controller
         $proceso->pro_idGradoFK= $request->get('grado');
     	$proceso->pro_estado = '1';
     	$proceso->save();
-    	return Redirect::to('procesos');
+    	return Redirect::to('procesos')->with('status', 'Proceso creado con éxito');
     }
     public function show($id){
     	return view("configuracion.procesos.show",["procesos"=>Procesos::findOrFail($id)]);
@@ -81,7 +81,7 @@ class ProcesosController extends Controller
         $proceso->pro_idPeriodoFK= $request->get('periodo');
         $proceso->pro_idGradoFK= $request->get('grado');
     	$proceso->update();
-    	return Redirect::to('procesos');
+    	return Redirect::to('procesos')->with('status', 'Proceso actualizado con éxito');
     }
     public function destroy($id){
     	$proceso=Procesos::findOrFail($id);

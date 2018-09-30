@@ -1,5 +1,6 @@
 @extends('layouts.admin')
 @section('contenido')
+@include('success.success')
 	<div class="row">
 		<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
 			<h3>Listado de procesos <a href="procesos/create"><button class="btn btn-success">Nuevo</button></a></h3>

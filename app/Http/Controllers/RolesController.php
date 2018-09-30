@@ -38,7 +38,7 @@ class RolesController extends Controller
         $rol->ro_nombre = $request->get('nombre');
         $rol->ro_estado = '1';
         $rol->save();
-        return Redirect::to('roles');
+        return Redirect::to('roles')->with('status', 'Rol creado con éxito');
     }
     public function show($id){
         return view("configuracion.roles.show",["roles"=>Roles::findOrFail($id)]);
@@ -50,7 +50,7 @@ class RolesController extends Controller
         $rol=Roles::findOrFail($id);
         $rol->ro_nombre=$request->get('nombre');
         $rol->update();
-        return Redirect::to('roles');
+        return Redirect::to('roles')->with('status', 'Rol actualizado con éxito');
     }
     public function destroy($id){
         $rol=Roles::findOrFail($id);

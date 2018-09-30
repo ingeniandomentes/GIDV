@@ -38,7 +38,7 @@ class TipoDocumentosController extends Controller
         $tipodocumento->td_nombre = $request->get('nombre');
         $tipodocumento->td_estado = '1';
         $tipodocumento->save();
-        return Redirect::to('tipodocumentos');
+        return Redirect::to('tipodocumentos')->with('status', 'Tipo de Documento creado con éxito');
     }
     public function show($id){
         return view("configuracion.tipodocumentos.show",["tipodocumentos"=>TipoDocumentos::findOrFail($id)]);
@@ -50,7 +50,7 @@ class TipoDocumentosController extends Controller
         $tipodocumento=TipoDocumentos::findOrFail($id);
         $tipodocumento->td_nombre=$request->get('nombre');
         $tipodocumento->update();
-        return Redirect::to('tipodocumentos');
+        return Redirect::to('tipodocumentos')->with('status', 'Tipo de Documento actualizado con éxito');
     }
     public function destroy($id){
         $tipodocumento=TipoDocumentos::findOrFail($id);

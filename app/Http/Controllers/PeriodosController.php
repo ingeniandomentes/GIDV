@@ -39,7 +39,7 @@ class PeriodosController extends Controller
     	$periodo->pe_fechaFinal=$request->get('fechaFinal');
     	$periodo->pe_estado = '1';
     	$periodo->save();
-    	return Redirect::to('periodos');
+    	return Redirect::to('periodos')->with('status', 'Periodo creado con éxito');
     }
     public function show($id){
     	return view("configuracion.periodos.show",["periodos"=>Periodos::findOrFail($id)]);
@@ -54,7 +54,7 @@ class PeriodosController extends Controller
     	$periodo->pe_fechaFinal=$request->get('fechaFinal');
     	$periodo->pe_estado=$request->get('estado');
     	$periodo->update();
-    	return Redirect::to('periodos');
+    	return Redirect::to('periodos')->with('status', 'Periodo actualizado con éxito');
     }
     public function destroy($id){
     	$periodo=Periodos::findOrFail($id);

@@ -43,7 +43,7 @@ class CursosController extends Controller
         $curso->cu_idGradoFK= $request->get('idGrado');
     	$curso->cu_estado = '1';
     	$curso->save();
-    	return Redirect::to('cursos');
+    	return Redirect::to('cursos')->with('status', 'Curso creado con éxito');
     }
     public function show($id){
     	return view("configuracion.cursos.show",["cursos"=>Cursos::findOrFail($id)]);
@@ -58,7 +58,7 @@ class CursosController extends Controller
     	$curso->cu_nombre = $request->get('nombre');
         $curso->cu_idGradoFK= $request->get('idGrado');
     	$curso->update();
-    	return Redirect::to('cursos');
+    	return Redirect::to('cursos')->with('status', 'Curso actualizado con éxito');
     }
     public function destroy($id){
     	$curso=Cursos::findOrFail($id);

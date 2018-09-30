@@ -38,7 +38,7 @@ class TipoObservacionesController extends Controller
         $tipoobservacion->to_nombre = $request->get('nombre');
         $tipoobservacion->to_estado = '1';
         $tipoobservacion->save();
-        return Redirect::to('tipoobservaciones');
+        return Redirect::to('tipoobservaciones')->with('status', 'Tipo de Observacion creado con éxito');
     }
     public function show($id){
         return view("configuracion.tipoobservaciones.show",["tipoobservaciones"=>TipoObservaciones::findOrFail($id)]);
@@ -50,7 +50,7 @@ class TipoObservacionesController extends Controller
         $tipoobservacion=TipoObservaciones::findOrFail($id);
         $tipoobservacion->to_nombre=$request->get('nombre');
         $tipoobservacion->update();
-        return Redirect::to('tipoobservaciones');
+        return Redirect::to('tipoobservaciones')->with('status', 'Tipo de Observacion actualizada con éxito');
     }
     public function destroy($id){
         $tipoobservacion=TipoObservaciones::findOrFail($id);

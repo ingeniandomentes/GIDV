@@ -42,7 +42,7 @@ class ObservacionesController extends Controller
         $observacion->ob_descripcion= $request->get('descripcion');
     	$observacion->ob_estado= '1';
     	$observacion->save();
-    	return Redirect::to('observaciones');
+    	return Redirect::to('observaciones')->with('status', 'Observacion creada con éxito');
     }
     public function show($id){
     	return view("configuracion.observaciones.show",["observaciones"=>Observaciones::findOrFail($id)]);
@@ -57,7 +57,7 @@ class ObservacionesController extends Controller
     	$observacion->ob_idTipoObservacionFK = $request->get('idTipoObservacion');
         $observacion->ob_descripcion= $request->get('descripcion');
     	$observacion->update();
-    	return Redirect::to('observaciones');
+    	return Redirect::to('observaciones')->with('status', 'Observacion actualizada con éxito');
     }
     public function destroy($id){
     	$observacion=Observaciones::findOrFail($id);

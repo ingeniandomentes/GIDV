@@ -1,13 +1,15 @@
 @extends('layouts.admin')
 @section('contenido')
-
+@include('success.success')
 @php($tr=0)
 @php($peri=0)
+@php($calific=0)
 @foreach($periodos as $pee)
 	@if($pee->pe_estado==0)
 		@php($peri++)
 	@endif
 	@foreach($calificaciones as $cal)
+		@php($calific++)
 		@if($pee->pe_nombre==$cal->periodo && $pee->pe_estado==1)
 			@php($tr++)
 		@endif
@@ -19,7 +21,7 @@
 		<h3>Listado de calificaciones 
 			<a href="calificaciones/create">
 			@if($peri!=4)
-				@if($tr==0)
+				@if($tr==0 && $user=Auth::user()->us_idRolFK==3)
 				<button class="btn btn-success">Nuevo</button>
 				@endif
 			@endif
@@ -32,6 +34,7 @@
 	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		<div class="table-responsive">
 			<table class="table table-striped table-bordered table-condensed table-hover text-center">
+				@if($calific!=0)
 				<thead>
 					<!--Calificaciones-->
 					<th>Id Calificacion</th>
@@ -42,8 +45,13 @@
 					<th>Proceso</th>
 					<th>Competencia</th>
 					<th>Nota Competencia</th>
-					<th>Opciones</th>
+					@if($tr!=0)
+						<th>Opciones</th>
+					@elseif($user=Auth::user()->us_idRolFK==2)
+						<th>Opciones</th>
+					@endif
 				</thead>
+				@endif
 				@foreach($periodos as $pe)
 				@php($per=$pe->pe_nombre)
 				@endforeach
@@ -90,6 +98,7 @@
 	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		<div class="table-responsive">
 			<table class="table table-striped table-bordered table-condensed table-hover text-center">
+				@if($calific!=0)
 				<thead>
 					<!--Notas Generales-->
 					<th>Id Nota General</th>
@@ -99,8 +108,13 @@
 					<th>Materia</th>
 					<th>Fallas</th>
 					<th>Nota General</th>
-					<th>Opciones</th>
+					@if($tr!=0)
+						<th>Opciones</th>
+					@elseif($user=Auth::user()->us_idRolFK==2)
+						<th>Opciones</th>
+					@endif
 				</thead>
+				@endif
 				@foreach($notasgenerales as $notageneral)
 				<tr>
 					@if($user=Auth::user()->us_idRolFK==3)
@@ -142,14 +156,20 @@
 	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		<div class="table-responsive">
 			<table class="table table-striped table-bordered table-condensed table-hover text-center">
+				@if($calific!=0)
 				<thead>
 					<!--Observaciones-->
 					<th>Id Observacion</th>
 					<th>Estudiante</th>
 					<th>Periodo</th>
 					<th>Observacion</th>
-					<th>Opciones</th>
+					@if($tr!=0)
+						<th>Opciones</th>
+					@elseif($user=Auth::user()->us_idRolFK==2)
+						<th>Opciones</th>
+					@endif
 				</thead>
+				@endif
 				@foreach($observacionesgenerales as $observaciongeneral)
 				<tr>
 					@if($user=Auth::user()->us_idRolFK==3)
