@@ -120,6 +120,6 @@ class EstudiantesController extends Controller
     	$estudiante=Estudiantes::findOrFail($id);
     	$estudiante->es_estado='0';
     	$estudiante->update();
-    	return Redirect::to('estudiantes');
+    	return Redirect::to('estudiantes')->with('status', 'Estudiante inactivado con éxito');
     }
 }

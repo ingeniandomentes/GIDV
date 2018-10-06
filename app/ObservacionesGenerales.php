@@ -11,6 +11,7 @@ class ObservacionesGenerales extends Model
 	public $timestamps=false;
 	protected $fillable =[
 		//Observaciones Generales
+		'og_anioCalificacion',
 		'og_idEstudianteFK',
 		'og_idPeriodoFK',
 		'og_idObservacionesFK'

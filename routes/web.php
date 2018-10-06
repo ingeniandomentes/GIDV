@@ -24,6 +24,26 @@ Route::get('/', function () {
     return view('auth/login');
 });
 
+//Cursos
+
+/*Route::get('/boletines/cursosPDF',function(){
+	return view('configuracion.boletines.cursosPDF');
+});*/
+
+Route::post('/boletines/cursosPDF','BoletinesController@cursosPDF');
+
+//Route::get('/boletines/cursosPDF','BoletinesController@cursos');
+
+//Estudiantes
+
+/*Route::get('/boletines/estudiantesPDF',function(){
+	return view('configuracion.boletines.estudiantesPDF');
+});*/
+
+Route::post('/boletines/estudiantesPDF','BoletinesController@estudiantesPDF');
+
+//Route::get('/boletines/estudiantes','BoletinesController@estudiantes');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
@@ -45,9 +65,13 @@ Route::resource('tipoObservaciones','TipoObservacionesController');
 Route::resource('usuarios','UsuariosController');
 Route::resource('notasgenerales','NotasGeneralesController');
 Route::resource('observacionesgenerales','ObservacionesGeneralesController');
+Route::resource('boletines','BoletinesController');
 
-Route::get('configuracion/usuarios/reset','UsuariosController@reset');
-Route::post('configuracion/usuarios/resetUpdate','UsuariosController@resetUpdate');
+Route::get('/usuarios/reset/{user}',[
+			'as'=>'configuracion/usuarios/reset',
+			'uses'=>'UsuariosController@reset']);
+
+Route::post('/usuarios/resetUpdate/{id}','UsuariosController@resetUpdate');
 
 Route::group(['middleware'=>'estudiante'], function(){
 	Route::get('estudiantes/create','EstudiantesController@create');

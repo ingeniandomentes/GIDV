@@ -11,6 +11,7 @@ class NotasGenerales extends Model
 	public $timestamps=false;
 	protected $fillable =[
 		//Notas Generales
+		'ng_anioCalificacion',
 		'ng_idEstudianteFK',
 		'ng_idUsuarioFK',
 		'ng_idPeriodoFK',

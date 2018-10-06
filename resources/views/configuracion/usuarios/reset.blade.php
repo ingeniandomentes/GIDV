@@ -1,12 +1,14 @@
 @extends('layouts.admin')
 @section('contenido')
+@include('success.error')
 	<div class="row">
 		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
 			<h3>Cambio de Contraseña</h3>
 			@include('errores/errores')
 		</div>
 	</div>
-	{!!Form::model($usuarios,['method'=>'PATCH','route'=>['usuarios.resetUupdate',$usuarios->id])!!}
+	<form method="Post" action="/usuarios/resetUpdate/{{ $usuario->id }}">
+	{{-- {!!Form::model($usuarios,['method'=>'PATCH','route'=>['usuarios.resetUpdate',$usuarios->id]])!!}--}}
 	{{Form::token()}}
 		<div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
 			<div class="form-group">
@@ -29,5 +31,6 @@
        <div class="form-group">
 		<button class="btn btn-primary" type="sumbmit">Cambiar Contraseña</button>
 	</div>
-	{!!Form::close()!!}
+	{{-- {!!Form::close()!!} --}}
+	</form>
 @endsection

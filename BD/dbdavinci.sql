@@ -393,3 +393,17 @@ insert into PROCESOS
 insert into competencias
   (co_idCompetencia,co_nombre,co_descripcion,co_idProcesoFK,co_estado) values
   (null,'','','','');
+
+CREATE TABLE temp_estudiante (
+te_id INT NOT NULL AUTO_INCREMENT,
+te_periodo int NOT NULL,
+te_estudiante int not null,
+te_anio int not null,
+PRIMARY KEY (te_id));
+
+CREATE TABLE temp_curso (
+tc_id INT NOT NULL AUTO_INCREMENT,
+tc_periodo int NOT NULL,
+tc_curso int not null,
+tc_anio int not null,
+PRIMARY KEY (tc_id));

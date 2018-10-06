@@ -68,6 +68,6 @@ class CompetenciasController extends Controller
     	$competencia=Competencias::findOrFail($id);
     	$competencia->co_estado='0';
     	$competencia->update();
-    	return Redirect::to('competencias');
+    	return Redirect::to('competencias')->with('status', 'Competencia inactivado con éxito');
     }
 }

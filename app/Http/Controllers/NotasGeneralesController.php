@@ -93,6 +93,7 @@ class NotasGeneralesController extends Controller
         //Notas Generales
         $notasgenerales->ng_idEstudianteFK=$request->get('ng_idEstudianteFK');
         $notasgenerales->ng_idPeriodoFK=$request->get('ng_idPeriodoFK');
+        $notasgenerales->ng_anioCalificacion=$request->get('ng_anioCalificacion');
         $notasgenerales->ng_idUsuarioFK=$request->get('ng_idUsuarioFK');
         $notasgenerales->ng_idMateriaFK=$request->get('ng_idMateriaFK');
         $notasgenerales->ng_fallas=$request->get('ng_fallas');

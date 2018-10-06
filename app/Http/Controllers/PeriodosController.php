@@ -60,6 +60,6 @@ class PeriodosController extends Controller
     	$periodo=Periodos::findOrFail($id);
     	$periodo->pe_estado='0';
     	$periodo->update();
-    	return Redirect::to('periodos');
+    	return Redirect::to('periodos')->with('status', 'Periodo inactivado con éxito');
     }
 }

@@ -56,6 +56,6 @@ class TipoObservacionesController extends Controller
         $tipoobservacion=TipoObservaciones::findOrFail($id);
         $tipoobservacion->to_estado='0';
         $tipoobservacion->update();
-        return Redirect::to('tipoobservaciones');
+        return Redirect::to('tipoobservaciones')->with('status', 'Tipo de Observación inactivada con éxito');
     }
 }

@@ -56,6 +56,6 @@ class TipoDocumentosController extends Controller
         $tipodocumento=TipoDocumentos::findOrFail($id);
         $tipodocumento->td_estado='0';
         $tipodocumento->update();
-        return Redirect::to('tipodocumentos');
+        return Redirect::to('tipodocumentos')->with('status', 'Tipo de Documento inactivado con éxito');
     }
 }

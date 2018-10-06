@@ -58,7 +58,7 @@ class GradosController extends Controller
     	$grado=Grados::findOrFail($id);
     	$grado->gr_estado='0';
     	$grado->update();
-    	return Redirect::to('grados');
+    	return Redirect::to('grados')->with('status', 'Grado inactivado con éxito');
     }
 
 }

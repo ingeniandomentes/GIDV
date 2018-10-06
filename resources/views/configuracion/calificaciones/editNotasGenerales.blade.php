@@ -32,6 +32,7 @@
 						<table class="table table-striped table-bordered table-condensed table-hover text-center">
 							<thead>
 								<!--Notas Generales-->
+								<th>Año</th>
 								<th>Estudiante</th>
 								<th>Periodo</th>
 								<th>Docente</th>
@@ -41,6 +42,11 @@
 							</thead>
 						<tbody>
 						<tr>
+							<th class="text-center" scope="row">
+								<input type="hidden" name="ng_anioCalificacion" value="{{ $notasgenerales->ng_anioCalificacion }}">
+								{{ $notasgenerales->ng_anioCalificacion }}
+							</th>
+							
 							@foreach($estudiantes as $es)
 								@if($es->es_idCursoFK==Auth::user()->us_idCursoFK)
 									<th class="text-center" scope="row">

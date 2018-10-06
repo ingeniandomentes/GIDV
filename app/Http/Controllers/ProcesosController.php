@@ -87,6 +87,6 @@ class ProcesosController extends Controller
     	$proceso=Procesos::findOrFail($id);
     	$proceso->pro_estado='0';
     	$proceso->update();
-    	return Redirect::to('procesos');
+    	return Redirect::to('procesos')->with('status', 'Proceso inactivado con éxito');
     }
 }

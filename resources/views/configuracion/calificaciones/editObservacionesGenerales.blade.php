@@ -31,6 +31,7 @@
 					<table class="table table-striped table-bordered table-condensed table-hover text-center">
 						<thead>
 							<!--Observaciones-->
+							<th>Año</th>
 							<th>Estudiante</th>
 							<th>Periodo</th>
 							<th>Observacion</th>
@@ -38,6 +39,11 @@
 						<tbody>
 							<tbody>
 							<tr>
+							<th class="text-center" scope="row">
+								<input type="hidden" name="og_anioCalificacion" value="{{ $observacionesgenerales->og_anioCalificacion }}">
+								{{ $observacionesgenerales->og_anioCalificacion }}
+							</th>
+
 							@foreach($estudiantes as $es)
 								@if($es->es_idEstudiante==$observacionesgenerales->og_idEstudianteFK)
 									<th class="text-center" scope="row">

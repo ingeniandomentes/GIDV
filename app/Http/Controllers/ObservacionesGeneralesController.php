@@ -93,6 +93,7 @@ class ObservacionesGeneralesController extends Controller
         //Observaciones Generales
         $observacionesgenerales->og_idEstudianteFK=$request->og_idEstudianteFK;
         $observacionesgenerales->og_idPeriodoFK=$request->og_idPeriodoFK;
+        $observacionesgenerales->og_anioCalificacion=$request->og_anioCalificacion;
         $observacionesgenerales->og_idObservacionesFK=$request->og_idObservacionesFK;
         $observacionesgenerales->update()->with('status', 'Observacion General actualizada con éxito');
 

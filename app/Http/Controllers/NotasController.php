@@ -58,6 +58,6 @@ class NotasController extends Controller
     	$nota=Notas::findOrFail($id);
     	$nota->no_estado='0';
     	$nota->update();
-    	return Redirect::to('notas');
+    	return Redirect::to('notas')->with('status', 'Nota inactivada con éxito');
     }
 }

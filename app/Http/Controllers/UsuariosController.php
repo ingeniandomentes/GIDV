@@ -14,7 +14,7 @@ use GIDV\User;
 
 use DB;
 
-use Hash;
+use Illuminate\Support\Facades\Hash;
 
 class UsuariosController extends Controller
 {
@@ -121,39 +121,20 @@ class UsuariosController extends Controller
     }
 
     public function reset($id){
-        $usuarios=User::findOrFail($id);
-        return view("configuracion.usuarios.reset",["usuarios"=>$usuarios]);
+        $usuario=User::findOrFail($id);
+        return view("configuracion.usuarios.reset",["usuario"=>$usuario]);
     }
 
-    public function resetUpdate(Request $request){
-        $usuarios=User::findOrFail($id);
-        $rules=[
-            'mypassword'=>'required',
-            'password'=>'required|confirmed|min:10',
-
-        ];
-        $message=[
-            'mypassword.required' => 'El campo es requerido',
-            'password.required' => 'El campo es requerido',
-            'password.confirmed' => 'Los passwords no coinciden',
-            'password.min' => 'El mínimo permitido son 10 caracteres',
-        ];
-
-        $validator = Validator::make($request->all(), $rules, $messages);
-        if ($validator->fails()){
-            return redirect('usuario/reset')->withErrors($validator);
-        }
-        else{
-            if (Hash::check($request->mypassword, Auth::user()->password)){
-                $user = new User;
-                $user->where('email', '=', Auth::user()->email)
-                     ->update(['password' => bcrypt($request->password)]);
-                return redirect('/home')->with('status', 'Password cambiado con éxito');
+    public function resetUpdate(Request $request,$id){
+        $mypassword=($request->get('mypassword'));
+        $usuario=User::findOrFail($id);
+            if(Hash::check($mypassword, $usuario->password)){
+                $usuario->password = bcrypt($request->get('password'));
+                $usuario->update();
+                return Redirect::to('home')->with('status', 'Contraseña actualizada con éxito');
             }
-            else
-            {
-                return redirect('usuario/reset')->with('message', 'Credenciales incorrectas');
-            }
-        }
+            else{
+                return Redirect::to('/usuarios/reset/{{ $id }}')->with('error', 'Contraseña actual no coincide');   
+            }      
     }
 }

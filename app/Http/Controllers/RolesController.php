@@ -56,6 +56,6 @@ class RolesController extends Controller
         $rol=Roles::findOrFail($id);
         $rol->ro_estado='0';
         $rol->update();
-        return Redirect::to('roles');
+        return Redirect::to('roles')->with('status', 'Rol inactivado con éxito');
     }
 }

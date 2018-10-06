@@ -77,7 +77,7 @@ class CalificacionesController extends Controller
 
             ->join('periodos as p','ng.ng_idPeriodoFK','=','p.pe_idPeriodo')
 
-            ->select('ng.ng_idNotaGeneral','e.es_nombre as nombreEs','e.es_apellido as apellidoEs','us.name as docente1','us.us_apellido as docente2','p.pe_nombre as periodo','m.ma_nombre as materia','ng.ng_fallas','n.no_descripcion as nota')
+            ->select('ng.ng_idNotaGeneral','ng.ng_anioCalificacion','e.es_nombre as nombreEs','e.es_apellido as apellidoEs','us.name as docente1','us.us_apellido as docente2','p.pe_nombre as periodo','m.ma_nombre as materia','ng.ng_fallas','n.no_descripcion as nota')
             ->where('e.es_nombre','LIKE','%'.$query.'%')
             ->paginate(9);
 
@@ -89,7 +89,7 @@ class CalificacionesController extends Controller
 
             ->join('periodos as p','og.og_idPeriodoFK','=','p.pe_idPeriodo')
 
-            ->select('og.og_idObservacionGeneral','e.es_nombre as nombreEs','e.es_apellido as apellidoEs','p.pe_nombre as periodo','ob.ob_descripcion as observacion')
+            ->select('og.og_idObservacionGeneral','og.og_anioCalificacion','e.es_nombre as nombreEs','e.es_apellido as apellidoEs','p.pe_nombre as periodo','ob.ob_descripcion as observacion')
 
             ->where('e.es_nombre','LIKE','%'.$query.'%')
 
@@ -135,8 +135,6 @@ class CalificacionesController extends Controller
         	}    
         }
         public function create(){
-        $calificaciones=DB::table('calificaciones')
-        ->get();
         $estudiantes=DB::table('estudiantes')
 
                                         ->where('es_estado','=','1')
@@ -182,7 +180,6 @@ class CalificacionesController extends Controller
                                         ->get();
     	return view("configuracion.calificaciones.create",
                     ["estudiantes"=>$estudiantes,
-                    "calificaciones"=>$calificaciones,
                     "calificaciones"=>$calificaciones,
                     "perio"=>$perio,
                     "periodos"=>$periodos,
@@ -282,6 +279,7 @@ class CalificacionesController extends Controller
                             $calificacion2->ng_idEstudianteFK=$request->ng_idEstudianteFK[$estu];
                             $calificacion2->ng_idUsuarioFK=$request->ng_idUsuarioFK[$mat];
                             $calificacion2->ng_idPeriodoFK=$request->ca_idPeriodoFK[$pe];
+                            $calificacion2->ng_anioCalificacion=$request->ca_anioCalificacion[$pe];  
                             $calificacion2->ng_idMateriaFK=$request->ng_idMateriaFK[$mat];
                             $calificacion2->ng_fallas=$request->ng_fallas[$mat];
                             $calificacion2->ng_idNotaFK=$request->ng_idNotaFK[$mat];
@@ -300,6 +298,7 @@ class CalificacionesController extends Controller
                         $calificacion3 = new ObservacionesGenerales;
                         $calificacion3->og_idEstudianteFK=$request->og_idEstudianteFK[$estud];
                         $calificacion3->og_idPeriodoFK=$request->ca_idPeriodoFK[$pe];
+                        $calificacion3->og_anioCalificacion=$request->ca_anioCalificacion[$pe]; 
                         $calificacion3->og_idObservacionesFK=$request->og_idObservacionesFK[$i];
                         $calificacion3->save();
                         $obe++;

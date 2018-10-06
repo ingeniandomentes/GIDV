@@ -72,6 +72,6 @@ class MateriasController extends Controller
     	$materia=Materias::findOrFail($id);
     	$materia->ma_estado='0';
     	$materia->update();
-    	return Redirect::to('materias');
+    	return Redirect::to('materias')->with('status', 'Materia inactivada con éxito');
     }
 }

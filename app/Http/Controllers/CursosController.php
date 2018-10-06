@@ -64,6 +64,6 @@ class CursosController extends Controller
     	$curso=Cursos::findOrFail($id);
     	$curso->cu_estado='0';
     	$curso->update();
-    	return Redirect::to('cursos');
+    	return Redirect::to('cursos')->with('status', 'Curso inactivado con éxito');
     }
 }

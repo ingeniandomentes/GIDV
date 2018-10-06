@@ -1,40 +1,99 @@
 @extends('layouts.admin')
 @section('contenido')
-	<div class="row">
-		<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-			<h3>Listado de competencias <a href="competencias/create"><button class="btn btn-success">Nuevo</button></a></h3>
-			@include('configuracion.competencias.search')
+@include('success.error')
+	<form method="Post" action="/boletines/cursosPDF">
+		{{-- {!!Form::model($usuarios,['method'=>'PATCH','route'=>['usuarios.resetUpdate',$usuarios->id]])!!}--}}
+		{{Form::token()}}
+			<table>
+	<table class="borde">
+		<h1>Reporte por curso</h1>
+		<div class="row">
+			<div class="col-lg-2 col-sm-2 col-md-2 col-xs-2">
+				<div class="form-group">
+					<label for="periodoCu">Periodo</label>
+					<select name="periodoCu" class="form-control">
+						<option value="0" selected>Elije una opción</option>
+						@foreach($periodos as $pe)
+						<option value="{{$pe->pe_idPeriodo}}">{{$pe->pe_nombre}}</option>
+						@endforeach
+					</select>
+				</div>
+			</div>
+
+			<div class="col-lg-2 col-sm-2 col-md-2 col-xs-2">
+				<div class="form-group">
+					<label for="curso">Curso</label>
+					<select name="curso" class="form-control">
+						<option value="0" selected>Elije una opción</option>
+						@foreach($cursos as $cu)
+						<option value="{{$cu->cu_idCurso}}">{{$cu->cu_nombre}}</option>
+						@endforeach
+					</select>
+				</div>
+			</div>
+
+			<div class="col-lg-2 col-sm-2 col-md-2 col-xs-2">
+				<div class="form-group">
+					<label for="anioCu">Año</label>
+					<select name="anioCu" class="form-control">
+						<option value="0" selected>Elije una opción</option>
+						<option value="{{date('Y')}}">{{date('Y')}}</option>
+					</select>
+				</div>
+			</div>
 		</div>
-	</div>
-<div class="row">
-	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-		<div class="table-responsive">
-			<table class="table table-striped table-bordered table-condensed table-hover text-center">
-				<thead>
-					<th>Id competencia</th>
-					<th>Descripcion competencia</th>
-					<th>Proceso competencia</th>
-					<th>Estado competencia</th>
-					<th>Opciones</th>
-				</thead>
-				@foreach($competencias as $competencia)
-				<tr>
-					<td>{{ $competencia->co_idCompetencia}}</td>
-					<td>{{ $competencia->co_descripcion}}</td>
-					<td>{{ $competencia->proceso}}</td>
-					@if($competencia->pro_estado='1')
-					<td>Activo</td>
-					@endif
-					<td>
-						<a href="{{URL::action('CompetenciasController@edit',$competencia->co_idCompetencia)}}"><button class="btn btn-info">Editar</button></a>
-						<a href="" data-target="#modal-delete-{{$competencia->co_idCompetencia}}" data-toggle="modal"><button class="btn btn-danger">Eliminar</button></a>
-					</td>
-				</tr>
-				@include('configuracion.competencias.modal')
-				@endforeach
-			</table>
+		<div>
+		<a href="{{URL::action('BoletinesController@cursosPDF')}}"><button class="btn btn-info">Generar PDF Curso</button></a>
 		</div>
-		{{$competencias->render()}}
-	</div>
-</div>
+	</table>
+	</form>
+	<br>
+	{{-- Estudiantes --}}
+	<form method="Post" action="/boletines/estudiantesPDF">
+	{{-- {!!Form::model($usuarios,['method'=>'PATCH','route'=>['usuarios.resetUpdate',$usuarios->id]])!!}--}}
+	{{Form::token()}}
+		<table>
+		<h1>Reporte por estudiante</h1>
+		<div class="row">
+			<div class="col-lg-2 col-sm-2 col-md-2 col-xs-2">
+				<div class="form-group">
+					<label for="periodoEs">Periodo</label>
+					<select name="periodoEs" id="periodoEs" class="form-control">
+						<option value="0" selected>Elije una opción</option>
+						@foreach($periodos as $pe)
+						<option value="{{$pe->pe_idPeriodo}}">{{$pe->pe_nombre}}</option>
+						@endforeach
+					</select>
+				</div>
+			</div>
+
+			<div class="col-lg-4 col-sm-4 col-md-4 col-xs-4">
+				<div class="form-group">
+					<label for="estudiante">Estudiante</label>
+					<select name="estudiante" id="estudiante" class="form-control">
+						<option value="0" selected>Elije una opción</option>
+						@foreach($estudiantes as $es)
+						<option value="{{$es->es_idEstudiante}}">{{$es->es_nombre}}  {{ $es->es_apellido }}</option>
+						@endforeach
+					</select>
+				</div>
+			</div>
+
+			<div class="col-lg-2 col-sm-2 col-md-2 col-xs-2">
+				<div class="form-group">
+					<label for="anioEs">Año</label>
+					<select name="anioEs" id="anioEs" class="form-control" onchange="anio()">
+						<option value="0" selected>Elije una opción</option>
+						<option value="{{date('Y')}}">{{date('Y')}}</option>
+					</select>
+					
+				</div>
+			</div>
+		</div>
+		<div>
+		<a href="{{URL::action('BoletinesController@estudiantesPDF')}}"><button class="btn btn-info" type="sumbmit">Generar PDF Estudiantes</button></a>
+		</div>
+	</table>
+	</form>
+	<!--<a class="btn btn-success" href="{{ URL::previous() }}">Volver</a>-->
 @endsection

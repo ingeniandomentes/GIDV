@@ -102,6 +102,7 @@
 				<thead>
 					<!--Notas Generales-->
 					<th>Id Nota General</th>
+					<th>Año</th>
 					<th>Estudiante</th>
 					<th>Periodo</th>
 					<th>Docente</th>
@@ -119,6 +120,7 @@
 				<tr>
 					@if($user=Auth::user()->us_idRolFK==3)
 						<td>{{$notageneral->ng_idNotaGeneral}}</td>
+						<td>{{$notageneral->ng_anioCalificacion}}</td>
 						<td>{{$notageneral->nombreEs}} {{$notageneral->apellidoEs}}</td>
 						<td>{{$notageneral->periodo}}</td>
 						<td>{{$notageneral->docente1}} {{$notageneral->docente2}}</td>
@@ -133,6 +135,7 @@
 						@endif
 					@elseif($user=Auth::user()->us_idRolFK==1 || $user=Auth::user()->us_idRolFK==2)
 						<td>{{$notageneral->ng_idNotaGeneral}}</td>
+						<td>{{$notageneral->ng_anioCalificacion}}</td>
 						<td>{{$notageneral->nombreEs}} {{$notageneral->apellidoEs}}</td>
 						<td>{{$notageneral->periodo}}</td>
 						<td>{{$notageneral->docente1}} {{$notageneral->docente2}}</td>
@@ -160,6 +163,7 @@
 				<thead>
 					<!--Observaciones-->
 					<th>Id Observacion</th>
+					<th>Año</th>
 					<th>Estudiante</th>
 					<th>Periodo</th>
 					<th>Observacion</th>
@@ -174,6 +178,7 @@
 				<tr>
 					@if($user=Auth::user()->us_idRolFK==3)
 						<td>{{$observaciongeneral->og_idObservacionGeneral}}</td>
+						<td>{{$observaciongeneral->og_anioCalificacion}}</td>
 						<td>{{$observaciongeneral->nombreEs}} {{$observaciongeneral->apellidoEs}}</td>
 						<td>{{$observaciongeneral->periodo}}</td>
 						<td>{{$observaciongeneral->observacion}}</td>
@@ -185,6 +190,7 @@
 						@endif
 					@elseif($user=Auth::user()->us_idRolFK==1 || $user=Auth::user()->us_idRolFK==2)
 						<td>{{$observaciongeneral->og_idObservacionGeneral}}</td>
+						<td>{{$observaciongeneral->og_anioCalificacion}}</td>
 						<td>{{$observaciongeneral->nombreEs}} {{$observaciongeneral->apellidoEs}}</td>
 						<td>{{$observaciongeneral->periodo}}</td>
 						<td>{{$observaciongeneral->observacion}}</td>
