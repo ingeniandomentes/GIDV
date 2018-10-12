@@ -28,34 +28,6 @@
 	@php($mat=0)
 			{!!Form::model($calificaciones,['method'=>'PATCH','route'=>['calificaciones.update',$calificaciones->ca_idCalificacion]])!!}
 			{{Form::token()}}
-			<div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
-				<div class="form-group">
-					<label for="periodo">Elija el Periodo</label>
-					<select name="ca_idPeriodoFK" id="{{ $calificaciones->ca_idPeriodoFK }}" class="form-control" required>
-						<option value="0">Elije una opción</option>
-						@foreach($periodos as $periodo)
-						@if($periodo->pe_idPeriodo==$calificaciones->ca_idPeriodoFK)
-						<option value="{{$periodo->pe_idPeriodo}}" selected>{{$periodo->pe_nombre}}</option>
-						@else
-						<option value="{{$periodo->pe_idPeriodo}}">{{$periodo->pe_nombre}}</option>
-						@endif
-						@endforeach
-					</select>
-				</div>
-			</div>
-			<div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
-				<div class="form-group">
-					<label for="ca_anioCalificacion">Elija el Año</label>
-					<select name="ca_anioCalificacion" id="ca_anioCalificacion" class="form-control" required>
-						<option value="0">Elije una opción</option>
-						@if($calificaciones->ca_idPeriodoFK==date('Y'))
-						<option value={{ date('Y') }} selected>2018</option>
-						@else
-						<option value={{ date('Y') }} selected>2018</option>
-						@endif
-					</select>
-				</div>
-			</div>
 			<div class="row">
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						<div>
@@ -65,18 +37,30 @@
 							<table class="table table-striped table-bordered table-condensed table-hover text-center">
 								<thead>
 									<!--Calificaciones-->
+									<th>Año</th>
 									<th>Estudiante</th>
+									<th>Periodo</th>
 									<th>Materia</th>
 									<th>Proceso</th>
 									<th>Competencia</th>
 									<th>Nota Competencia</th>
 								</thead>
 								<tbody>
+
 									@foreach($estudiantes as $es)
 										@if($es->es_idEstudiante==$calificaciones->ca_idEstudianteFK)
 											<th class="text-center" scope="row">
 												<input type="hidden" name="ca_idEstudianteFK" value="{{ $calificaciones->ca_idEstudianteFK }}">
 												{{ $es->es_nombre }} {{ $es->es_apellido }}
+											</th>
+										@endif
+									@endforeach
+
+									@foreach($perio as $pe)
+										@if($pe->pe_idPeriodo==$calificaciones->ca_idPeriodoFK)
+											<th class="text-center" scope="row">
+												<input type="hidden" name="ca_idPeriodoFK" value="{{ $calificaciones->ca_idPeriodoFK }}">
+												{{ $pe->pe_nombre }}
 											</th>
 										@endif
 									@endforeach
@@ -140,34 +124,6 @@
 	@elseif($user=Auth::user()->us_idRolFK==2)
 	{!!Form::model($calificaciones,['method'=>'PATCH','route'=>['calificaciones.update',$calificaciones->ca_idCalificacion]])!!}
 			{{Form::token()}}
-			<div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
-				<div class="form-group">
-					<label for="periodo">Elija el Periodo</label>
-					<select name="ca_idPeriodoFK" id="{{ $calificaciones->ca_idPeriodoFK }}" class="form-control" required>
-						<option value="0">Elije una opción</option>
-						@foreach($periodos as $periodo)
-						@if($periodo->pe_idPeriodo==$calificaciones->ca_idPeriodoFK)
-						<option value="{{$periodo->pe_idPeriodo}}" selected>{{$periodo->pe_nombre}}</option>
-						@else
-						<option value="{{$periodo->pe_idPeriodo}}">{{$periodo->pe_nombre}}</option>
-						@endif
-						@endforeach
-					</select>
-				</div>
-			</div>
-			<div class="col-lg-6 col-sm-6 col-md-6 col-xs-6">
-				<div class="form-group">
-					<label for="ca_anioCalificacion">Elija el Año</label>
-					<select name="ca_anioCalificacion" id="ca_anioCalificacion" class="form-control" required>
-						<option value="0">Elije una opción</option>
-						@if($calificaciones->ca_idPeriodoFK==date('Y'))
-						<option value={{ date('Y') }} selected>2018</option>
-						@else
-						<option value={{ date('Y') }} selected>2018</option>
-						@endif
-					</select>
-				</div>
-			</div>
 			<div class="row">
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						<div>
@@ -177,18 +133,34 @@
 							<table class="table table-striped table-bordered table-condensed table-hover text-center">
 								<thead>
 									<!--Calificaciones-->
+									<th>Año</th>
 									<th>Estudiante</th>
+									<th>Periodo</th>
 									<th>Materia</th>
 									<th>Proceso</th>
 									<th>Competencia</th>
 									<th>Nota Competencia</th>
 								</thead>
 								<tbody>
+									<th class="text-center" scope="row">
+										<input type="hidden" name="ca_anioCalificacion" value="{{ $calificaciones->ca_anioCalificacion }}">
+										{{ $calificaciones->ca_anioCalificacion }}
+									</th>
+
 									@foreach($estudiantes as $es)
 										@if($es->es_idEstudiante==$calificaciones->ca_idEstudianteFK)
 											<th class="text-center" scope="row">
 												<input type="hidden" name="ca_idEstudianteFK" value="{{ $calificaciones->ca_idEstudianteFK }}">
 												{{ $es->es_nombre }} {{ $es->es_apellido }}
+											</th>
+										@endif
+									@endforeach
+
+									@foreach($perio as $pe)
+										@if($pe->pe_idPeriodo==$calificaciones->ca_idPeriodoFK)
+											<th class="text-center" scope="row">
+												<input type="hidden" name="ca_idPeriodoFK" value="{{ $calificaciones->ca_idPeriodoFK }}">
+												{{ $pe->pe_nombre }}
 											</th>
 										@endif
 									@endforeach

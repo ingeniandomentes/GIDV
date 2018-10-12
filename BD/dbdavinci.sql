@@ -407,3 +407,5 @@ tc_periodo int NOT NULL,
 tc_curso int not null,
 tc_anio int not null,
 PRIMARY KEY (tc_id));
+
+truncate table calificaciones;

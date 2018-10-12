@@ -23,10 +23,10 @@
 
   </head>
   @guest
-  <body class="hold-transition skin-blue sidebar-mini sidebar-collapse" onload="cargar()">
-    @else
-      <body class="hold-transition skin-blue sidebar-mini" onload="cargar()">
-        @endif
+    <body class="hold-transition skin-blue sidebar-mini sidebar-collapse" onload="cargar()">
+  @else
+    <body class="hold-transition skin-blue sidebar-mini" onload="cargar()">
+  @endif
     <div class="wrapper">
 
       <header class="main-header">
@@ -139,7 +139,6 @@
                 <i class="fa fa-plus-square"></i> <span>Ayuda </span><small class="label pull-middle bg-red">PDF</small><i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="#ManualDirectivos"><i class="fa fa-circle-o"></i> Manual Directivos</a></li>
                 <li><a href="#ManualDocente"><i class="fa fa-circle-o"></i> Manual Docentes</a></li>
               </ul>
             </li>
@@ -219,7 +218,7 @@
             <div class="col-md-12">
               <div class="box box-solid box-primary">
                 <div class="box-header with-border">
-                  <h3 class="box-title">Sistema de Registro de Notas</h3>
+                  <h3 class="box-title">Sistema de Registro de Notas </h3><a class="btn btn-success" href="{{ URL::previous() }}">Volver</a>
                   <div class="box-tools pull-right">
                     <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                     <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>

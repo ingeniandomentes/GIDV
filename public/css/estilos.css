@@ -49,3 +49,10 @@ padding: 5px;
 border: solid 2px #f60;
 font: normal 13px arial, helvetica, sans-serif;
 }
+.azul{
+	background-color:blue; 
+}
+
+.boletinsize{
+	width: 200px;
+}

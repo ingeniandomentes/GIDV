@@ -247,7 +247,7 @@ class CalificacionesController extends Controller
                                         foreach ($competencias as $co) {
                                             if($co->co_idProcesoFK==$pro->pro_idProceso){
                                             $calificacion1 = new Calificaciones;
-                                            $calificacion1->ca_anioCalificacion=$request->ca_anioCalificacion[$pe];                              
+                                            $calificacion1->ca_anioCalificacion=$request->ca_anioCalificacion[$pe];           
                                             $calificacion1->ca_idEstudianteFK=$request->ca_idEstudianteFK[$est];
                                             $calificacion1->ca_idPeriodoFK=$request->ca_idPeriodoFK[$pe];
                                             $calificacion1->ca_idMateriaFK=$request->ca_idMateriaFK[$matt];

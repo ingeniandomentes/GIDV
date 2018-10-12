@@ -313,6 +313,7 @@ class BoletinesController extends Controller
                                             ->where('ob_estado','=','1')
                                             ->orderBy('ob_idObservaciones','asc')
                                             ->get();
+            $ess=4;
 
             return view('configuracion.boletines.estudiantesPDF',
                     ["estudiantes"=>$estudiantes,
@@ -327,7 +328,9 @@ class BoletinesController extends Controller
                     "competencias"=>$competencias,
                     "notas"=>$notas,
                     "tobservaciones"=>$tobservaciones,
-                    "observaciones"=>$observaciones]);
+                    "observaciones"=>$observaciones,
+                    "users"=>$users,
+                    "ess"=>$ess]);
         }
 
         public function cursosPDF(PDFCuRequest $request){
@@ -410,10 +413,14 @@ class BoletinesController extends Controller
 
             $notasgenerales=DB::table('notasgenerales')
                                 ->where('ng_idEstudianteFK','=',$ess)
+                                ->where('ng_idPeriodoFK','=',$perEs)
+                                ->where('ng_anioCalificacion','=',$anio)
                                 ->get();
 
             $observacionesgenerales=DB::table('observacionesgenerales')
                                 ->where('og_idEstudianteFK','=',$ess)
+                                ->where('og_idPeriodoFK','=',$perEs)
+                                ->where('og_anioCalificacion','=',$anio)
                                 ->get();
 
             $estudiantes=DB::table('estudiantes')
@@ -455,6 +462,9 @@ class BoletinesController extends Controller
                                         ->where('ob_estado','=','1')
                                         ->orderBy('ob_idObservaciones','asc')
                                         ->get();
+            $grados=DB::table('grados')->get();
+            $cursos=DB::table('cursos')->get();
+            $notas=DB::table('notas')->get();
             if(count($calificaciones)>0 && count($notasgenerales)>0 && count($observacionesgenerales)>0){
                 $pdf=PDF::loadView('configuracion.boletines.estudiantesPDF',["estudiantes"=>$estudiantes,
                     "calificaciones"=>$calificaciones,
@@ -468,7 +478,13 @@ class BoletinesController extends Controller
                     "competencias"=>$competencias,
                     "notas"=>$notas,
                     "tobservaciones"=>$tobservaciones,
-                    "observaciones"=>$observaciones]);
+                    "observaciones"=>$observaciones,
+                    "anio"=>$anio,
+                    "ess"=>$ess,
+                    "perEs"=>$perEs,
+                    "grados"=>$grados,
+                    "cursos"=>$cursos,
+                    "notas"=>$notas]);
             return $pdf->stream(); 
                 
             }

@@ -42,7 +42,7 @@ Route::post('/boletines/cursosPDF','BoletinesController@cursosPDF');
 
 Route::post('/boletines/estudiantesPDF','BoletinesController@estudiantesPDF');
 
-//Route::get('/boletines/estudiantes','BoletinesController@estudiantes');
+//Route::get('/boletines/estudiantesPDF','BoletinesController@estudiantes');
 
 Auth::routes();
 
