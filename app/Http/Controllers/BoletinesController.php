@@ -333,55 +333,72 @@ class BoletinesController extends Controller
                     "ess"=>$ess]);
         }
 
-        public function cursosPDF(PDFCuRequest $request){
-             $calificaciones=DB::table('calificaciones')->get();
+        public function cursosPDF(){
+            $anio=Request::get('anioCu');
 
-            $notasgenerales=DB::table('notasgenerales')->get();
+            $curr=Request::get('curso');
 
-            $observacionesgenerales=DB::table('observacionesgenerales')->get();
+            $perCu=Request::get('periodoCu');
 
-             $estudiantes=DB::table('estudiantes')
+            $calificaciones=DB::table('calificaciones')
+                                ->where('ca_idPeriodoFK','=',$perCu)
+                                ->where('ca_anioCalificacion','=',$anio)
+                                ->get();
 
-                                        ->where('es_estado','=','1')
-                                        ->orderBy('es_nombre','asc')
+            $notasgenerales=DB::table('notasgenerales')
+                                ->where('ng_idPeriodoFK','=',$perCu)
+                                ->where('ng_anioCalificacion','=',$anio)
+                                ->get();
+
+            $observacionesgenerales=DB::table('observacionesgenerales')
+                                ->where('og_idPeriodoFK','=',$perCu)
+                                ->where('og_anioCalificacion','=',$anio)
+                                ->get();
+
+            $estudiantes=DB::table('estudiantes')
+                                        ->where('es_idCursoFK','=',$curr)
                                         ->get();
-            $periodos=DB::table('periodos')('pe_estado','=','1')
-                                            ->order
-                                            ->whereBy('pe_nombre','asc')
-                                            ->get();
+            $periodos=DB::table('periodos')
+                                        ->where('pe_idPeriodo','=',$perCu )
+                                        ->orderBy('pe_nombre','asc')
+                                        ->get();
             $perio=DB::table('periodos')
-                                            ->orderBy('pe_nombre','asc')
-                                            ->get();
+                                        ->orderBy('pe_nombre','asc')
+                                        ->get();
             $materias=DB::table('materias')
-                                            ->where('ma_estado','=','1')
-                                            ->orderBy('ma_nombre','asc')
-                                            ->get();
+                                        ->where('ma_estado','=','1')
+                                        ->orderBy('ma_nombre','asc')
+                                        ->get();
             $users=DB::table('users')
-                                            ->where('us_estado','=','1')
-                                            ->where('us_idRolFK','=','3')
-                                            ->orderBy('name','asc')
-                                            ->get();
+                                        ->where('us_estado','=','1')
+                                        ->where('us_idRolFK','=','3')
+                                        ->orderBy('name','asc')
+                                        ->get();
             $procesos=DB::table('procesos')
-                                            ->where('pro_estado','=','1')
-                                            ->orderBy('pro_nombre','asc')
-                                            ->get();
+                                        ->where('pro_estado','=','1')
+                                        ->orderBy('pro_nombre','asc')
+                                        ->get();
             $competencias=DB::table('competencias')
-                                            ->where('co_estado','=','1')
-                                            ->orderBy('co_descripcion','asc')
-                                            ->get();
+                                        ->where('co_estado','=','1')
+                                        ->orderBy('co_descripcion','asc')
+                                        ->get();
             $notas=DB::table('notas')
-                                            ->where('no_estado','=','1')
-                                            ->orderBy('no_idNota','asc')
-                                            ->get();
+                                        ->where('no_estado','=','1')
+                                        ->orderBy('no_idNota','asc')
+                                        ->get();
             $tobservaciones=DB::table('tipoobservaciones')
-                                            ->where('to_estado','=','1')
-                                            ->orderBy('to_idTipoObservacion','asc')
-                                            ->get();
+                                        ->where('to_estado','=','1')
+                                        ->orderBy('to_idTipoObservacion','asc')
+                                        ->get();
             $observaciones=DB::table('observaciones')
-                                            ->where('ob_estado','=','1')
-                                            ->orderBy('ob_idObservaciones','asc')
-                                            ->get();
-            $pdf=PDF::loadView('configuracion.boletines.cursosPDF',["estudiantes"=>$estudiantes,
+                                        ->where('ob_estado','=','1')
+                                        ->orderBy('ob_idObservaciones','asc')
+                                        ->get();
+            $grados=DB::table('grados')->get();
+            $cursos=DB::table('cursos')->get();
+            $notas=DB::table('notas')->get();
+            if(count($calificaciones)>0 && count($notasgenerales)>0 && count($observacionesgenerales)>0){
+                $pdf=PDF::loadView('configuracion.boletines.cursosPDF',["estudiantes"=>$estudiantes,
                     "calificaciones"=>$calificaciones,
                     "notasgenerales"=>$notasgenerales,
                     "observacionesgenerales"=>$observacionesgenerales,
@@ -393,8 +410,19 @@ class BoletinesController extends Controller
                     "competencias"=>$competencias,
                     "notas"=>$notas,
                     "tobservaciones"=>$tobservaciones,
-                    "observaciones"=>$observaciones]);
-            return $pdf->stream();
+                    "observaciones"=>$observaciones,
+                    "anio"=>$anio,
+                    "curr"=>$curr,
+                    "perCu"=>$perCu,
+                    "grados"=>$grados,
+                    "cursos"=>$cursos,
+                    "notas"=>$notas]);
+            return $pdf->download('curso.pdf'); 
+                
+            }
+            else{
+                return Redirect::to('boletines')->with('error','No se encontraron registros en la base de datos');
+            }
         }
 
         public function estudiantesPDF(){

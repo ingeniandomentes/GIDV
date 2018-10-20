@@ -46,7 +46,10 @@
 									<th>Nota Competencia</th>
 								</thead>
 								<tbody>
-
+									<th class="text-center" scope="row">
+										<input type="hidden" name="ca_anioCalificacion" value="{{ $calificaciones->ca_anioCalificacion }}">
+										{{ $calificaciones->ca_anioCalificacion }}
+									</th>
 									@foreach($estudiantes as $es)
 										@if($es->es_idEstudiante==$calificaciones->ca_idEstudianteFK)
 											<th class="text-center" scope="row">

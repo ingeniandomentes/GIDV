@@ -301,10 +301,9 @@ class CalificacionesController extends Controller
                         $calificacion3->og_anioCalificacion=$request->ca_anioCalificacion[$pe]; 
                         $calificacion3->og_idObservacionesFK=$request->og_idObservacionesFK[$i];
                         $calificacion3->save();
-                        $obe++;
                         }
+                    $estud++;
                     }
-                    $obe=0;
                 }
     	return Redirect::to('calificaciones')->with('status', 'Calificaciones creadas con éxito');
     }

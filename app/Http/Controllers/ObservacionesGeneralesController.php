@@ -95,8 +95,8 @@ class ObservacionesGeneralesController extends Controller
         $observacionesgenerales->og_idPeriodoFK=$request->og_idPeriodoFK;
         $observacionesgenerales->og_anioCalificacion=$request->og_anioCalificacion;
         $observacionesgenerales->og_idObservacionesFK=$request->og_idObservacionesFK;
-        $observacionesgenerales->update()->with('status', 'Observacion General actualizada con éxito');
+        $observacionesgenerales->update();
 
-        return Redirect::to('calificaciones');
+        return Redirect::to('calificaciones')->with('status', 'Observacion General actualizada con éxito');
     }
 }

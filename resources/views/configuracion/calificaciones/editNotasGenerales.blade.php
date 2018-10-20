@@ -46,9 +46,9 @@
 								<input type="hidden" name="ng_anioCalificacion" value="{{ $notasgenerales->ng_anioCalificacion }}">
 								{{ $notasgenerales->ng_anioCalificacion }}
 							</th>
-							
+
 							@foreach($estudiantes as $es)
-								@if($es->es_idCursoFK==Auth::user()->us_idCursoFK)
+								@if($es->es_idEstudiante==$notasgenerales->ng_idEstudianteFK)
 									<th class="text-center" scope="row">
 										<input type="hidden" name="ng_idEstudianteFK" value="{{ $notasgenerales->ng_idEstudianteFK }}">
 										{{ $es->es_nombre }} {{ $es->es_apellido }}
