@@ -20,33 +20,43 @@ Route::get('/information/create/ajax-state',function()
  
 });
 
+/*
+* En esta ruta se valida el inicio de sesión de los usuarios
+*/
 Route::get('/', function () {
     return view('auth/login');
 });
 
 //Cursos
-
-/*Route::get('/boletines/cursosPDF',function(){
-	return view('configuracion.boletines.cursosPDF');
-});*/
-
+/*
+*Esta ruta permite la generación de los boletines por cursos
+*/
 Route::post('/boletines/cursosPDF','BoletinesController@cursosPDF');
 
-//Route::get('/boletines/cursosPDF','BoletinesController@cursos');
+Route::post('/boletines/cursosQPDF','BoletinesController@cursosQPDF');
 
 //Estudiantes
 
-/*Route::get('/boletines/estudiantesPDF',function(){
-	return view('configuracion.boletines.estudiantesPDF');
-});*/
+//Cursos
+/*
+*Esta ruta permite la generación de los boletines por cursos
+*/
 
 Route::post('/boletines/estudiantesPDF','BoletinesController@estudiantesPDF');
 
-//Route::get('/boletines/estudiantesPDF','BoletinesController@estudiantes');
+Route::post('/boletines/estudiantesQPDF','BoletinesController@estudiantesQPDF');
 
 Auth::routes();
 
+/*
+*Esta ruta permite redirigir al home
+*/
+
 Route::get('/home', 'HomeController@index')->name('home');
+
+/*
+*Esta lista de routes resource permite que todos los metodos crud se ejecutan sin necesidad de escribirlos uno a uno 
+*/
 
 Route::resource('roles','RolesController');
 Route::resource('calificaciones','CalificacionesController');
@@ -67,11 +77,19 @@ Route::resource('notasgenerales','NotasGeneralesController');
 Route::resource('observacionesgenerales','ObservacionesGeneralesController');
 Route::resource('boletines','BoletinesController');
 
+
+/*
+* Esta ruta permite el reinicio de contraseña
+*/
 Route::get('/usuarios/reset/{user}',[
 			'as'=>'configuracion/usuarios/reset',
 			'uses'=>'UsuariosController@reset']);
 
 Route::post('/usuarios/resetUpdate/{id}','UsuariosController@resetUpdate');
+
+/*
+* Esta ruta permite la ejecución de los middleware
+*/
 
 Route::group(['middleware'=>'estudiante'], function(){
 	Route::get('estudiantes/create','EstudiantesController@create');

@@ -27,6 +27,10 @@ class CalificacionesController extends Controller
     public function __construct(){
         $this->middleware('auth');
     }
+    /*
+    *Este metodo realiza todas las busquedas en la base de datos correspondiente a las calificaciones.
+    *@return view
+    */
     public function index(Request $request){
     	if($request){
     		$query=trim($request->get('searchText'));
@@ -134,6 +138,11 @@ class CalificacionesController extends Controller
     		return view('configuracion.calificaciones.index',["calificaciones"=>$calificaciones,"notasgenerales"=>$notasgenerales,"observacionesgenerales"=>$observacionesgenerales,"periodos"=>$periodos,"searchText"=>$query]);
         	}    
         }
+        /*
+        *create
+        *Este metodo permite realizar la busqueda en la base de datos para realizar la creación de notas
+        *return view
+        */
         public function create(){
         $estudiantes=DB::table('estudiantes')
 
@@ -191,6 +200,12 @@ class CalificacionesController extends Controller
                     "tobservaciones"=>$tobservaciones,
                     "observaciones"=>$observaciones]);
     }
+    /*
+    *store
+    *Este metodo permite relizar el guardado en la base de datos de las calificaciones tanto por competencias como por materias, ademas
+    *de ingresar las observaciones.
+    *@return view
+    */
     public function store(CalificacionesFormRequest $request){
        $estudiantes=DB::table('estudiantes')
 
@@ -310,7 +325,12 @@ class CalificacionesController extends Controller
     public function show($id){
     	return view("configuracion.calificaciones.show",["calificaciones"=>Calificaciones::findOrFail($id)]);
     }
-    //Calficaciones
+    /*
+    *edit
+    *Este metodo permite realizar la busqueda de la nota que se desea editar mediante el id
+    *@param $id
+    *@return view
+    */
     public function edit($id){
         $calificaciones=Calificaciones::findOrFail($id);
         $perio=DB::table('periodos')
@@ -371,6 +391,11 @@ class CalificacionesController extends Controller
                     "tobservaciones"=>$tobservaciones,
                     "observaciones"=>$observaciones]);
     }
+    /*
+    *update
+    *Este metodo permite realizar la actualización de la calificacion que se desea editar.
+    *return view
+    */
     public function update(CalificacionFormRequest $request,$id){
 
         $calificaciones=Calificaciones::findOrFail($id);
@@ -384,11 +409,5 @@ class CalificacionesController extends Controller
         $calificaciones->update();
        
         return Redirect::to('calificaciones')->with('status', 'Calificacion actualizada con éxito');
-    }/*
-    public function destroy($id){
-    	$competencia=Competencias::findOrFail($id);
-    	$competencia->co_estado='0';
-    	$competencia->update();
-    	return Redirect::to('competencias');
-    }*/
+    }
 }

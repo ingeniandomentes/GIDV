@@ -20,6 +20,12 @@ class MateriasController extends Controller
         $this->middleware('auth');
         $this->middleware('admin');
     }
+
+    /*
+    *index
+    *Este metodo permite mostrar todos los registros que estan dentro de la tabla buscada y realizar la busqueda en la misma
+    *@return view
+    */
     public function index(Request $request){
     	if($request){
     		$query=trim($request->get('searchText'));
@@ -33,6 +39,11 @@ class MateriasController extends Controller
     		return view('configuracion.materias.index',["materias"=>$materias,"searchText"=>$query]);
        	}
     }
+
+    /*
+    *create
+    *Este metodo permite realizar la busqueda de las tablas necesarias para la creación
+    */
     public function create(){
         $docentes=DB::table('users')->where('us_estado','=','1')
         								->where('us_idRolFK','=','3')
@@ -40,6 +51,12 @@ class MateriasController extends Controller
         								->get();
     	return view("configuracion.materias.create",["docentes"=>$docentes]);
     }
+
+    /*
+    *store
+    *Este metodo permite realizar el guardado
+    *@return view
+    */
     public function store(MateriasFormRequest $request){
     	$materia = new Materias;
     	$materia->ma_nombre = $request->get('nombre');
@@ -49,9 +66,21 @@ class MateriasController extends Controller
     	$materia->save();
     	return Redirect::to('materias')->with('status', 'Materia creada con éxito');
     }
+
+    /*
+    *show
+    *Permite mostrar las busquedas realizadas dentro de la pagina
+    *return view
+    */
     public function show($id){
     	return view("configuracion.materias.show",["materias"=>Materias::findOrFail($id)]);
     }
+
+    /*
+    *edit
+    *Permite realizar la busqueda en la base de datos para la edición
+    *return view
+    */
     public function edit($id){
         $materias=Materias::findOrFail($id);
         $docentes=DB::table('users')->where('us_estado','=','1')
@@ -60,6 +89,12 @@ class MateriasController extends Controller
         								->get();
     	return view("configuracion.materias.edit",["materias"=>$materias,"docentes"=>$docentes]);
     }
+
+    /*
+    *update
+    *Permite realizar la actualización del item seleccionado
+    *return view
+    */
     public function update(MateriasFormRequest $request,$id){
     	$materia=Materias::findOrFail($id);
     	$materia->ma_nombre = $request->get('nombre');
@@ -68,6 +103,12 @@ class MateriasController extends Controller
     	$materia->update();
     	return Redirect::to('materias')->with('status', 'Materia actualizada con éxito');
     }
+
+    /*
+    *destroy
+    *Permite cambiar el estado a 0 y desactivar el item de la tabla
+    *return view
+    */
     public function destroy($id){
     	$materia=Materias::findOrFail($id);
     	$materia->ma_estado='0';

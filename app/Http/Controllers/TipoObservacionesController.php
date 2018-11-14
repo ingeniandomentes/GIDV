@@ -20,6 +20,12 @@ class TipoObservacionesController extends Controller
         $this->middleware('auth');
         $this->middleware('admin');
     }
+
+    /*
+    *index
+    *Este metodo permite mostrar todos los registros que estan dentro de la tabla buscada y realizar la busqueda en la misma
+    *@return view
+    */
     public function index(Request $request){
         if($request){
             $query=trim($request->get('searchText'));
@@ -30,9 +36,20 @@ class TipoObservacionesController extends Controller
             return view('configuracion.tipoobservaciones.index',["tipoobservaciones"=>$tipoobservaciones,"searchText"=>$query]);
         }
     }
+
+    /*
+    *create
+    *Este metodo permite realizar la busqueda de las tablas necesarias para la creación
+    */
     public function create(){
         return view("configuracion.tipoobservaciones.create");
     }
+
+    /*
+    *store
+    *Este metodo permite realizar el guardado
+    *@return view
+    */
     public function store(TipoObservacionesFormRequest $request){
         $tipoobservacion = new TipoObservaciones;
         $tipoobservacion->to_nombre = $request->get('nombre');
@@ -40,18 +57,42 @@ class TipoObservacionesController extends Controller
         $tipoobservacion->save();
         return Redirect::to('tipoobservaciones')->with('status', 'Tipo de Observacion creado con éxito');
     }
+
+    /*
+    *show
+    *Permite mostrar las busquedas realizadas dentro de la pagina
+    *return view
+    */
     public function show($id){
         return view("configuracion.tipoobservaciones.show",["tipoobservaciones"=>TipoObservaciones::findOrFail($id)]);
     }
+
+    /*
+    *edit
+    *Permite realizar la busqueda en la base de datos para la edición
+    *return view
+    */
     public function edit($id){
         return view("configuracion.tipoobservaciones.edit",["tipoobservaciones"=>TipoObservaciones::findOrFail($id)]);
     }
+
+    /*
+    *update
+    *Permite realizar la actualización del item seleccionado
+    *return view
+    */
     public function update(TipoObservacionesFormRequest $request,$id){
         $tipoobservacion=TipoObservaciones::findOrFail($id);
         $tipoobservacion->to_nombre=$request->get('nombre');
         $tipoobservacion->update();
         return Redirect::to('tipoobservaciones')->with('status', 'Tipo de Observacion actualizada con éxito');
     }
+
+    /*
+    *destroy
+    *Permite cambiar el estado a 0 y desactivar el item de la tabla
+    *return view
+    */
     public function destroy($id){
         $tipoobservacion=TipoObservaciones::findOrFail($id);
         $tipoobservacion->to_estado='0';

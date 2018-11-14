@@ -22,6 +22,12 @@ class UsuariosController extends Controller
         $this->middleware('auth');
         $this->middleware('admin');
     }
+
+    /*
+    *index
+    *Este metodo permite mostrar todos los registros que estan dentro de la tabla buscada y realizar la busqueda en la misma
+    *@return view
+    */
     public function index(Request $request){
     	if($request){
     		$query=trim($request->get('searchText'));
@@ -39,12 +45,23 @@ class UsuariosController extends Controller
     		return view('configuracion.usuarios.index',["usuarios"=>$usuarios,"searchText"=>$query]);
        	}
     }
+
+    /*
+    *create
+    *Este metodo permite realizar la busqueda de las tablas necesarias para la creación
+    */
     public function create(){
         $tipodocumentos=DB::table('tipodocumento')->where('td_estado','=','1')->get();
         $cursos=DB::table('cursos')->where('cu_estado','=','1')->get();
         $roles=DB::table('roles')->where('ro_estado','=','1')->get();
         return view("configuracion.usuarios.create",["tipodocumentos"=>$tipodocumentos,"cursos"=>$cursos,"roles"=>$roles]);
     }
+
+    /*
+    *store
+    *Este metodo permite realizar el guardado
+    *@return view
+    */
     public function store(UsuariosFormRequest $request){
     	$usuario = new User;
     	$usuario->email = $request->get('email');
@@ -74,9 +91,21 @@ class UsuariosController extends Controller
     	$usuario->save();
     	return Redirect::to('usuarios')->with('status', 'Usuario creado con éxito');
     }
+
+    /*
+    *show
+    *Permite mostrar las busquedas realizadas dentro de la pagina
+    *return view
+    */
     public function show($id){
     	return view("configuracion.usuarios.show",["usuarios"=>User::findOrFail($id)]);
     }
+
+    /*
+    *edit
+    *Permite realizar la busqueda en la base de datos para la edición
+    *return view
+    */
     public function edit($id){
         $usuarios=User::findOrFail($id);
         $tipodocumentos=DB::table('tipodocumento')->where('td_estado','=','1')->get();
@@ -84,6 +113,12 @@ class UsuariosController extends Controller
         $roles=DB::table('roles')->where('ro_estado','=','1')->get();
     	return view("configuracion.usuarios.edit",["usuarios"=>$usuarios,"tipodocumentos"=>$tipodocumentos,"cursos"=>$cursos,"roles"=>$roles]);
     }
+
+    /*
+    *update
+    *Permite realizar la actualización del item seleccionado
+    *return view
+    */
     public function update(UsuariosFormRequest $request,$id){
     	$usuario=User::findOrFail($id);
     	$usuario->email = $request->get('email');
@@ -113,6 +148,12 @@ class UsuariosController extends Controller
     	$usuario->update();
     	return Redirect::to('usuarios')->with('status', 'Usuario actualizado con éxito');
     }
+
+    /*
+    *destroy
+    *Permite cambiar el estado a 0 y desactivar el item de la tabla
+    *return view
+    */
     public function destroy($id){
     	$usuario=User::findOrFail($id);
         $usuario->us_estado='0';
@@ -120,11 +161,19 @@ class UsuariosController extends Controller
     	return Redirect::to('usuarios')->with('status', 'Usuario deshabilitado con exito');
     }
 
+    /*
+    *reset
+    *Este metodo permite capturar el id del usuario logeado para poder realizar el reinicio de la contraseña
+    */
     public function reset($id){
         $usuario=User::findOrFail($id);
         return view("configuracion.usuarios.reset",["usuario"=>$usuario]);
     }
 
+    /*
+    *resetUpdate
+    *Este metodo realiza la actualización en la base de datos de la contraseña
+    */
     public function resetUpdate(Request $request,$id){
         $mypassword=($request->get('mypassword'));
         $usuario=User::findOrFail($id);

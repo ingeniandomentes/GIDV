@@ -10,7 +10,7 @@ class EstudiantesMiddleware
 {
     /**
      * Handle an incoming request.
-     *
+     * Este metodo permite que los docentes no puedan manipular a los estudiantes
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
      * @return mixed

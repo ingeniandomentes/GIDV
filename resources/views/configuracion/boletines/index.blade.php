@@ -95,5 +95,41 @@
 		</div>
 	</table>
 	</form>
+	<br>
+	{{-- Estudiantes --}}
+	<form method="Post" action="/boletines/estudiantesQPDF">
+	{{-- {!!Form::model($usuarios,['method'=>'PATCH','route'=>['usuarios.resetUpdate',$usuarios->id]])!!}
+	{{Form::token()}}
+		<table>
+		<h1>Reporte por estudiante (5° Boletin)</h1>
+		<div class="row">
+			<div class="col-lg-4 col-sm-4 col-md-4 col-xs-4">
+				<div class="form-group">
+					<label for="estudianteQ">Estudiante</label>
+					<select name="estudianteQ" id="estudianteQ" class="form-control">
+						<option value="0" selected>Elije una opción</option>
+						@foreach($estudiantes as $es)
+						<option value="{{$es->es_idEstudiante}}">{{$es->es_nombre}}  {{ $es->es_apellido }}</option>
+						@endforeach
+					</select>
+				</div>
+			</div>
+
+			<div class="col-lg-2 col-sm-2 col-md-2 col-xs-2">
+				<div class="form-group">
+					<label for="anioEsQ">Año</label>
+					<select name="anioEsQ" id="anioEsQ" class="form-control" onchange="anio()">
+						<option value="0" selected>Elije una opción</option>
+						<option value="{{date('Y')}}">{{date('Y')}}</option>
+					</select>
+					
+				</div>
+			</div>
+		</div>
+		<div>
+		<a href="{{URL::action('BoletinesController@estudiantesQPDF')}}"><button class="btn btn-info" type="sumbmit">Generar PDF Estudiantes</button></a>
+		</div>
+	</table>
+	</form>--}}
 	<!--<a class="btn btn-success" href="{{ URL::previous() }}">Volver</a>-->
 @endsection

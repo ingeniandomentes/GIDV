@@ -20,6 +20,12 @@ class PeriodosController extends Controller
         $this->middleware('auth');
         $this->middleware('admin');
     }
+
+    /*
+    *index
+    *Este metodo permite mostrar todos los registros que estan dentro de la tabla buscada y realizar la busqueda en la misma
+    *@return view
+    */
     public function index(Request $request){
     	if($request){
     		$query=trim($request->get('searchText'));
@@ -29,9 +35,20 @@ class PeriodosController extends Controller
     		return view('configuracion.periodos.index',["periodos"=>$periodos,"searchText"=>$query]);
        	}
     }
+
+    /*
+    *create
+    *Este metodo permite realizar la busqueda de las tablas necesarias para la creación
+    */
     public function create(){
     	return view("configuracion.periodos.create");
     }
+
+    /*
+    *store
+    *Este metodo permite realizar el guardado
+    *@return view
+    */
     public function store(PeriodosFormRequest $request){
     	$periodo = new Periodos;
     	$periodo->pe_nombre = $request->get('nombre');
@@ -41,12 +58,30 @@ class PeriodosController extends Controller
     	$periodo->save();
     	return Redirect::to('periodos')->with('status', 'Periodo creado con éxito');
     }
+
+    /*
+    *show
+    *Permite mostrar las busquedas realizadas dentro de la pagina
+    *return view
+    */
     public function show($id){
     	return view("configuracion.periodos.show",["periodos"=>Periodos::findOrFail($id)]);
     }
+
+    /*
+    *edit
+    *Permite realizar la busqueda en la base de datos para la edición
+    *return view
+    */
     public function edit($id){
     	return view("configuracion.periodos.edit",["periodos"=>Periodos::findOrFail($id)]);
     }
+
+    /*
+    *update
+    *Permite realizar la actualización del item seleccionado
+    *return view
+    */
     public function update(PeriodosFormRequest $request,$id){
     	$periodo=Periodos::findOrFail($id);
     	$periodo->pe_nombre = $request->get('nombre');
@@ -56,6 +91,12 @@ class PeriodosController extends Controller
     	$periodo->update();
     	return Redirect::to('periodos')->with('status', 'Periodo actualizado con éxito');
     }
+
+    /*
+    *destroy
+    *Permite cambiar el estado a 0 y desactivar el item de la tabla
+    *return view
+    */
     public function destroy($id){
     	$periodo=Periodos::findOrFail($id);
     	$periodo->pe_estado='0';

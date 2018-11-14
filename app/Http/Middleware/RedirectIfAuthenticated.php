@@ -9,7 +9,7 @@ class RedirectIfAuthenticated
 {
     /**
      * Handle an incoming request.
-     *
+     *Este metodo permite solo el ingreso a la plataforma a aquellos usuarios autenticados y activos
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
      * @param  string|null  $guard

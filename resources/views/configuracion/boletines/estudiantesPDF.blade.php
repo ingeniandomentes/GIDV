@@ -19,7 +19,7 @@ table {
 th {
     border: 1px solid #000000;
     text-align: left;
-    padding: 8px;
+    padding: 4px;
     background-color:rgb(146,208,80);
     font-size:12px;
 }
@@ -47,7 +47,7 @@ th:nth-child(6) {
 		<div id="contenedor_2">
 		 	@foreach($estudiantes as $es)
 			 	@if($ess==$es->es_idEstudiante)
-					<img src="C:Users/Ricardo/Desktop/TesisLaravel/GIDV/public/imagenes/fotosEstudiantes/{{ $es->es_fotoEstudiante }}" alt="{{ $es->es_nombre}}" height="100px" width="110px" class="img-thumbnail" hspace="20">							
+					<img src="C:Users/Ricardo/Desktop/TesisLaravel/GIDV/public/imagenes/fotosEstudiantes/{{ $es->es_fotoEstudiante }}" alt="{{ $es->es_nombre}}" height="90px" width="110px" class="img-thumbnail" hspace="20">							
 				@endif
 			@endforeach
 		 </div>
@@ -55,23 +55,25 @@ th:nth-child(6) {
 		</div>
 		 <div id="contenedor_1">
 		 	<b>REGISTRO ESCOLAR DE EVALUACIÓN {{$anio}}</b>
+		 	<div id="espacior">
+			</div>
 			@foreach($users as $us)
 				@foreach($estudiantes as $es)
 				 	@if($ess==$es->es_idEstudiante && $es->es_idCursoFK == $us->us_idCursoFK)
-						<p>Docente: {{ $us->name }} {{ $us->us_apellido }}</p>							
+						Docente: {{ $us->name }} {{ $us->us_apellido }}					
 					@endif
 				@endforeach
 			@endforeach
 		 </div>
 	</div>	
-	<style> #contenedor {width:auto; height:110px; background:none;text-align: center; overflow: hidden; position: relative;}</style>
+	<style> #contenedor {width:auto; height:90px; background:none;text-align: center; overflow: hidden; position: relative;}</style>
 
     <style>
-     #contenedor_1 {width:200px; height:80px; background:none; padding:10px;border-width:2.5px;  
+     #contenedor_1 {width:200px; height:60px; background:none; padding:10px;border-width:2.5px;  
     border-style:solid; border-radius: 15px;float: right;text-align: center; overflow: hidden;}</style>
 
     <style>
-     #contenedor_2 {width:110px; height:100px; background:none;float: right;text-align: center; overflow: hidden;}</style>
+     #contenedor_2 {width:110px; height:80px; background:none;float: right;text-align: center; overflow: hidden;}</style>
      <style>
      #espacio {width:2px; height:50px; background:none;float: right;text-align: center; overflow: hidden;}</style>
 </div>
@@ -159,7 +161,7 @@ th:nth-child(6) {
 				 {{ $no->no_nombre }}={{ $no->no_descripcion }}							
 		@endforeach
 	 </div>	
-	<style> #rectangleee {width:auto; height:25px; background:rgb(146,208,80);border-radius: 5px;font-size:13px;text-align: center; overflow: hidden;border-width:1.5px;border-style:solid;}</style>
+	<style> #rectangleee {width:auto; height:20px; background:rgb(146,208,80);border-radius: 5px;font-size:13px;text-align: center; overflow: hidden;border-width:1.5px;border-style:solid;}</style>
 
     <style>
      #espacio {width:3px; height:50px; background:none;float: right;text-align: center; overflow: hidden;}</style>
@@ -174,13 +176,13 @@ th:nth-child(6) {
 @if($cont==4)
 	<div id="espaciore">
 	</div>
-<style>#espaciore{width:auto; height:70px; background:none;border-width:1.5px;border-style:solid;border-color: #FFFFFF}</style>
+<style>#espaciore{width:auto; height:130px; background:none;border-width:1.5px;border-style:solid;border-color: #FFFFFF}</style>
 <div class="row"><!--Primera linea con la foto-->
 	<div id="contenedor">
 		<div id="contenedor_2">
 		 	@foreach($estudiantes as $es)
 			 	@if($ess==$es->es_idEstudiante)
-					<img src="C:Users/Ricardo/Desktop/TesisLaravel/GIDV/public/imagenes/fotosEstudiantes/{{ $es->es_fotoEstudiante }}" alt="{{ $es->es_nombre}}" height="100px" width="110px" class="img-thumbnail" hspace="20">							
+					<img src="C:Users/Ricardo/Desktop/TesisLaravel/GIDV/public/imagenes/fotosEstudiantes/{{ $es->es_fotoEstudiante }}" alt="{{ $es->es_nombre}}" height="90px" width="110px" class="img-thumbnail" hspace="20">							
 				@endif
 			@endforeach
 		 </div>
@@ -188,25 +190,17 @@ th:nth-child(6) {
 		</div>
 		 <div id="contenedor_1">
 		 	<b>REGISTRO ESCOLAR DE EVALUACIÓN {{$anio}}</b>
+		 	<div id="espacior">
+			</div>
 			@foreach($users as $us)
 				@foreach($estudiantes as $es)
 				 	@if($ess==$es->es_idEstudiante && $es->es_idCursoFK == $us->us_idCursoFK)
-						<p>Docente: {{ $us->name }} {{ $us->us_apellido }}</p>							
+						Docente: {{ $us->name }} {{ $us->us_apellido }}						
 					@endif
 				@endforeach
 			@endforeach
 		 </div>
 	</div>	
-	<style> #contenedor {width:auto; height:110px; background:none;text-align: center; overflow: hidden; position: relative;}</style>
-
-    <style>
-     #contenedor_1 {width:200px; height:80px; background:none; padding:10px;border-width:2.5px;  
-    border-style:solid; border-radius: 15px;float: right;text-align: center; overflow: hidden;}</style>
-
-    <style>
-     #contenedor_2 {width:110px; height:100px; background:none;float: right;text-align: center; overflow: hidden;}</style>
-     <style>
-     #espacio {width:2px; height:50px; background:none;float: right;text-align: center; overflow: hidden;}</style>
 </div>
 <div class="row"><!--Segunda linea con datos del estudiante-->
 	<div id="rectanglee">
@@ -267,15 +261,10 @@ th:nth-child(6) {
 				 {{ $no->no_nombre }}={{ $no->no_descripcion }}							
 		@endforeach
 	 </div>	
-	<style> #rectangleee {width:auto; height:25px; background:rgb(146,208,80);border-radius: 5px;font-size:13px;text-align: center; overflow: hidden;border-width:1.5px;border-style:solid;}</style>
-
-    <style>
-     #espacio {width:3px; height:50px; background:none;float: right;text-align: center; overflow: hidden;}</style>
 </div>
 <div class="row">
 	<div id="espaciooo">
 	</div>
-<style>#espaciooo {width:auto; height:5px; background:none;text-align: center; overflow: hidden;}</style>
 </div>
 <div class="row">
 <table>
@@ -329,7 +318,7 @@ th:nth-child(6) {
 </table>
 <br>
 </div>
-@elseif($cont==9)
+@elseif($cont==8)
 <div class="row">
 <table>
   <tr>
@@ -437,16 +426,17 @@ th:nth-child(6) {
 @endif
 @php($cont++)
 @endforeach
-<div class="row">
-	<p>Observaciones</p>
+	Observaciones
+	<br>
 	@foreach($observacionesgenerales as $og)
 		@foreach($observaciones as $ob)
 			@if($og->og_idObservacionesFK == $ob->ob_idObservaciones)
-				<p>{{ $ob->ob_descripcion }}</p>
+				{{ $ob->ob_descripcion }}
+				<br>
 			@endif
 		@endforeach
 	@endforeach
+	<br>
 	<p><b>DOCENTE DE CURSO:   ___________________________ DIRECTOR(A): ________________________</b></p>
-</div>
 </body>
 </html>

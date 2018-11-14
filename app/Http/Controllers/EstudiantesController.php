@@ -21,6 +21,12 @@ class EstudiantesController extends Controller
      public function __construct(){
         $this->middleware('auth');
     }
+
+    /*
+    *index
+    *Este metodo permite mostrar todos los registros que estan dentro de la tabla buscada y realizar la busqueda en la misma
+    *@return view
+    */
     public function index(Request $request){
     	if($request){
     		$query=trim($request->get('searchText'));
@@ -38,12 +44,23 @@ class EstudiantesController extends Controller
     		return view('configuracion.estudiantes.index',["estudiantes"=>$estudiantes,"searchText"=>$query]);
        	}
     }
+
+    /*
+    *create
+    *Este metodo permite realizar la busqueda de las tablas necesarias para la creación
+    */
     public function create(){
         $tipodocumentos=DB::table('tipodocumento')->where('td_estado','=','1')->get();
         $cursos=DB::table('cursos')->where('cu_estado','=','1')->get();
         $grados=DB::table('grados')->where('gr_estado','=','1')->get();
         return view("configuracion.estudiantes.create",["tipodocumentos"=>$tipodocumentos,"cursos"=>$cursos,"grados"=>$grados]);
     }
+
+    /*
+    *store
+    *Este metodo permite realizar el guardado
+    *@return view
+    */
     public function store(EstudiantesFormRequest $request){
     	$estudiante = new Estudiantes;
     	$estudiante->es_nombre = $request->get('nombre');
@@ -75,9 +92,21 @@ class EstudiantesController extends Controller
     	$estudiante->save();
     	return Redirect::to('estudiantes')->with('status', 'Estudiante creado con éxito');
     }
+
+    /*
+    *show
+    *Permite mostrar las busquedas realizadas dentro de la pagina
+    *return view
+    */
     public function show($id){
     	return view("configuracion.estudiantes.show",["estudiantes"=>Estudiantes::findOrFail($id)]);
     }
+
+    /*
+    *edit
+    *Permite realizar la busqueda en la base de datos para la edición
+    *return view
+    */
     public function edit($id){
         $estudiantes=Estudiantes::findOrFail($id);
         $tipodocumentos=DB::table('tipodocumento')->where('td_estado','=','1')->get();
@@ -85,6 +114,12 @@ class EstudiantesController extends Controller
         $grados=DB::table('grados')->where('gr_estado','=','1')->get();
     	return view("configuracion.estudiantes.edit",["estudiantes"=>$estudiantes,"tipodocumentos"=>$tipodocumentos,"cursos"=>$cursos,"grados"=>$grados]);
     }
+
+    /*
+    *update
+    *Permite realizar la actualización del item seleccionado
+    *return view
+    */
     public function update(EstudiantesFormRequest $request,$id){
     	$estudiante=Estudiantes::findOrFail($id);
     	$estudiante->es_nombre = $request->get('nombre');
@@ -116,6 +151,12 @@ class EstudiantesController extends Controller
     	$estudiante->update();
     	return Redirect::to('estudiantes')->with('status', 'Estudiante actualizado con éxito');
     }
+
+    /*
+    *destroy
+    *Permite cambiar el estado a 0 y desactivar el item de la tabla
+    *return view
+    */
     public function destroy($id){
     	$estudiante=Estudiantes::findOrFail($id);
     	$estudiante->es_estado='0';

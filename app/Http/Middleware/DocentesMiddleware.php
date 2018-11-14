@@ -10,7 +10,7 @@ class DocentesMiddleware
 {
     /**
      * Handle an incoming request.
-     *
+     *Este midleware permite que todos los usuarios directivos no puedan realizar calificaciones
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
      * @return mixed

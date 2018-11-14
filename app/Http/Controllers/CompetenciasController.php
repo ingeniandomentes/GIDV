@@ -16,10 +16,20 @@ use DB;
 
 class CompetenciasController extends Controller
 {
+    /*
+    *construct
+    *Este metodo permite autenticar usuario logeado y los perfiles que pueden verlo mediante middleware
+    */
     public function __construct(){
         $this->middleware('auth');
         $this->middleware('admin');
     }
+
+    /*
+    *index
+    *Este metodo permite mostrar todos los registros que estan dentro de la tabla buscada y realizar la busqueda en la misma
+    *@return view
+    */
     public function index(Request $request){
     	if($request){
     		$query=trim($request->get('searchText'));
@@ -33,12 +43,23 @@ class CompetenciasController extends Controller
     		return view('configuracion.competencias.index',["competencias"=>$competencias,"searchText"=>$query]);
        	}
     }
+
+    /*
+    *create
+    *Este metodo permite realizar la busqueda de las tablas necesarias para la creación
+    */
     public function create(){
         $procesos=DB::table('procesos')->where('pro_estado','=','1')
                                         ->orderBy('pro_nombre','asc')
         								->get();
     	return view("configuracion.competencias.create",["procesos"=>$procesos]);
     }
+
+    /*
+    *store
+    *Este metodo permite realizar el guardado
+    *@return view
+    */
     public function store(CompetenciasFormRequest $request){
     	$competencia = new Competencias;
         $competencia->co_descripcion= $request->get('descripcion');
@@ -47,9 +68,20 @@ class CompetenciasController extends Controller
     	$competencia->save();
     	return Redirect::to('competencias')->with('status', 'Competencias creadas con éxito');
     }
+
+    /*
+    *show
+    *Permite mostrar las busquedas realizadas dentro de la pagina
+    *return view
+    */
     public function show($id){
     	return view("configuracion.competencias.show",["competencias"=>Competencias::findOrFail($id)]);
     }
+    /*
+    *edit
+    *Permite realizar la busqueda en la base de datos para la edición
+    *return view
+    */
     public function edit($id){
         $competencias=Competencias::findOrFail($id);
         $procesos=DB::table('procesos')->where('pro_estado','=','1')
@@ -57,6 +89,11 @@ class CompetenciasController extends Controller
         								->get();
     	return view("configuracion.competencias.edit",["competencias"=>$competencias,"procesos"=>$procesos]);
     }
+    /*
+    *update
+    *Permite realizar la actualización del item seleccionado
+    *return view
+    */
     public function update(CompetenciasFormRequest $request,$id){
     	$competencia=Competencias::findOrFail($id);
         $competencia->co_descripcion= $request->get('descripcion');
@@ -64,6 +101,11 @@ class CompetenciasController extends Controller
     	$competencia->update();
     	return Redirect::to('competencias')->with('status', 'Usuario actualizado con éxito');
     }
+    /*
+    *destroy
+    *Permite cambiar el estado a 0 y desactivar el item de la tabla
+    *return view
+    */
     public function destroy($id){
     	$competencia=Competencias::findOrFail($id);
     	$competencia->co_estado='0';

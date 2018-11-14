@@ -20,6 +20,12 @@ class ProcesosController extends Controller
         $this->middleware('auth');
         $this->middleware('admin');
     }
+
+    /*
+    *index
+    *Este metodo permite mostrar todos los registros que estan dentro de la tabla buscada y realizar la busqueda en la misma
+    *@return view
+    */
     public function index(Request $request){
     	if($request){
     		$query=trim($request->get('searchText'));
@@ -36,6 +42,11 @@ class ProcesosController extends Controller
     		return view('configuracion.procesos.index',["procesos"=>$procesos,"searchText"=>$query]);
        	}
     }
+
+    /*
+    *create
+    *Este metodo permite realizar la busqueda de las tablas necesarias para la creación
+    */
     public function create(){
         $materias=DB::table('materias')->where('ma_estado','=','1')
                                         ->orderBy('ma_nombre','asc')
@@ -48,6 +59,12 @@ class ProcesosController extends Controller
         								->get();
     	return view("configuracion.procesos.create",["materias"=>$materias,"periodos"=>$periodos,"grados"=>$grados]);
     }
+
+    /*
+    *store
+    *Este metodo permite realizar el guardado
+    *@return view
+    */
     public function store(ProcesosFormRequest $request){
     	$proceso = new Procesos;
     	$proceso->pro_nombre = $request->get('nombre');
@@ -58,9 +75,21 @@ class ProcesosController extends Controller
     	$proceso->save();
     	return Redirect::to('procesos')->with('status', 'Proceso creado con éxito');
     }
+
+    /*
+    *show
+    *Permite mostrar las busquedas realizadas dentro de la pagina
+    *return view
+    */
     public function show($id){
     	return view("configuracion.procesos.show",["procesos"=>Procesos::findOrFail($id)]);
     }
+
+    /*
+    *edit
+    *Permite realizar la busqueda en la base de datos para la edición
+    *return view
+    */
     public function edit($id){
         $procesos=Procesos::findOrFail($id);
         $materias=DB::table('materias')->where('ma_estado','=','1')
@@ -74,6 +103,12 @@ class ProcesosController extends Controller
         								->get();
     	return view("configuracion.procesos.edit",["procesos"=>$procesos,"materias"=>$materias,"periodos"=>$periodos,"grados"=>$grados]);
     }
+
+    /*
+    *update
+    *Permite realizar la actualización del item seleccionado
+    *return view
+    */
     public function update(ProcesosFormRequest $request,$id){
     	$proceso=Procesos::findOrFail($id);
     	$proceso->pro_nombre = $request->get('nombre');
@@ -83,6 +118,12 @@ class ProcesosController extends Controller
     	$proceso->update();
     	return Redirect::to('procesos')->with('status', 'Proceso actualizado con éxito');
     }
+
+    /*
+    *destroy
+    *Permite cambiar el estado a 0 y desactivar el item de la tabla
+    *return view
+    */
     public function destroy($id){
     	$proceso=Procesos::findOrFail($id);
     	$proceso->pro_estado='0';

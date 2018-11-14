@@ -20,7 +20,7 @@ class UsuariosFormRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     *
+     *En el request se realizan todas las validaciones dentro del formulario
      * @return array
      */
     public function rules()

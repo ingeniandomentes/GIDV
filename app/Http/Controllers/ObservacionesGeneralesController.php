@@ -27,6 +27,12 @@ class ObservacionesGeneralesController extends Controller
 	public function __construct(){
         $this->middleware('auth');
     }
+
+    /*
+    *edit
+    *Permite realizar la busqueda en la base de datos para la edición
+    *return view
+    */
    public function edit($id){
         $observacionesgenerales=ObservacionesGenerales::findOrFail($id);
         $perio=DB::table('periodos')
@@ -87,6 +93,12 @@ class ObservacionesGeneralesController extends Controller
                     "tobservaciones"=>$tobservaciones,
                     "observaciones"=>$observaciones]);
     }
+
+    /*
+    *update
+    *Permite realizar la actualización del item seleccionado
+    *return view
+    */
     public function update(ObservacionesGeneralesFormRequest $request,$id){
 
         $observacionesgenerales=ObservacionesGenerales::findOrFail($id);
