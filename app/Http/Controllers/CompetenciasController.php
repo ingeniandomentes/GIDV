@@ -99,7 +99,7 @@ class CompetenciasController extends Controller
         $competencia->co_descripcion= $request->get('descripcion');
         $competencia->co_idProcesoFK= $request->get('proceso');
     	$competencia->update();
-    	return Redirect::to('competencias')->with('status', 'Usuario actualizado con éxito');
+    	return Redirect::to('competencias')->with('status', 'Competencia actualizada con éxito');
     }
     /*
     *destroy

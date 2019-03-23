@@ -75,7 +75,7 @@ class BoletinesController extends Controller
 
             ->orderBy('n.no_idNota','asc')
 
-            ->paginate(8); 
+            ->paginate(10); 
 
             $notasgenerales=DB::table('notasgenerales as ng')
 
@@ -91,7 +91,7 @@ class BoletinesController extends Controller
 
             ->select('ng.ng_idNotaGeneral','ng.ng_anioCalificacion','e.es_nombre as nombreEs','e.es_apellido as apellidoEs','us.name as docente1','us.us_apellido as docente2','p.pe_nombre as periodo','m.ma_nombre as materia','ng.ng_fallas','n.no_descripcion as nota')
 
-            ->paginate(9);
+            ->paginate(10);
 
             $observacionesgenerales=DB::table('observacionesgenerales as og')
 
@@ -101,7 +101,9 @@ class BoletinesController extends Controller
 
             ->join('periodos as p','og.og_idPeriodoFK','=','p.pe_idPeriodo')
 
-            ->select('og.og_idObservacionGeneral','og.og_anioCalificacion','e.es_nombre as nombreEs','e.es_apellido as apellidoEs','p.pe_nombre as periodo','ob.ob_descripcion as observacion');
+            ->select('og.og_idObservacionGeneral','og.og_anioCalificacion','e.es_nombre as nombreEs','e.es_apellido as apellidoEs','p.pe_nombre as periodo','ob.ob_descripcion as observacion')
+            
+            ->paginate(10);
 
             $periodos=DB::table('periodos')
                                         ->orderBy('pe_idPeriodo','asc')

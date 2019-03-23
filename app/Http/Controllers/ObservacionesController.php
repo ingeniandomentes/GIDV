@@ -104,6 +104,6 @@ class ObservacionesController extends Controller
     	$observacion=Observaciones::findOrFail($id);
     	$observacion->ob_estado='0';
     	$observacion->update();
-    	return Redirect::to('observaciones')->with('status', 'Obserrvación inactivada con éxito');
+    	return Redirect::to('observaciones')->with('status', 'Observación inactivada con éxito');
     }
 }

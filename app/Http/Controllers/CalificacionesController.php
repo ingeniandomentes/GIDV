@@ -73,7 +73,7 @@ class CalificacionesController extends Controller
 
             ->join('estudiantes as e','ng.ng_idEstudianteFK','=','e.es_idEstudiante')
 
-            ->join('users as us','ng.ng_idUsuarioFK','=','us.id')
+            ->join('users as us','ng.ng_idUsuarioFK','=','us.id')   
 
             ->join('materias as m','ng.ng_idMateriaFK','=','m.ma_idMateria')
 
@@ -83,6 +83,9 @@ class CalificacionesController extends Controller
 
             ->select('ng.ng_idNotaGeneral','ng.ng_anioCalificacion','e.es_nombre as nombreEs','e.es_apellido as apellidoEs','us.name as docente1','us.us_apellido as docente2','p.pe_nombre as periodo','m.ma_nombre as materia','ng.ng_fallas','n.no_descripcion as nota')
             ->where('e.es_nombre','LIKE','%'.$query.'%')
+
+            ->orderBy('ng.ng_idNotaGeneral','asc')
+
             ->paginate(9);
 
             $observacionesgenerales=DB::table('observacionesgenerales as og')
@@ -98,6 +101,8 @@ class CalificacionesController extends Controller
             ->where('e.es_nombre','LIKE','%'.$query.'%')
 
             ->orwhere('e.es_apellido','LIKE','%'.$query.'%')
+
+            ->orderBy('og.og_idObservacionGeneral','asc')
 
             ->paginate(8);
 

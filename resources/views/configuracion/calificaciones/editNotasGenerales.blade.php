@@ -56,7 +56,7 @@
 								@endif
 							@endforeach
 
-							@foreach($periodos as $pe)
+							@foreach($perio as $pe)
 								@if($pe->pe_idPeriodo==$notasgenerales->ng_idPeriodoFK)
 									<th class="text-center" scope="col">
 										<input type="hidden" name="ng_idPeriodoFK" value="{{ $notasgenerales->ng_idPeriodoFK }}">

@@ -70,8 +70,8 @@ Route::resource('notasGenerales','NotasGeneralesController');
 Route::resource('observaciones','ObservacionesController');
 Route::resource('periodos','PeriodosController');
 Route::resource('procesos','ProcesosController');
-Route::resource('tipoDocumentos','TipoDocumentosController');
-Route::resource('tipoObservaciones','TipoObservacionesController');
+Route::resource('tipodocumentos','TipoDocumentosController');
+Route::resource('tipoobservaciones','TipoObservacionesController');
 Route::resource('usuarios','UsuariosController');
 Route::resource('notasgenerales','NotasGeneralesController');
 Route::resource('observacionesgenerales','ObservacionesGeneralesController');
@@ -86,15 +86,3 @@ Route::get('/usuarios/reset/{user}',[
 			'uses'=>'UsuariosController@reset']);
 
 Route::post('/usuarios/resetUpdate/{id}','UsuariosController@resetUpdate');
-
-/*
-* Esta ruta permite la ejecución de los middleware
-*/
-
-Route::group(['middleware'=>'estudiante'], function(){
-	Route::get('estudiantes/create','EstudiantesController@create');
-});
-
-Route::group(['middleware'=>'directivo'], function(){
-	Route::get('calificaciones/create','CalificacionesController@create');
-});

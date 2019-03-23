@@ -96,9 +96,8 @@
 	</table>
 	</form>
 	<br>
-	{{-- Estudiantes --}}
+	{{-- Estudiantes --}}<!--
 	<form method="Post" action="/boletines/estudiantesQPDF">
-	{{-- {!!Form::model($usuarios,['method'=>'PATCH','route'=>['usuarios.resetUpdate',$usuarios->id]])!!}
 	{{Form::token()}}
 		<table>
 		<h1>Reporte por estudiante (5° Boletin)</h1>
@@ -130,6 +129,6 @@
 		<a href="{{URL::action('BoletinesController@estudiantesQPDF')}}"><button class="btn btn-info" type="sumbmit">Generar PDF Estudiantes</button></a>
 		</div>
 	</table>
-	</form>--}}
+	</form>-->
 	<!--<a class="btn btn-success" href="{{ URL::previous() }}">Volver</a>-->
 @endsection

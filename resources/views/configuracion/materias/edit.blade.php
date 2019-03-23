@@ -27,10 +27,10 @@
 				<select name="idDocenteAsignado" class="form-control">
 					<option value="0">Elije una opción</option>
 					@foreach($docentes as $docente)
-					@if($docente->us_idUsuario==$materias->ma_docenteAsignadoFK)
-					<option value="{{$docente->us_idUsuario}}" selected>{{$docente->us_nombre}}</option>
+					@if($docente->id==$materias->ma_docenteAsignadoFK)
+					<option value="{{$docente->id}}" selected>{{$docente->name}} {{$docente->us_apellido}}</option>
 					@else
-					<option value="{{$docente->us_idUsuario}}">{{$docente->us_nombre}}</option>
+					<option value="{{$docente->id}}">{{$docente->name}} {{$docente->us_apellido}}</option>
 					@endif
 					@endforeach
 				</select>
@@ -40,7 +40,6 @@
 			<div class="form-group">
 				<button class="btn btn-primary" type="sumbmit">Agregar</button>
 				<button class="btn btn-danger" type="reset">Borrar</button>
-				<a href="materias/index"><button class="btn btn-dark">Regresar</button></a>
 			</div>
 			{!!Form::close()!!}
 @endsection

@@ -134,6 +134,7 @@
                 <li><a href="{{url('estudiantes')}}"><i class="fa fa-circle-o"></i> Estudiantes</a></li>
               </ul>
             </li>
+            <!--
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-plus-square"></i> <span>Ayuda </span><small class="label pull-middle bg-red">PDF</small><i class="fa fa-angle-left pull-right"></i>
@@ -147,11 +148,11 @@
                 <i class="fa fa-info-circle"></i> <span>Acerca De...</span>
                 <small class="label pull-right bg-yellow">Proyecto</small>
               </a>
-            </li>       
+            </li>  -->     
           </ul>
           @else
           <ul class="sidebar-menu">
-            <li class="header">Sistema de calificaciones</li>
+            <li class="header"><h5 style="color:#FFFFFFFF";>Sistema de calificaciones</h5></li>
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-list" aria-hidden="true"></i>
@@ -180,11 +181,12 @@
                 <li><a href="{{url('periodos')}}"><i class="fa fa-circle-o"></i> Periodos</a></li>
                 <li><a href="{{url('procesos')}}"><i class="fa fa-circle-o"></i> Procesos</a></li>
                 <li><a href="{{url('roles')}}"><i class="fa fa-circle-o"></i> Roles</a></li>
-                <li><a href="{{url('tipoDocumentos')}}"><i class="fa fa-circle-o"></i>Tipo de Documento</a></li>
-                <li><a href="{{url('tipoObservaciones')}}"><i class="fa fa-circle-o"></i>Tipo de Observacion</a></li>
+                <li><a href="{{url('tipodocumentos')}}"><i class="fa fa-circle-o"></i>Tipo de Documento</a></li>
+                <li><a href="{{url('tipoobservaciones')}}"><i class="fa fa-circle-o"></i>Tipo de Observacion</a></li>
                 <li><a href="{{url('usuarios')}}"><i class="fa fa-circle-o"></i> Usuarios</a></li>
               </ul>
             </li>
+            <!--
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-plus-square"></i> <span>Ayuda </span><small class="label pull-middle bg-red">PDF</small><i class="fa fa-angle-left pull-right"></i>
@@ -199,7 +201,8 @@
                 <i class="fa fa-info-circle"></i> <span>Acerca De...</span>
                 <small class="label pull-right bg-yellow">Proyecto</small>
               </a>
-            </li>       
+            </li> 
+            -->      
           </ul>
           @endif
         </section>
@@ -219,9 +222,12 @@
               <div class="box box-solid box-primary">
                 <div class="box-header with-border">
                   <h3 class="box-title">Sistema de Registro de Notas </h3>
+                  @guest
+                  @else
                   <div class="box-tools pull-right">
                     <a class="btn btn-success" href="{{ URL::previous() }}">Volver</a>
                   </div>
+                  @endif
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body ">
@@ -244,9 +250,9 @@
       <!--Fin-Contenido-->
       <footer class="main-footer">
         <div class="pull-right hidden-xs">
-          <b>Version</b> 2.3.0
+          <b>Version</b> 2.4
         </div>
-        <strong>Copyright &copy; 2015-2020 Ricardo Franco Rios.</strong> All rights reserved.
+        <strong>Diseñado y programado por Ricardo Franco y Mauricio Leal</strong>
       </footer>
 
       

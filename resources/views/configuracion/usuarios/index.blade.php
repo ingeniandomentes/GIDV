@@ -83,7 +83,6 @@
 								@else
 								<td>Incativo</td>
 								@endif
-						@else
 						@endif
 						@else
 						@if($rol=Auth::user()->us_idRolFK==1 && $usuario->us_idRolFK==1)
@@ -170,8 +169,6 @@
 									<a href="{{URL::action('UsuariosController@edit',$usuario->id)}}"><button class="btn btn-info">Activar</button></a>
 								</td>
 								@endif
-						@else
-						<td></td>
 						@endif
 					@endif
 				</tr>

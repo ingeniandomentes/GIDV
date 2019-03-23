@@ -172,29 +172,33 @@ th:nth-child(6) {
 	@php($def=0)
 	@php($div=0)
 	@php($res=0)
+	@php($fallas=0)
 	@foreach($notasgenerales as $ng)
 		@if($ng->ng_idMateriaFK==$ma->ma_idMateria)
 			@php($def=$def+$ng->ng_idNotaFK)
 		@endif
-	@enforeach
+		@php($fallas=$fallas+$ng->ng_fallas)
+	@endforeach
 		@php($div=$def/4)
 	@if($div>=1 && $div<=1.5)
 		@php($res=1)
-	@elseif($div>1.5 && $div<=2.5)
+	@elseif($div>1.5 && $div<=2.75)
 		@php($res=2)
-	@elseif($div>2.5)
+	@elseif($div>2.75)
 		@php($res=3)
 	@endif
   <tr>
     <th class="text-center">{{ $ma->ma_nombre }}</th>
 	<th class="text-center" >{{ $ma->ma_intensidad }}h</th>
 	<th class="text-center" >NF</th>
+	@php($sum=0)
 	@foreach($notasgenerales as $ng)
 		@foreach($notas as $no)
-			@if($ng->ng_idEstudianteFK == $ess && $ma->ma_idMateria==$ng->ng_idMateriaFK && $no->no_idNota==$ng->ng_idNotaFK)
+			@if($ng->ng_idEstudianteFK == $ess && $ma->ma_idMateria==$ng->ng_idMateriaFK && $no->no_idNota==$res && $sum==0)
 			<th class="text-center" >{{ $no->no_descripcion }}</th>
 			<th class="text-center" >Fallas</th>
-			<th class="text-center" >{{ $ng->ng_fallas }}</th>
+			<th class="text-center" >{{ $fallas }}</th>
+			@php($sum++)
 			@endif
 		@endforeach
 	@endforeach
@@ -203,14 +207,7 @@ th:nth-child(6) {
 </table>
 	Observaciones
 	<br>
-	@foreach($observacionesgenerales as $og)
-		@foreach($observaciones as $ob)
-			@if($og->og_idObservacionesFK == $ob->ob_idObservaciones)
-				{{ $ob->ob_descripcion }}
-				<br>
-			@endif
-		@endforeach
-	@endforeach
+	Felicitaciones por tu excelente desempeño académico, continua así .Eres promovíd@ al siguiente grado.
 	<br>
 	<p><b>DOCENTE DE CURSO:   ___________________________ DIRECTOR(A): ________________________</b></p>
 </body>

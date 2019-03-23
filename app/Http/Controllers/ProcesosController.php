@@ -51,8 +51,7 @@ class ProcesosController extends Controller
         $materias=DB::table('materias')->where('ma_estado','=','1')
                                         ->orderBy('ma_nombre','asc')
         								->get();
-        $periodos=DB::table('periodos')->where('pe_estado','=','1')
-                                        ->orderBy('pe_idPeriodo','asc')
+        $periodos=DB::table('periodos') ->orderBy('pe_idPeriodo','asc')
         								->get();
         $grados=DB::table('grados')->where('gr_estado','=','1')
                                         ->orderBy('gr_idGrado','asc')

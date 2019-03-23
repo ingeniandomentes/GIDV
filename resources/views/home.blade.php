@@ -12,7 +12,7 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    <img src="/imagenes/prueba.jpg" class="img-responsive center-block">
+                    <img src="/imagenes/prueba.jpg" class="img-responsive center-block" width="300" height="300">
                 </div>
                 @php($id=Auth::user()->id)
                 <div>
